@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :load_question, only: %i[show edit]
+  before_action :load_question, only: %i[show edit update]
   def new
     @question = Question.new
   end
@@ -21,6 +21,14 @@ class QuestionsController < ApplicationController
   def show; end
 
   def edit; end
+
+  def update
+    if @question.update(question_params)
+      redirect_to @question
+    else
+      render :edit
+    end
+  end
 
   private
 
