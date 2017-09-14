@@ -51,25 +51,27 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) } }
+    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) } }
 
     context 'with valid attributes' do
       it 'saves new question to DB' do
         # attributes_for returns a hash of attributes from factory girl
         # which is create a question object
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { valid_post_create }.to change(Question, :count).by(1)
       end
       it 'redirect to show' do
-        post :create, params: { question: attributes_for(:question) }
+        valid_post_create
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
     context 'with invalid attributes' do
       it 'does not save the new question to DB' do
-        expect { post :create, params: { question: attributes_for(:invalid_question) } }.to_not change(Question, :count)
+        expect { invalid_post_create }.to_not change(Question, :count)
       end
       it 're-renders new template' do
-        post :create, params: { question: attributes_for(:invalid_question) }
+        invalid_post_create
         expect(response).to render_template :new
       end
     end
