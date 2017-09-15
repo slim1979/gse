@@ -21,7 +21,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves answer to database' do
-        expect { valid_post_create }.to change(Answer, :count).by(1)
+        expect { valid_post_create }.to change(question.answers, :count).by(1)
       end
       it 'redirect to show' do
         valid_post_create
