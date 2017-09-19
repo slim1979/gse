@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
   def new
     @question = Question.new
@@ -13,6 +14,7 @@ class QuestionsController < ApplicationController
 
     if @question.save
       redirect_to @question
+      flash[:notice] = 'Your question created successfully!'
     else
       render :new
     end
