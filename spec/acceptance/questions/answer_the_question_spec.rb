@@ -15,9 +15,8 @@ feature 'Answer the question', %q(
     question
 
     visit questions_path
-    click_on 'Show question'
+    click_on 'show question'
     fill_in 'Body', with: 'Some text to solve problem'
-    save_and_open_page
     click_on 'Answer the question'
     expect(page).to have_content question.title
     expect(page).to have_content question.body
@@ -28,7 +27,7 @@ feature 'Answer the question', %q(
 
     question
     visit questions_path
-    click_on 'Show question'
+    click_on 'show question'
 
     click_on 'Answer the question'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
