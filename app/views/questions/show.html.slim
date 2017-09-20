@@ -8,7 +8,7 @@
     - @question.answers.each do |a|
       .body       =a.body
       .created_at =a.created_at
-      .manage = link_to 'Delete', answer_path(id: a.id), data: { confirm: 'Are you sure?' }, method: :delete
+      .manage = link_to 'Delete answer', answer_path(id: a.id), data: { confirm: 'Are you sure?' }, method: :delete
       br
   p Вы можете помочь в решении проблемы, оставив ответ.
   .new_answer
