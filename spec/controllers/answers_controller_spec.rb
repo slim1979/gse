@@ -25,7 +25,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirect to show' do
         valid_post_create
-        expect(response).to redirect_to answer_path(assigns(:answer))
+        expect(response).to redirect_to question_path(question)
       end
     end
 

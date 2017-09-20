@@ -1,0 +1,3 @@
+p =link_to 'Answer the question', new_question_answer_path(@question)
+p =@question.answers.each do |answer|
+    = answer.body
