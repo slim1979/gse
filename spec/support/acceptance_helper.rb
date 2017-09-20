@@ -17,17 +17,6 @@ module AcceptanceHelper
   end
 
   def expectations
-    expect(page).to have_content question1.title
-    expect(page).to have_content question1.body
-    answers1.each do |answer|
-      expect(page).to have_content answer.body
-    end
-    expect(page).to have_content question2.title
-    expect(page).to have_content question2.body
-    answers2.each do |answer|
-      expect(page).to have_content answer.body
-    end
-
     expect(page).to have_content question3.title
     expect(page).to have_content question3.body
     answers3.each do |answer|
