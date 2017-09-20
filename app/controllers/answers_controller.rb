@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: %i[new create]
+  before_action :set_question
 
   def new
     @answer = @question.answers.new
