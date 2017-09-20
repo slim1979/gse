@@ -7,7 +7,7 @@ feature 'To see a list of issues', %q(
 ) do
 
   given(:user) { create(:user) }
-  given(:questions) { create_list(:question, 5) }
+  given(:questions) { create_list(:question, 5, user: user) }
 
   scenario 'Authenticated user see the list of questions' do
 
