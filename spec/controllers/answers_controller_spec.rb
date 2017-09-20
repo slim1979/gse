@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:question) { create(:question, user: @user) }
+  let(:answer)   { create(:answer, user: @user, question: question) }
 
   sign_in_user
 

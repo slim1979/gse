@@ -7,7 +7,7 @@ feature 'Answer the question', %q(
 ) do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user can answer the question' do
 
@@ -17,8 +17,8 @@ feature 'Answer the question', %q(
     visit questions_path
     click_on 'Show question'
     fill_in 'Body', with: 'Some text to solve problem'
+    save_and_open_page
     click_on 'Answer the question'
-
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     expect(page).to have_content 'Some text to solve problem'
