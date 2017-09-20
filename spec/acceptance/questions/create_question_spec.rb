@@ -21,7 +21,7 @@ feature 'Create question', %q(
     expect(page).to have_content 'Your question created successfully!'
   end
 
-  scenario 'Authenticated user created the question' do
+  scenario 'Unauthenticated user created the question' do
 
     visit questions_path
     click_on 'Ask question'
