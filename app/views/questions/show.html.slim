@@ -1,3 +1,20 @@
-p =link_to 'Answer the question', new_question_answer_path(@question)
-p =@question.answers.each do |answer|
-    = answer.body
+.container
+
+  h4 =@question.title
+  p  =@question.body
+  br
+
+  .exists_answers
+    - @question.answers.each do |a|
+      .body       =a.body
+      .created_at =a.created_at
+      .manage = link_to 'Delete', answer_path(id: a.id), data: { confirm: 'Are you sure?' }, method: :delete
+      br
+  p Вы можете помочь в решении проблемы, оставив ответ.
+  .new_answer
+    = form_for [@question, Answer.new] do |a|
+      =a.label :body
+      br
+      =a.text_area :body, rows: 5
+      br
+      =a.submit 'Answer the question'
