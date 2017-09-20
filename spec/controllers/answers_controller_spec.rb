@@ -4,6 +4,8 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, question: question) }
 
+  sign_in_user
+
   describe 'GET #new' do
     before { get :new, params: { question_id: question } }
 
