@@ -12,7 +12,6 @@ module AcceptanceHelper
 
     questions.each do |question|
       expect(page).to have_content question.title
-      expect(page).to have_content question.body
     end
   end
 
