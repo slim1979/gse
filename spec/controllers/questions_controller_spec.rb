@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:question) { create(:question, user: @user) }
+  # the better way to assign variable instead of @questions = FactoryGirl.create_list etc...
+  # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
+  let(:questions) { create_list(:question, 2, user: @user) }
 
   describe 'GET #index' do
-    # the better way to assign variable instead of @questions = FactoryGirl.create_list etc...
-    # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
-    let(:questions) { create_list(:question, 2) }
-
+    sign_in_user
     before { get :index }
     it 'populates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
@@ -18,6 +18,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
+    sign_in_user
     before { get :show, params: { id: question } }
 
     it 'assign request question to @question' do
@@ -104,8 +105,10 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to_not eq nil
+        expect(question.title).to eq question.title
+        expect(question.body).to_not eq nil
+        expect(question.body).to eq question.body
       end
       it 're-render edit template' do
         expect(response).to render_template :edit
