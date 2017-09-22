@@ -16,10 +16,8 @@ feature 'Answer the question', %q(
 
     visit questions_path
     click_on 'show question'
-    fill_in 'Body', with: 'Some text to solve problem'
+    fill_in 'Содержание', with: 'Some text to solve problem'
     click_on 'Answer the question'
-    expect(page).to have_content question.title
-    expect(page).to have_content question.body
     expect(page).to have_content 'Some text to solve problem'
   end
 
@@ -30,6 +28,6 @@ feature 'Answer the question', %q(
     click_on 'show question'
 
     click_on 'Answer the question'
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
   end
 end

@@ -13,7 +13,7 @@ feature 'User sign out', %q(
     sign_in(user)
     click_on 'Выйти'
 
-    expect(page).to have_content 'Signed out successfully.'
+    expect(page).to have_content 'Выход из системы выполнен.'
   end
 
   scenario 'Unregistered user tried to sign out' do

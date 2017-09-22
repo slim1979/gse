@@ -14,8 +14,8 @@ feature 'Create question', %q(
 
     visit questions_path
     click_on 'Ask question'
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'text text'
+    fill_in 'Заголовок', with: 'Test question'
+    fill_in 'Содержание', with: 'text text'
     click_on 'Create'
 
     expect(page).to have_content 'Your question created successfully!'
@@ -26,6 +26,6 @@ feature 'Create question', %q(
     visit questions_path
     click_on 'Ask question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
   end
 end

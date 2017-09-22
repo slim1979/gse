@@ -37,6 +37,6 @@ feature 'Destroy answer', %q(
     visit question_path(question)
     click_on 'Delete answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
   end
 end

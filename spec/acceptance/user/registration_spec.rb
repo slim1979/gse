@@ -11,10 +11,10 @@ feature 'The user register itself on the website', %q(
   scenario 'User tried to sign up' do
     visit new_user_registration_path
     fill_in 'Email', with: 'new_one@test.com'
-    fill_in 'Password', with: 'qwerty'
-    fill_in 'Password confirmation', with: 'qwerty'
+    fill_in 'Пароль', with: 'qwerty'
+    fill_in 'Подтверждение пароля', with: 'qwerty'
     click_on 'Sign up'
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    expect(page).to have_content 'Добро пожаловать! Вы зарегистрировались'
     expect(current_path).to eq root_path
   end
 end
