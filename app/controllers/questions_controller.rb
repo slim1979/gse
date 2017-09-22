@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
   def new
-    @question = current_user.questions.new
+    @question = Question.new
   end
 
   def index
@@ -33,13 +33,13 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.user == current_user
+    if current_user.author_of? @question
       @question.destroy
       redirect_to questions_path
       flash[:notice] = 'Your question successfully deleted!'
     else
       redirect_to questions_path
-      flash[:notice] = 'You can delete only your own content'
+      flash[:alert] = 'You can delete only your own content'
     end
   end
 
