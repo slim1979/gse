@@ -7,8 +7,6 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
 
-  private
-
   def author_of?(resource)
     resource.user_id == id
   end
