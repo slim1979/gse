@@ -5,16 +5,16 @@
   br
 
   .exists_answers
-    - @question.answers.each do |a|
-      .body       =a.body
-      .created_at =a.created_at
-      .manage = link_to 'Delete answer', answer_path(id: a.id), data: { confirm: 'Are you sure?' }, method: :delete
+    -@question.answers.each do |answer|
+      -if answer.valid?
+        .body       =answer.body
+        .created_at =answer.created_at
+        .manage =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
+
       br
   p Вы можете помочь в решении проблемы, оставив ответ.
   .new_answer
-    = form_for [@question, Answer.new] do |a|
-      =a.label :body
-      br
-      =a.text_area :body, rows: 5
-      br
-      =a.submit 'Answer the question'
+    =form_for [@question, Answer.new] do |form|
+      p =form.label :body
+      p =form.text_area :body, rows: 5
+      p =form.submit 'Answer the question'
