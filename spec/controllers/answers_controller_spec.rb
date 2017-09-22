@@ -6,17 +6,6 @@ RSpec.describe AnswersController, type: :controller do
 
   sign_in_user
 
-  describe 'GET #new' do
-    before { get :new, params: { question_id: question } }
-
-    it 'assign a new question to @question' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-    it 'renders new view' do
-      expect(response).to render_template :new
-    end
-  end
-
   describe 'POST #create' do
     let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
     let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil } } }
@@ -37,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 're-render template new' do
         invalid_post_create
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
