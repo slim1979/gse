@@ -21,6 +21,19 @@ feature 'Answer the question', %q(
     expect(page).to have_content 'Some text to solve problem'
   end
 
+  scenario 'Authenticated user created invalid answer' do
+
+    sign_in(user)
+    question
+
+    visit questions_path
+    click_on 'show question'
+    fill_in 'Содержание', with: nil
+    click_on 'Answer the question'
+    expect(page).to have_content 'При заполнении формы возникли ошибки:'
+    expect(page).to have_content 'Содержание не может быть пустым'
+  end
+
   scenario 'Unauthenticated user can\'t answer the question' do
 
     question

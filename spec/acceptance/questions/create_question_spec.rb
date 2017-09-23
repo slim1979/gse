@@ -22,6 +22,21 @@ feature 'Create question', %q(
     expect(page).to have_content 'Your question created successfully!'
   end
 
+  scenario 'Authenticated user created invalid question' do
+
+    sign_in(user)
+
+    visit questions_path
+    click_on 'Ask question'
+    fill_in 'Заголовок', with: nil
+    fill_in 'Содержание', with: nil
+    click_on 'Create'
+
+    expect(page).to have_content 'При заполнении формы возникли ошибки:'
+    expect(page).to have_content 'Заголовок не может быть пустым'
+    expect(page).to have_content 'Содержание не может быть пустым'
+  end
+
   scenario 'Unauthenticated user created the question' do
 
     visit questions_path
