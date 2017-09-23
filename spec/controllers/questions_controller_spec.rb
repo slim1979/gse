@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:user2) { create(:user) }
   let(:question) { create(:question, user: @user) }
   # the better way to assign variable instead of @questions = FactoryGirl.create_list etc...
   # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
@@ -117,16 +118,35 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
-    before { question }
 
-    it 'delete question' do
-      expect { delete :destroy, params: { id: question} }.to change(Question, :count).by(-1)
+    context 'Question by it author' do
+      sign_in_user
+      before { question }
+
+      it 'delete question' do
+        expect { delete :destroy, params: { id: question} }.to change(Question, :count).by(-1)
+      end
+      it 'redirect to index view' do
+        delete :destroy, params: { id: question}
+        expect(response).to redirect_to questions_path
+      end
     end
-    it 'redirect to index view' do
-      delete :destroy, params: { id: question}
-      expect(response).to redirect_to questions_path
+
+    context 'Question by other author' do
+      sign_in_user
+      before { question }
+
+      it 'will not delete question' do
+        sign_out @user
+        sign_in user2
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+      it 'redirect to index view' do
+        sign_out @user
+        sign_in user2
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
   end
-
 end
