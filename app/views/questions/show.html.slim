@@ -9,10 +9,14 @@
       -if answer.valid?
         .body       =answer.body
         .created_at =answer.created_at
-        .manage =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
+        -if user_signed_in? && current_user.author_of?(answer)
+          .manage =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
 
       br
   p Вы можете помочь в решении проблемы, оставив ответ.
+  -if @answer
+    = render 'common/errors', resource: @answer
+
   .new_answer
     =form_for [@question, Answer.new] do |form|
       p =form.label :body

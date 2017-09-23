@@ -10,6 +10,7 @@
           td
             / button are visible to all user roles for demo how its work with diff roles.
             / it will be visible after green tests only for author
-            = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
+            -if user_signed_in? && current_user.author_of?(question)
+              = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
 
   p= link_to 'Ask question', new_question_path
