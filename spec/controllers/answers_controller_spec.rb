@@ -30,4 +30,17 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE #destroy' do
+    context 'Answer by Author' do
+      it 'will decrease answers count' do
+        answer
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+      it 'will redirect to question' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
 end
