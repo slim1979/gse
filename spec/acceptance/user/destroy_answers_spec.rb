@@ -30,8 +30,7 @@ feature 'Destroy answer', %q(
     sign_in(user2)
     visit question_path(question)
 
-    click_on 'Delete answer'
-    expect(page).to have_content 'You can delete only your own content'
+    expect(page).to_not have_content 'Delete answer'
   end
 
   scenario 'Unauthenticated user tries to delete someone else\'s answer' do
