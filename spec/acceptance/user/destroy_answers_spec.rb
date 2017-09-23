@@ -35,8 +35,7 @@ feature 'Destroy answer', %q(
 
   scenario 'Unauthenticated user tries to delete someone else\'s answer' do
     visit question_path(question)
-    click_on 'Delete answer'
 
-    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
+    expect(page).to_not have_content 'Delete answer'
   end
 end
