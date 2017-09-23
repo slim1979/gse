@@ -18,6 +18,9 @@ feature 'Destroy question', %q(
     visit root_path
     click_on 'delete question'
 
+
+    expect(page).to_not have_content own_question.title
+    expect(page).to_not have_content own_question.body
     expect(page).to have_content 'Your question successfully deleted!'
   end
 
@@ -26,15 +29,13 @@ feature 'Destroy question', %q(
     other_author_question
     visit questions_path
 
-    click_on 'delete question'
-    expect(page).to have_content 'You can delete only your own content'
+    expect(page).to_not have_content 'delete question'
   end
 
   scenario 'Unauthenticated user created the question' do
-    other_author_question 
+    other_author_question
     visit questions_path
-    click_on 'delete question'
 
-    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
+    expect(page).to_not have_content 'delete question'
   end
 end
