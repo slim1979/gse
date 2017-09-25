@@ -9,19 +9,19 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      render 'questions/show', resource: @answer
+      render 'questions/show'
     end
   end
 
   def destroy
     @answer = Answer.find(params[:id])
     @question = @answer.question
+    redirect_to @question
+
     if current_user.author_of? @answer
       @answer.destroy
-      redirect_to @question
       flash[:notice] = 'Your answer successfully deleted!'
     else
-      redirect_to @question
       flash[:alert] = 'You can delete only your own content'
     end
   end

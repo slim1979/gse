@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:user2)    { create(:user) }
   let(:question) { create(:question, user: @user) }
   let(:answer)   { create(:answer, user: @user, question: question) }
 
@@ -40,6 +41,32 @@ RSpec.describe AnswersController, type: :controller do
       it 'will redirect to question' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to question_path(question)
+      end
+    end
+    context 'Answer by other author' do
+      it 'will decrease answers count' do
+        answer
+        sign_out @user
+        sign_in user2
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
+      it 'will redirect to question' do
+        sign_out @user
+        sign_in user2
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+    context 'Answer by unauthenticated user' do
+      it 'will decrease answers count' do
+        answer
+        sign_out @user
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
+      it 'will redirect to question' do
+        sign_out @user
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to new_user_session_path
       end
     end
   end
