@@ -40,7 +40,7 @@ feature 'Answer the question', %q(
     visit questions_path
     click_on 'show question'
 
-    expect(page).to_not have_css '.new_answer'
+    expect(page).to_not have_css '.new_answer' 
     expect(page).to_not have_content 'Ответить на вопрос'
   end
 end
