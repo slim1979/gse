@@ -5,20 +5,14 @@
   br
 
   .exists_answers
-    -@question.answers.each do |answer|
-      -if answer.persisted?
-        .body       =answer.body
-        .created_at =answer.created_at
-        -if user_signed_in? && current_user.author_of?(answer)
-          .manage =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
+    =render 'questions/answers'
 
-      br
-  p Вы можете помочь в решении проблемы, оставив ответ.
-  -if @answer
-    = render 'common/errors', resource: @answer
+  .errors
 
-  .new_answer
-    =form_for [@question, Answer.new] do |form|
-      p =form.label :body
-      p =form.text_area :body, rows: 5
-      p =form.submit 'Answer the question'
+  -if user_signed_in?
+    .new_answer
+      =form_for [@question, Answer.new], remote: true do |form|
+
+        p =form.label :body
+        p =form.text_area :body, rows: 5
+        p =form.submit 'Answer the question', class: 'answer-the-question'
