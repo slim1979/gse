@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'The user register itself on the website', %q(
   In order to be able to ask questions and solve problem

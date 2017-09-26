@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'To see a list of issues', %q(
   In order to find the same problem

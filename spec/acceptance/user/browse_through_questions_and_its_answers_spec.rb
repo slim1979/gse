@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance_helper'
 
 feature 'Browse through the questions and its answers', %q(
   In order to solve own problem
