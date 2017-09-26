@@ -8,8 +8,8 @@ RSpec.describe AnswersController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
-    let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil } } }
+    let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }
+    let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil }, format: :js } }
 
     context 'with valid attributes' do
       it 'saves answer to database' do
@@ -17,7 +17,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirect to show' do
         valid_post_create
-        expect(response).to redirect_to question_path(question)
+        expect(response).to render_template :create
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 're-render template new' do
         invalid_post_create
-        expect(response).to render_template 'questions/show'
+        expect(response).to render_template :create
       end
     end
   end

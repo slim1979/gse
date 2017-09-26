@@ -6,10 +6,10 @@ feature 'Answer the question', %q(
   I want to be able to answer the question
 ) do
 
-  given(:user) { create(:user) }
+  given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user can answer the question' do
+  scenario 'Authenticated user can answer the question', js: true do
 
     sign_in(user)
     question
@@ -17,11 +17,11 @@ feature 'Answer the question', %q(
     visit questions_path
     click_on 'show question'
     fill_in 'Содержание', with: 'Some text to solve problem'
-    click_on 'Answer the question'
+    first('.answer-the-question').click
     expect(page).to have_content 'Some text to solve problem'
   end
 
-  scenario 'Authenticated user created invalid answer' do
+  scenario 'Authenticated user created invalid answer', js: true do
 
     sign_in(user)
     question
@@ -29,7 +29,7 @@ feature 'Answer the question', %q(
     visit questions_path
     click_on 'show question'
     fill_in 'Содержание', with: nil
-    click_on 'Answer the question'
+    first('.answer-the-question').click
     expect(page).to have_content 'При заполнении формы возникли ошибки:'
     expect(page).to have_content 'Содержание не может быть пустым'
   end
@@ -40,7 +40,7 @@ feature 'Answer the question', %q(
     visit questions_path
     click_on 'show question'
 
-    click_on 'Answer the question'
-    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
+    expect(page).to_not have_css '.new_answer'
+    expect(page).to_not have_content 'Ответить на вопрос'
   end
 end
