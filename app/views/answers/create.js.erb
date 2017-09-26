@@ -1,0 +1,4 @@
+$('.exists_answers').empty().append(' <%= j render "questions/answers" %>');
+$('.errors').html(' <%= j render "common/errors", resource: @answer %>');
+
+$('#answer_body').val('');
