@@ -50,6 +50,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'database_cleaner'
 end
 
 group :development do
