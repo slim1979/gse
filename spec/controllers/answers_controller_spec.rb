@@ -32,6 +32,29 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATH #update' do
+    context 'Answer by it author' do
+      it 'assign answer to @answer' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+      it 'assign question to @question' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:question)).to eq question
+      end
+      it 'change answer body' do
+        patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
+        answer.reload
+        expect(answer.body).to eq 'some new text'
+      end
+      it 'render update template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :update
+      end
+    end
+    context 'Answer by someone else'
+  end
+
   describe 'DELETE #destroy' do
     context 'Answer by Author' do
       it 'will decrease answers count' do
