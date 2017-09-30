@@ -13,7 +13,7 @@
 
     -if current_user&.author_of?(answer)
       td.manage.edit
-        =link_to 'Edit answer','', class: 'edit-answer-link', data: { answer_id: answer.id }
+        =link_to 'Edit answer','', class: "edit-answer-link edit_answer_#{answer.id}", data: { answer_id: answer.id }
       td.manage.delete
         =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
     -else

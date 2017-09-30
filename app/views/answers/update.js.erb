@@ -6,5 +6,5 @@
     $(".edit_form_<%= @answer.id %>").hide();
     $(".body_of_<%= @answer.id %>").html('<%= @answer.body %>').show();
     $(".updated_for_<%= @answer.id %>").html('<%= @answer.updated_at %>').show();
-    $(".edit-answer-link").show();
+    $(".edit_answer_<%= @answer.id %>").show();
   <% end %>
