@@ -1,22 +1,23 @@
 .container
 
   .question
-    h4 =@question.title
-    p  =@question.body
-    p =link_to 'Edit question','', class: 'edit_question_link'
-    .edit_question_form
-      =form_for @question, remote: true do |f|
-        =f.label :title, 'Title'
-        =f.text_field :title
-        =f.label :body, 'Body'
-        =f.text_area :body
-        =f.submit 'Save'
+    = render @question
+
+  .link =link_to 'Edit question','', class: 'edit_question_link'
+  .question_errors
+  .edit_question_form
+    =form_for @question, remote: true do |f|
+      =f.label :title, 'Title'
+      =f.text_field :title
+      =f.label :body, 'Body'
+      =f.text_area :body
+      =f.submit 'Save'
   br
 
   .exists_answers
     =render 'answers/answers'
 
-  .errors
+  .answer_errors
 
   -if user_signed_in?
     .new_answer
