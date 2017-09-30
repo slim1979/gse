@@ -28,7 +28,7 @@ feature 'Answer editing', %q{
       end
     end
 
-    scenario 'tried to edit his answer', js: true do 
+    scenario 'tried to edit his answer', js: true do
       within '.answer' do
         click_on 'Edit answer'
         fill_in 'Answer', with: 'some new answer'
