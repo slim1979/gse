@@ -1,16 +1,13 @@
-.container
-  .exists_questions
-    table.table.table-hover
-      - @questions.each do |question|
-        tr
-          td
-            = question.title
-          td
-            = link_to 'show question', question_path(question)
-          td
-            / button are visible to all user roles for demo how its work with diff roles.
-            / it will be visible after green tests only for author
-            -if current_user&.author_of?(question)
-              = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
+.exists_questions
+  table.table.table-hover
+    - @questions.each do |question|
+      tr
+        td
+          = question.title
+        td
+          = link_to 'show question', question_path(question)
+        td
+          -if current_user&.author_of?(question)
+            = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
 
-  p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path
