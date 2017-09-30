@@ -1,18 +1,19 @@
 -if answer.persisted?
-  tr id="answer_#{answer.id}"
+  tr.answer id="answer_#{answer.id}"
     td
-      .body       =answer.body
-      .updated_at =answer.updated_at
+      .answer_body class="body_of_#{answer.id}"     =answer.body
+      .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
 
       div class="answer_error_#{answer.id}"
-      p =form_for answer, remote: true do |f|
-          p=f.label :body, 'Answer'
-          p=f.text_area :body
-          p=f.submit 'Save'
+      div.edit_form class="edit_form_#{answer.id}"
+        =form_for answer, remote: true do |f|
+          =f.label :body, 'Answer'
+          =f.text_area :body
+          =f.submit 'Save'
 
     -if current_user&.author_of?(answer)
       td.manage.edit
-        =link_to 'Edit answer'
+        =link_to 'Edit answer','', class: 'edit-answer-link', data: { answer_id: answer.id }
       td.manage.delete
         =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
     -else
