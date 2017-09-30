@@ -97,7 +97,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'new body'
       end
       it 're-render show template' do
-        expect(response).to render_template :show
+        expect(response).to render_template :update
       end
     end
 
@@ -112,7 +112,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq question.body
       end
       it 're-render edit template' do
-        expect(response).to render_template :edit
+        expect(response).to render_template :update
       end
     end
   end
