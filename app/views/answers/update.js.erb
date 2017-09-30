@@ -1,2 +1,8 @@
-$('.exists_answers>table').append(' <%= j render @answer %>');
-$('.edition_errors').html(' <%= j render "common/errors", resource: @answer %>');
+<% if @answer.errors.present? %>
+  $(".answer_error_<%= @answer.id %>").show();
+  $(".answer_error_<%= @answer.id %>").html("<%= j render 'common/errors', resource: @answer %>")
+<% else %>
+  $(".answer_error_<%= @answer.id %>").hide();
+  $("table.table.table-hover tr#answer_<%= @answer.id %> div.body").html('<%= @answer.body %>');
+  $("table.table.table-hover tr#answer_<%= @answer.id %> div.updated_at").html('<%= @answer.updated_at %>');
+<% end %>

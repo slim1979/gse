@@ -1,12 +1,11 @@
 -if answer.persisted?
-  tr.answer
+  tr id="answer_#{answer.id}"
     td
       .body       =answer.body
+      .updated_at =answer.updated_at
 
-      .created_at =answer.created_at
-
-      .edition_errors
-        =form_for answer, remote: true do |f|
+      div class="answer_error_#{answer.id}"
+      p =form_for answer, remote: true do |f|
           p=f.label :body, 'Answer'
           p=f.text_area :body
           p=f.submit 'Save'
