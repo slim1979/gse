@@ -49,8 +49,8 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assign request question to @question' do
       expect(assigns(:question)).to eq question
     end
-    it 'renders edit template' do
-      expect(response).to render_template :edit
+    it 're-renders show template' do
+      expect(response).to render_template :show
     end
   end
 
@@ -85,24 +85,24 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
     context 'valid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question) } }
+      before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
 
       it 'assigns request question to @question' do
         expect(assigns(:question)).to eq question
       end
       it 'change question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
         question.reload
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
       end
-      it 'redirect to updated question' do
-        expect(response).to redirect_to question
+      it 're-render show template' do
+        expect(response).to render_template :show
       end
     end
 
     context 'invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: nil, body: nil } } }
+      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :js }
 
       it 'does not change question attributes' do
         question.reload
