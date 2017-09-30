@@ -1,2 +1,9 @@
-$('.question').html(' <%= render @question %>')
-$('.question_errors').html(' <%= j render "common/errors", resource: @question %>');
+<% if @question.errors.any? %>
+  $('.question_errors').html(' <%= j render "common/errors", resource: @question %>');
+<% else  %>
+  $('.edit_question_form').hide();
+  $('.question_errors').hide();
+  $('.question').show();
+  $('.edit_question_link').show();
+  $('.question').html(' <%= render @question %>');
+<% end %>

@@ -7,11 +7,11 @@
   .question_errors
   .edit_question_form
     =form_for @question, remote: true do |f|
-      =f.label :title, 'Title'
-      =f.text_field :title
-      =f.label :body, 'Body'
-      =f.text_area :body
-      =f.submit 'Save'
+      p=f.label :title, 'Title'
+      p=f.text_field :title
+      p=f.label :body, 'Body'
+      p=f.text_area :body, rows: 5
+      p=f.submit 'Save'
   br
 
   .exists_answers

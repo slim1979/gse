@@ -5,7 +5,8 @@
 stady = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault();
-    console.log('11');
+    $(this).hide();
+    $('.question').hide();
     $('.edit_question_form').show();
 
 $(document).on('page:update', stady)
