@@ -8,5 +8,5 @@ stady = ->
     console.log('11');
     $('.edit_question_form').show();
 
-# $(document).ready(stady)
+$(document).on('page:update', stady)
 $(document).on('turbolinks:load', stady)
