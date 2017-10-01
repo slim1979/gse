@@ -1,10 +1,10 @@
 require 'acceptance_helper'
 
-feature 'Delete answer', '
+feature 'Delete answer', %q{
   In order to refuse to provide help in solving some problem
   As an author
   I want to delete answer
-' do
+} do
 
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
