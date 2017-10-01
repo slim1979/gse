@@ -1,4 +1,4 @@
 $('.exists_answers>table').append(' <%= j render @answer %>');
-$('.errors').html(' <%= j render "common/errors", resource: @answer %>');
+$('.answer_errors').html(' <%= j render "common/errors", resource: @answer %>');
 
 $('#answer_body').val('');
