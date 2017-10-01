@@ -16,16 +16,16 @@ feature 'Delete answer', '
       sign_in user
       visit question_path(question)
     end
-    scenario 'sees link to delete answer' do
+    scenario 'sees link to delete answer', js: true do
 
       expect(page).to have_link 'Delete answer'
     end
-    scenario 'tries to delete answer' do
+    scenario 'tries to delete answer', js: true do
       click_on 'Delete answer'
 
       expect(page).to_not have_content answer.body
     end
-    scenario 're-render question show template' do
+    scenario 're-render question show template', js: true do
       click_on 'Delete answer'
 
       expect(current_path).to eq question_path(question)
