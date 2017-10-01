@@ -1,28 +1,26 @@
-.container
+.question
+  = render @question
+- if current_user&.author_of?(@question)
+  .link =link_to 'Edit question','', class: 'edit_question_link'
+  .question_errors
+  .edit_question_form
+    =form_for @question, remote: true do |f|
+      p=f.label :title, 'Title'
+      p=f.text_field :title
+      p=f.label :body, 'Body'
+      p=f.text_area :body, rows: 5
+      p=f.submit 'Save'
+br
 
-  .question
-    = render @question
-  - if current_user&.author_of?(@question)
-    .link =link_to 'Edit question','', class: 'edit_question_link'
-    .question_errors
-    .edit_question_form
-      =form_for @question, remote: true do |f|
-        p=f.label :title, 'Title'
-        p=f.text_field :title
-        p=f.label :body, 'Body'
-        p=f.text_area :body, rows: 5
-        p=f.submit 'Save'
-  br
+.exists_answers
+  =render 'answers/answers'
 
-  .exists_answers
-    =render 'answers/answers'
+.answer_errors
 
-  .answer_errors
+-if user_signed_in?
+  .new_answer
+    =form_for [@question, Answer.new], remote: true do |form|
 
-  -if user_signed_in?
-    .new_answer
-      =form_for [@question, Answer.new], remote: true do |form|
-
-        p =form.label :body
-        p =form.text_area :body, rows: 5
-        p =form.submit 'Answer the question', class: 'answer-the-question'
+      p =form.label :body
+      p =form.text_area :body, rows: 5, class: 'new_answer_body'
+      p =form.submit 'Answer the question', class: 'answer-the-question'

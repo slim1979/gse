@@ -1,6 +1,5 @@
   <% if @answer.errors.present? %>
-    $(".answer_error_<%= @answer.id %>").show();
-    $(".answer_error_<%= @answer.id %>").html("<%= j render 'common/errors', resource: @answer %>")
+    $(".answer_error_<%= @answer.id %>").show().html("<%= j render 'common/errors', resource: @answer %>")
   <% else %>
     $(".answer_error_<%= @answer.id %>").hide();
     $(".edit_form_<%= @answer.id %>").hide();
