@@ -6,9 +6,12 @@ feature 'Answer editing', %q{
   I qant to be able to edit answer
 } do
 
-  given(:user) { create(:user) }
+  given(:user)      { create(:user) }
+  given(:user2)     { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, user: user, question: question) }
+  given!(:question2) { create(:question, user: user2) }
+  given!(:answer)   { create(:answer, user: user, question: question) }
+  given!(:answer2)  { create(:answer, user: user2, question: question2) }
 
   scenario 'Unauthenticated user tried to edit answer' do
     visit question_path(question)
@@ -40,6 +43,10 @@ feature 'Answer editing', %q{
       end
     end
 
-    scenario 'tried to edit someone else answer'
+    scenario 'tried to edit someone else answer' do
+      visit question_path(question2)
+
+      expect(page).to_not have_link 'Edit answer'
+    end
   end
 end
