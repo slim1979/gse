@@ -7,7 +7,9 @@ feature 'Edit question', %q(
 ) do
 
   given(:user)      { create(:user) }
+  given(:user2)      { create(:user) }
   given!(:question) { create(:question, user: user) }
+  given!(:question2) { create(:question, user: user2) }
 
   describe 'Authenticated user' do
 
@@ -36,8 +38,11 @@ feature 'Edit question', %q(
       expect(page).to have_content 'New body'
       expect(current_path).to eq question_path(question)
     end
-    scenario 'tries to edit someone else question' do
 
+    scenario 'tries to edit someone else question', js: true do
+      visit question_path(question2)
+
+      expect(page).to_not have_link 'Edit question'
     end
 
   end
