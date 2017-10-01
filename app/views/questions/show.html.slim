@@ -18,9 +18,8 @@ br
 .answer_errors
 
 -if user_signed_in?
-  .new_answer
+  .new_answer_form
     =form_for [@question, Answer.new], remote: true do |form|
-
       p =form.label :body
       p =form.text_area :body, rows: 5, class: 'new_answer_body'
-      p =form.submit 'Answer the question', class: 'answer-the-question'
+      p =form.submit 'Answer the question'
