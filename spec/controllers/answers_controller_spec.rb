@@ -59,32 +59,32 @@ RSpec.describe AnswersController, type: :controller do
     context 'Answer by Author' do
       it 'will decrease answers count' do
         answer
-        expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(question.answers, :count).by(-1)
       end
-      it 'will redirect to question' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'will render destroy template' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
     context 'Answer by other author' do
-      it 'will decrease answers count' do
+      it 'will not decrease answers count' do
         answer
         sign_out @user
         sign_in user2
-        expect { delete :destroy, params: { id: answer } }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
       end
-      it 'will redirect to question' do
+      it 'will render destroy template' do
         sign_out @user
         sign_in user2
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
     context 'Answer by unauthenticated user' do
-      it 'will decrease answers count' do
+      it 'will not decrease answers count' do
         answer
         sign_out @user
-        expect { delete :destroy, params: { id: answer } }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
       end
       it 'will redirect to question' do
         sign_out @user
