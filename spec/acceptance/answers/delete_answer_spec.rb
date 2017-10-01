@@ -10,25 +10,32 @@ feature 'Delete answer', %q{
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, user: user, question: question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
 
     before do
       sign_in user
       visit question_path(question)
     end
-    scenario 'sees link to delete answer', js: true do
+    scenario 'sees link to delete answer' do
 
       expect(page).to have_link 'Delete answer'
     end
-    scenario 'tries to delete answer', js: true do
+    scenario 'tries to delete answer' do
       click_on 'Delete answer'
 
       expect(page).to_not have_content answer.body
     end
-    scenario 're-render question show template', js: true do
+    scenario 're-render question show template' do
       click_on 'Delete answer'
 
       expect(current_path).to eq question_path(question)
+    end
+  end
+  describe 'Unauthenticated user' do
+    scenario 'tries to delete someine answer' do
+      visit question_path(question)
+
+      expect(page).to_not have_link 'Delete answer'
     end
   end
 end
