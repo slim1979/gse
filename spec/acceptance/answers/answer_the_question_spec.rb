@@ -6,37 +6,36 @@ feature 'Answer the question', %q(
   I want to be able to answer the question
 ) do
 
-  given!(:user) { create(:user) }
+  given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user can answer the question', js: true do
+  describe 'Authenticated user' do
 
-    sign_in(user)
-    question
+    before do
+      sign_in(user)
+      visit question_path(question)
+    end
 
-    visit questions_path
-    click_on 'show question'
-    fill_in 'Содержание', with: 'Some text to solve problem'
-    first('.answer-the-question').click
-    expect(page).to have_content 'Some text to solve problem'
-  end
+    scenario 'can answer the question', js: true do
+      within '.new_answer' do
+        fill_in 'Содержание', with: 'Some text to solve problem'
+        click_on 'Answer the question'
+      end
+      expect(page).to have_content 'Some text to solve problem'
+    end
 
-  scenario 'Authenticated user created invalid answer', js: true do
+    scenario 'created invalid answer', js: true do
+      within '.new_answer' do
+        fill_in 'Содержание', with: nil
+        click_on 'Answer the question'
+      end
 
-    sign_in(user)
-    question
-
-    visit questions_path
-    click_on 'show question'
-    fill_in 'Содержание', with: nil
-    first('.answer-the-question').click
-    expect(page).to have_content 'При заполнении формы возникли ошибки:'
-    expect(page).to have_content 'Содержание не может быть пустым'
+      expect(page).to have_content 'При заполнении формы возникли ошибки:'
+      expect(page).to have_content 'Содержание не может быть пустым'
+    end
   end
 
   scenario 'Unauthenticated user can\'t answer the question' do
-
-    question
     visit questions_path
     click_on 'show question'
 
