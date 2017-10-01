@@ -15,7 +15,7 @@
       td.manage.edit
         =link_to 'Edit answer','', class: "edit-answer-link edit_answer_#{answer.id}", data: { answer_id: answer.id }
       td.manage.delete
-        =link_to 'Delete answer', answer_path(answer), data: { confirm: 'Are you sure?' }, method: :delete
+        =link_to 'Delete answer', answer_path(answer), remote: true, data: { confirm: 'Are you sure?' }, method: :delete
     -else
       td
       td
