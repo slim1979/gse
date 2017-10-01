@@ -17,14 +17,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @question = @answer.question
-    redirect_to @question
-
-    if current_user.author_of? @answer
-      @answer.destroy
-      flash[:notice] = 'Your answer successfully deleted!'
-    else
-      flash[:alert] = 'You can delete only your own content'
-    end
+    @answer.destroy if current_user.author_of? @answer
   end
 
   private
