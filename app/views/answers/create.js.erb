@@ -1,6 +1,3 @@
-if ($('tbody').length == 0) {
-  $('table').append('<tbody></tbody>')
-}
 $('table > tbody:last').append(' <%= j render @answer %>');
 $('.answer_errors').html(' <%= j render "common/errors", resource: @answer %>');
 

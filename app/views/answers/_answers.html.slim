@@ -1,2 +1,3 @@
 table.table.table-hover
-  =render @question.answers.order('updated_at ASC')
+  tbody
+    =render @question.answers.order('updated_at ASC')
