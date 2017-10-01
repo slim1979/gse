@@ -6,9 +6,9 @@ feature 'Edit question', %q(
   I want to be able to edit question
 ) do
 
-  given(:user)      { create(:user) }
+  given(:user)       { create(:user) }
   given(:user2)      { create(:user) }
-  given!(:question) { create(:question, user: user) }
+  given!(:question)  { create(:question, user: user) }
   given!(:question2) { create(:question, user: user2) }
 
   describe 'Authenticated user' do
