@@ -18,9 +18,6 @@
  /*@import 'bootstrap';*/
  /*@import 'bootstrap-sprockets';*/
 
-.alert{
-  padding: 5px;
-}
 
 .edit_form {
   display: none;
