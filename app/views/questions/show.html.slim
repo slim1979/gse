@@ -2,16 +2,16 @@
 
   .question
     = render @question
-
-  .link =link_to 'Edit question','', class: 'edit_question_link'
-  .question_errors
-  .edit_question_form
-    =form_for @question, remote: true do |f|
-      p=f.label :title, 'Title'
-      p=f.text_field :title
-      p=f.label :body, 'Body'
-      p=f.text_area :body, rows: 5
-      p=f.submit 'Save'
+  - if current_user&.author_of?(@question)
+    .link =link_to 'Edit question','', class: 'edit_question_link'
+    .question_errors
+    .edit_question_form
+      =form_for @question, remote: true do |f|
+        p=f.label :title, 'Title'
+        p=f.text_field :title
+        p=f.label :body, 'Body'
+        p=f.text_area :body, rows: 5
+        p=f.submit 'Save'
   br
 
   .exists_answers
