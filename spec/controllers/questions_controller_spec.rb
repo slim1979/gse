@@ -42,18 +42,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-    before { get :edit, params: { id: question } }
-
-    it 'assign request question to @question' do
-      expect(assigns(:question)).to eq question
-    end
-    it 're-renders show template' do
-      expect(response).to render_template :show
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
     let(:valid_post_create) { post :create, params: { question: attributes_for(:question) } }
