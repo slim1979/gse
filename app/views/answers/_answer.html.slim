@@ -1,6 +1,11 @@
 -if answer.persisted?
   tr.answer id="answer_#{answer.id}"
     td
+      =form_tag best_answer_assign_question_path(answer.question), method: :patch, remote: true do
+        = hidden_field_tag :best_answer, answer.id
+        = submit_tag 'Best answer', class: 'best_answer'
+      end
+    td
       .answer_body class="body_of_#{answer.id}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
 
