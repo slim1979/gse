@@ -38,7 +38,12 @@ class QuestionsController < ApplicationController
   end
 
   def best_answer_assign
+    # turn off old best answer, if exist
+    @question.turn_off_old_best_answer if @question.best_answer
+    # assigns new best answer to question
     @question.update(best_answer: params[:best_answer])
+    # turn on new best answer
+    @question.turn_on_new_best_answer
   end
 
   private
