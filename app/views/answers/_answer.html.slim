@@ -1,5 +1,5 @@
 -if answer.persisted?
-  tr.answer id="answer_#{answer.id}"
+  tr.answer id="answer_#{answer.id}" class="#{ answer.best_answer ? 'best' : 'usual'}"
     td
       =form_tag best_answer_assign_question_path(answer.question), method: :patch, remote: true do
         = hidden_field_tag :best_answer, answer.id
