@@ -8,6 +8,7 @@ stady = ->
     $(this).hide();
     $('.question').hide();
     $('.edit_question_form').show();
-
+  $('.best').insertBefore('tr:first');
+  
 $(document).on('page:update', stady)
 $(document).on('turbolinks:load', stady)
