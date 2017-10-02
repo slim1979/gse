@@ -6,6 +6,7 @@ RSpec.describe QuestionsController, type: :controller do
   # the better way to assign variable instead of @questions = FactoryGirl.create_list etc...
   # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
   let(:questions) { create_list(:question, 2, user: @user) }
+  let(:answer) { create(:answer, question: question, user: @user) }
 
   describe 'GET #index' do
     sign_in_user
@@ -104,6 +105,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
   describe 'PATCH #best_answer' do
     sign_in_user
     context 'valid attributes' do
@@ -113,9 +115,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect(assigns(:question)).to eq question
       end
       it 'change question attributes' do
-        patch :best_answer_assign, params: { id: question, best_answer: 11, format: :js }
+        patch :best_answer_assign, params: { id: question, best_answer: answer.id, format: :js }
         question.reload
-        expect(question.best_answer).to eq 11
+        expect(question.best_answer).to eq answer.id
       end
       it 'render best_answer template' do
         expect(response).to render_template :best_answer_assign
