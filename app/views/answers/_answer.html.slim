@@ -1,7 +1,8 @@
 -if answer.persisted?
   tr.answer id="answer_#{answer.id}" class="#{answer.best_answer ? 'best' : 'usual'}"
     td
-      =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true
+      - if current_user
+        =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true
     td
       .answer_body class="body_of_#{answer.id}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
