@@ -8,8 +8,9 @@ RSpec.describe QuestionsController, type: :controller do
   let(:questions) { create_list(:question, 2, user: @user) }
   let(:answer) { create(:answer, question: question, user: @user) }
 
+  sign_in_user
+
   describe 'GET #index' do
-    sign_in_user
     before { get :index }
     it 'populates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
@@ -20,7 +21,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    sign_in_user
     before { get :show, params: { id: question } }
 
     it 'assign request question to @question' do
@@ -32,7 +32,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    sign_in_user
     before { get :new }
 
     it 'assigns new Question to a @question' do
@@ -44,7 +43,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    sign_in_user
     let(:valid_post_create) { post :create, params: { question: attributes_for(:question) } }
     let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) } }
 
@@ -71,8 +69,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #update' do
-    sign_in_user
+  describe 'PATCH #update question by it autor' do
     context 'valid attributes' do
       before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
 
@@ -106,10 +103,30 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update question by someone else' do
+    context 'valid attributes' do
+      before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
+
+      it 'will not change question attributes' do
+        sign_out @user
+        sign_in user2
+
+        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+        question.reload
+        expect(question.title).to_not eq 'new title'
+        expect(question.body).to_not eq 'new body'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
+      end
+      it 're-render show template' do
+        expect(response).to render_template :update
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
 
     context 'Question by it author' do
-      sign_in_user
       before { question }
 
       it 'delete question' do
@@ -122,16 +139,13 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'Question by other author' do
-      sign_in_user
       before { question }
 
       it 'will not delete question' do
-        sign_out @user
         sign_in user2
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
       it 'redirect to index view' do
-        sign_out @user
         sign_in user2
         delete :destroy, params: { id: question }
         expect(response).to redirect_to questions_path
