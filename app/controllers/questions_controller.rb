@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy best_answer_assign]
+  before_action :load_question, only: %i[show edit update destroy]
   def new
     @question = Question.new
   end
@@ -35,15 +35,6 @@ class QuestionsController < ApplicationController
     else
       flash[:alert] = 'You can delete only your own content'
     end
-  end
-
-  def best_answer_assign
-    # turn off old best answer, if exist
-    @question.turn_off_old_best_answer if @question.best_answer
-    # assigns new best answer to question
-    @question.update(best_answer: params[:best_answer])
-    # turn on new best answer
-    @question.turn_on_new_best_answer
   end
 
   private
