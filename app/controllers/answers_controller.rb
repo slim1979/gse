@@ -20,7 +20,7 @@ class AnswersController < ApplicationController
   end
 
   def best_answer_assign
-    @answer.best_answer_switch
+    @answer.best_answer_switch if current_user.author_of?(@answer.question)
   end
 
   private

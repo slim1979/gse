@@ -61,15 +61,32 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #best_answer' do
-    context 'valid attributes' do
+    context 'choise by question author' do
       before { patch :best_answer_assign, params: { id: answer, answer: attributes_for(:answer) }, format: :js }
 
       it 'assigns request question to @question' do
         expect(assigns(:answer)).to eq answer
       end
-      it 'change question attributes' do
+      it 'change answer attributes' do
         answer.reload
         expect(answer.best_answer).to eq true
+      end
+      it 'render best_answer template' do
+        expect(response).to render_template :best_answer_assign
+      end
+    end
+    context 'choise by other author' do
+
+      before do
+        sign_out @user
+        sign_in user2
+        patch :best_answer_assign, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+      end
+
+      it 'will not change answer attributes' do
+        answer.reload
+        expect(answer.best_answer).to_not eq true
+        expect(answer.best_answer).to eq false
       end
       it 'render best_answer template' do
         expect(response).to render_template :best_answer_assign
