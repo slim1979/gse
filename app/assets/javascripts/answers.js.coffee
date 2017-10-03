@@ -12,6 +12,8 @@ ready = ->
   $('.best').insertBefore('tr:first');
   $('.now-best').hide();
   $('.bold').css('font-weight','bold');
+  $('.img').hide();
+  $('.thumbs-up').show();
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
