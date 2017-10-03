@@ -1,7 +1,7 @@
 -if answer.persisted?
   tr.answer id="answer_#{answer.id}" class="#{answer.best_answer ? 'best' : 'usual'}"
     td
-      - if current_user
+      - if current_user&.author_of?(answer.question)
         =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true,\
                  class: "best-answer-link #{answer.best_answer ? 'now-best' : ''}", id: "best-answer-link-#{answer.id}"
       =image_tag('best.png', size: "50x50", alt: "Best answer", \

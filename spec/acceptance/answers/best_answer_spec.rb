@@ -65,6 +65,12 @@ feature 'Choose best answer', %q{
     end
   end
 
+  scenario 'Other question author tries to choose best answer', js: true do
+    sign_in user2
+    visit question_path(question)
+    expect(page).to_not have_link 'Best answer'
+  end
+
   scenario 'Unathenticated user does not sees link to best answer', js: true do
     visit question_path(question)
     expect(page).to_not have_link 'Best answer'
