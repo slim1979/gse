@@ -3,9 +3,8 @@
     - @questions.each do |question|
       tr
         td
-          = question.title
-        td
-          = link_to 'show question', question_path(question)
+          .badge = "#{question.answers.count}"
+          = link_to " #{question.title}", question_path(question)
         td
           -if current_user&.author_of?(question)
             = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
