@@ -10,6 +10,8 @@ ready = ->
     $(".updated_for_" + answer_id).hide();
     $('.edit_form_' + answer_id).show();
   $('.best').insertBefore('tr:first');
+  $('.now-best').hide();
+  $('.bold').css('font-weight','bold');
 
 $(document).ready(ready)
 $(document).on('turbolinks:load', ready)
