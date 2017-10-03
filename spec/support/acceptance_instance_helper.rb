@@ -6,6 +6,10 @@ module AcceptanceInstanceHelper
     click_on 'Log in'
   end
 
+  def sign_out
+    click_on 'Выйти'
+  end
+
   def reaching_the_questions_list
     questions
     visit questions_path
