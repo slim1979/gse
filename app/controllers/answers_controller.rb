@@ -20,6 +20,10 @@ class AnswersController < ApplicationController
     @answer.destroy if current_user.author_of? @answer
   end
 
+  def best_answer_assign
+    @answer.best_answer_switch
+  end
+
   private
 
   def set_question
