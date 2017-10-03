@@ -55,6 +55,24 @@ RSpec.describe AnswersController, type: :controller do
     context 'Answer by someone else'
   end
 
+  describe 'PATCH #best_answer' do
+    sign_in_user
+    context 'valid attributes' do
+      before { patch :best_answer_assign, params: { id: answer, answer: attributes_for(:answer) }, format: :js }
+
+      it 'assigns request question to @question' do
+        expect(assigns(:answer)).to eq answer
+      end
+      it 'change question attributes' do
+        answer.reload
+        expect(answer.best_answer).to eq true
+      end
+      it 'render best_answer template' do
+        expect(response).to render_template :best_answer_assign
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     context 'Answer by Author' do
       it 'will decrease answers count' do

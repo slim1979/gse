@@ -106,25 +106,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #best_answer' do
-    sign_in_user
-    context 'valid attributes' do
-      before { patch :best_answer_assign, params: { id: question, question: attributes_for(:question) }, format: :js }
-
-      it 'assigns request question to @question' do
-        expect(assigns(:question)).to eq question
-      end
-      it 'change question attributes' do
-        patch :best_answer_assign, params: { id: question, best_answer: answer.id, format: :js }
-        question.reload
-        expect(question.best_answer).to eq answer.id
-      end
-      it 'render best_answer template' do
-        expect(response).to render_template :best_answer_assign
-      end
-    end
-  end
-
   describe 'DELETE #destroy' do
 
     context 'Question by it author' do
