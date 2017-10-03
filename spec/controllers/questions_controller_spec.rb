@@ -103,7 +103,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH #update question by someone else' do
+  describe 'PATCH #update question by authenticated someone else' do
     context 'valid attributes' do
       before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
 
