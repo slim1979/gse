@@ -1,4 +1,2 @@
-<% if @current_best_answer %>
-  $('#answer_<%= @current_best_answer.id %>').removeClass("best").addClass("usual");
-<% end %>
+$('.answer').removeClass("best").addClass("usual");
 $('#answer_<%= @answer.id %>').removeClass("usual").addClass("best").insertBefore('tr:first');
