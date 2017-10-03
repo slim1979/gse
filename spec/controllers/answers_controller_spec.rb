@@ -32,15 +32,11 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'PATH #update' do
+  describe 'PATСH #update' do
     context 'Answer by it author' do
       it 'assign answer to @answer' do
         patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
         expect(assigns(:answer)).to eq answer
-      end
-      it 'assign question to @question' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-        expect(assigns(:question)).to eq question
       end
       it 'change answer body' do
         patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
@@ -52,11 +48,19 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
-    context 'Answer by someone else'
+    context 'Answer by someone else' do
+      it 'will not change answer body' do
+        sign_out @user
+        sign_in user2
+        patch :update, params: { id: answer, answer: { body: 'someone else new text' }, format: :js }
+        answer.reload
+        expect(answer.body).to_not eq 'someone else new text'
+        expect(answer.body).to eq answer.body
+      end
+    end
   end
 
   describe 'PATCH #best_answer' do
-    sign_in_user
     context 'valid attributes' do
       before { patch :best_answer_assign, params: { id: answer, answer: attributes_for(:answer) }, format: :js }
 
