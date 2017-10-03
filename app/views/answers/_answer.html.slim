@@ -2,9 +2,10 @@
   tr.answer id="answer_#{answer.id}" class="#{answer.best_answer ? 'best' : 'usual'}"
     td
       - if current_user
-        =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true
+        =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true,\
+                 class: "best-answer-link #{answer.best_answer ? 'now-best' : ''}", id: "best-answer-link-#{answer.id}"
     td
-      .answer_body class="body_of_#{answer.id}"     =answer.body
+      .answer_body class="body_of_#{answer.id} #{answer.best_answer ? 'bold' : ''}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
 
       div class="answer_error_#{answer.id}"
