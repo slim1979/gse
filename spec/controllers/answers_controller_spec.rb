@@ -110,7 +110,7 @@ RSpec.describe AnswersController, type: :controller do
         answer
         sign_out @user
         sign_in user2
-        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
       it 'will render destroy template' do
         sign_out @user
@@ -123,7 +123,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'will not decrease answers count' do
         answer
         sign_out @user
-        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
       it 'will redirect to question' do
         sign_out @user
