@@ -12,7 +12,7 @@ feature 'Browse through the questions and its answers', %q(
     sign_in(user)
     visit questions_path
 
-    click_on 'show question'
+    click_on question3.title
 
     expect(page).to have_content question3.title
     expect(page).to have_content question3.body
@@ -25,7 +25,7 @@ feature 'Browse through the questions and its answers', %q(
 
     visit questions_path
 
-    click_on 'show question'
+    click_on question3.title
     expect(page).to have_content question3.title
     expect(page).to have_content question3.body
     answers3.each do |answer|

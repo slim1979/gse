@@ -37,7 +37,7 @@ feature 'Answer the question', %q(
 
   scenario 'Unauthenticated user can\'t answer the question' do
     visit questions_path
-    click_on 'show question'
+    click_on question.title
 
     expect(page).to_not have_css '.new_answer'
     expect(page).to_not have_content 'Ответить на вопрос'
