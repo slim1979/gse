@@ -1,11 +1,11 @@
 -if answer.persisted?
   tr.answer id="answer_#{answer.id}" class="#{answer.best_answer ? 'best' : 'usual'}"
-    td
+    td.col-sm-2
       - if current_user&.author_of?(answer.question)
         =link_to 'Best answer', best_answer_assign_answer_path(answer), method: :patch, remote: true,\
                  class: "best-answer-link #{answer.best_answer ? 'now-best' : ''}", id: "best-answer-link-#{answer.id}"
       =image_tag('best.png', size: "50x50", alt: "Best answer", \
-                  class: "img img-#{answer.id} #{answer.best_answer ? 'thumbs-up' : ''}", hidden: 'hidden')
+                  class: "img img-#{answer.id} #{answer.best_answer ? 'thumbs-up' : ''}")
     td
       .answer_body class="body_of_#{answer.id} #{answer.best_answer ? 'bold' : ''}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at

@@ -29,12 +29,11 @@ feature 'Choose best answer', %q{
       within '#answer_3' do
         click_on 'Best answer'
       end
-
       within '.answer:first-child' do
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer2.body
         expect(page).to have_content answer3.body
-        expect(page).to have_xpath('//img[@src="/assets/best-272f2f9e50eba3e954cc7a3de060a1d47823677f3589b08e0aa270c327d02782.png"]')
+        expect(page).to have_css '.thumbs-up'
         expect(page).to_not have_link 'Best answer'
       end
       # answers = all('.answer')
@@ -54,7 +53,7 @@ feature 'Choose best answer', %q{
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer3.body
         expect(page).to have_content answer2.body
-        expect(page).to have_xpath('//img[@src="/assets/best-272f2f9e50eba3e954cc7a3de060a1d47823677f3589b08e0aa270c327d02782.png"]')
+        expect(page).to have_css '.thumbs-up'
         expect(page).to_not have_link 'Best answer'
       end
 
