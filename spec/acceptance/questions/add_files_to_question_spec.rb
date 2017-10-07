@@ -19,6 +19,6 @@ feature 'Add files to question', %q{
     attach_file 'File', "#{Rails.root}/spec/acceptance/questions/create_question_spec.rb"
 
     click_on 'Create'
-    expect(page).to have_content 'create_question_spec.rb'
+    expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
   end
 end
