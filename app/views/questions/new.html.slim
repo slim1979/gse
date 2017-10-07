@@ -1,8 +1,13 @@
 = form_for @question do |f|
   =render 'common/errors', resource: @question
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
+  p
+    = f.label :title
+    = f.text_field :title
+  p
+    = f.label :body
+    = f.text_area :body
+  p Вложения:
+  = f.fields_for :attaches do |a|
+    =a.label :file
+    =a.file_field :file
   = f.submit 'Create'
-  

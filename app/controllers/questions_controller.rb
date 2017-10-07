@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show edit update destroy]
   def new
     @question = Question.new
+    @question.attaches.new
   end
 
   def index
@@ -44,6 +45,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, :best_answer)
+    params.require(:question).permit(:title, :body, :best_answer, attaches_attributes: [:file])
   end
 end

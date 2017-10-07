@@ -1,5 +1,10 @@
 .question
   = render @question
+  p Вложения:
+  ul
+    -@question.attaches.each do |a|
+      li=a.file.file.filename
+
 - if current_user&.author_of?(@question)
   .link =link_to 'Edit question','', class: 'edit_question_link'
   .question_errors
