@@ -21,7 +21,10 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    @answer = @question.answers.new
+    @answer.attaches.build
+  end
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
