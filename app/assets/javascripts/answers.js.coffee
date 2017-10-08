@@ -16,4 +16,5 @@ ready = ->
   $('.thumbs-up').show();
 
 $(document).ready(ready)
+$(document).on('page:update', ready)
 $(document).on('turbolinks:load', ready)
