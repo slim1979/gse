@@ -1,7 +1,7 @@
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
-  has_many :attaches
+  has_many :attaches, as: :attachable, dependent: :destroy
 
   validates :body, presence: true
 
