@@ -9,6 +9,9 @@
     td
       .answer_body class="body_of_#{answer.id} #{answer.best_answer ? 'bold' : ''}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
+      ul
+        -answer.attaches.each do |a|
+          li=link_to a.file.identifier, a.file.url
 
       div class="answer_error_#{answer.id}"
       div.edit_form class="edit_form_#{answer.id}"
@@ -16,7 +19,6 @@
           =f.label :body, 'Answer'
           =f.text_area :body
           =f.submit 'Save'
-
     -if current_user&.author_of?(answer)
       td.manage.edit
         =link_to 'Edit answer','', class: "edit-answer-link edit_answer_#{answer.id}", data: { answer_id: answer.id }
