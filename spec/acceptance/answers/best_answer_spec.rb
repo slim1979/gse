@@ -26,7 +26,7 @@ feature 'Choose best answer', %q{
     end
 
     scenario 'choosed the best answer', js: true do
-      within '#answer_3' do
+      within "#answer_#{answer3.id}" do
         click_on 'Best answer'
       end
       within '.answer:first-child' do
@@ -41,11 +41,11 @@ feature 'Choose best answer', %q{
     end
 
     scenario 'choosed another best answer', js: true do
-      within '#answer_3' do
+      within "#answer_#{answer3.id}" do
         click_on 'Best answer'
       end
 
-      within '#answer_2' do
+      within "#answer_#{answer2.id}" do
         click_on 'Best answer'
       end
 
