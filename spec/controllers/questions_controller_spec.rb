@@ -12,17 +12,34 @@ RSpec.describe QuestionsController, type: :controller do
   sign_in_user
 
   describe 'DELETE #attach' do
-    it 'assign request attach to @attach' do
-      delete :attach, params: { id: attach }, format: :js
-      expect(assigns(:attach)).to eq attach
+    context 'by author' do
+      it 'assign request attach to @attach' do
+        delete :attach, params: { id: attach }, format: :js
+        expect(assigns(:attach)).to eq attach
+      end
+      it 'destroy attach by only question author wish' do
+        attach
+        expect { delete :attach, params: { id: attach }, format: :js }.to change(question.attaches, :count).by(-1)
+      end
+      it 're-render show template' do
+        delete :attach, params: { id: attach }, format: :js
+        expect(response).to render_template :attach
+      end
     end
-    it 'destroy attach by only question author wish' do
-      attach
-      expect { delete :attach, params: { id: attach }, format: :js }.to change(question.attaches, :count).by(-1)
+    context 'by someone else' do
+      it 'will not reduce attaches count' do
+        attach
+        sign_out @user
+        sign_in user2
+        expect { delete :attach, params: { id: attach }, format: :js }.to_not change(Attach, :count)
+      end
     end
-    it 're-render show template' do
-      delete :attach, params: { id: attach }, format: :js
-      expect(response).to render_template :attach
+    context 'by unauthenticated user' do
+      it 'will not reduce attaches count' do
+        attach
+        sign_out @user
+        expect { delete :attach, params: { id: attach }, format: :js }.to_not change(Attach, :count)
+      end
     end
   end
 
