@@ -1,0 +1,7 @@
+p =f.link_to_add "Add an attach", :attaches, data: { target: '.attaches'}
+p Вложения:
+.attaches
+  = f.fields_for :attaches do |a|
+    =a.label :file
+    =a.file_field :file
+    =a.link_to_remove "Remove this file"

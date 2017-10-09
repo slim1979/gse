@@ -28,11 +28,8 @@ table
 
 -if user_signed_in?
   .new_answer_form
-    =form_for [@question, @answer], remote: true do |form|
+    =nested_form_for [@question, @answer], remote: true do |form|
       p =form.label :body
       p =form.text_area :body, rows: 5, class: 'new_answer_body'
-      p =form.fields_for :attaches do |a|
-          p Вложения для ответа:
-          =a.label :file
-          =a.file_field :file
+      p = render 'common/attaches', f: form
       p =form.submit 'Answer the question'

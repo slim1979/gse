@@ -1,4 +1,4 @@
-= form_for @question do |f|
+= nested_form_for @question do |f|
   =render 'common/errors', resource: @question
   p
     = f.label :title
@@ -6,8 +6,6 @@
   p
     = f.label :body
     = f.text_area :body
-  p Вложения:
-  = f.fields_for :attaches do |a|
-    =a.label :file
-    =a.file_field :file
+  p
+    = render 'common/attaches', f: f
   = f.submit 'Create'
