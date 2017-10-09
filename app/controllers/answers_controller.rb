@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_question, only: :create
-  before_action :set_answer, except: :create
+  before_action :set_answer, except: %i[create attach]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -25,6 +25,12 @@ class AnswersController < ApplicationController
     else
       @error = true
     end
+  end
+
+  def attach
+    @answer_attach = Attach.find(params[:id])
+    @answer = @answer_attach.attachable
+    @answer_attach.destroy if current_user.author_of?(@answer)
   end
 
   private

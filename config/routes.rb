@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :questions do
     delete :attach, on: :member
     resources :answers, shallow: true do
+      delete :attach, on: :member
       patch :best_answer_assign, on: :member
     end
   end

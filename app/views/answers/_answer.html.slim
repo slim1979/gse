@@ -10,8 +10,11 @@
       .answer_body class="body_of_#{answer.id} #{answer.best_answer ? 'bold' : ''}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
       ul
-        -answer.attaches.each do |a|
-          li=link_to a.file.identifier, a.file.url
+        -answer.attaches.each do |attach|
+          li id="file_#{attach.id}"
+            .link_to_file =link_to attach.file.identifier, attach.file.url
+            - if current_user&.author_of?(answer)
+              .delete_answer_attach =link_to '  delete', attach_answer_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
 
       div class="answer_error_#{answer.id}"
       div.edit_form class="edit_form_#{answer.id}"
