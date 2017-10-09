@@ -7,8 +7,24 @@ RSpec.describe QuestionsController, type: :controller do
   # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
   let(:questions) { create_list(:question, 2, user: @user) }
   let(:answer) { create(:answer, question: question, user: @user) }
+  let(:attach) { create(:attach, attachable: question) }
 
   sign_in_user
+
+  describe 'DELETE #attach' do
+    it 'assign request attach to @attach' do
+      delete :attach, params: { id: attach }, format: :js
+      expect(assigns(:attach)).to eq attach
+    end
+    it 'destroy attach by only question author wish' do
+      attach
+      expect { delete :attach, params: { id: attach }, format: :js }.to change(question.attaches, :count).by(-1)
+    end
+    it 're-render show template' do
+      delete :attach, params: { id: attach }, format: :js
+      expect(response).to render_template :attach
+    end
+  end
 
   describe 'GET #index' do
     before { get :index }

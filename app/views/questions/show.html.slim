@@ -1,10 +1,5 @@
 .question
   = render @question
-  p Вложения:
-  ul
-    -@question.attaches.each do |a|
-      li=link_to a.file.identifier, a.file.url
-
 - if current_user&.author_of?(@question)
   .link =link_to 'Edit question','', class: 'edit_question_link'
   .question_errors
@@ -16,6 +11,14 @@
       p=f.text_area :body, rows: 5
       p=f.submit 'Save'
 br
+p Вложения:
+table
+  -@question.attaches.each do |attach|
+    tr.row id="file_#{attach.id}"
+      td.col-md-1=link_to attach.file.identifier, attach.file.url
+      td.col-md-1.delete_question_attach=link_to '  delete', attach_question_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+      td.col-md-10
+
 
 .exists_answers
   =render 'answers/answers'
