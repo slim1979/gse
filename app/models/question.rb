@@ -5,5 +5,5 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
-  accepts_nested_attributes_for :attaches
+  accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
 end

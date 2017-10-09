@@ -5,7 +5,7 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  accepts_nested_attributes_for :attaches
+  accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
 
   def best_answer_switch
     transaction do
