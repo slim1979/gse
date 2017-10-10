@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+  resources :attaches
   resources :questions do
     resources :answers, shallow: true do
       patch :best_answer_assign, on: :member
