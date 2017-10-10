@@ -8,38 +8,6 @@ RSpec.describe AnswersController, type: :controller do
 
   sign_in_user
 
-  describe 'DELETE #attach' do
-    context 'by author' do
-      it 'assigns request attach to @answer_attach' do
-        delete :attach, params: { id: answer_attach }, format: :js
-        expect(assigns(:answer_attach)).to eq answer_attach
-      end
-      it 'will reduce answer attaches count' do
-        answer_attach
-        expect { delete :attach, params: { id: answer_attach }, format: :js }.to change(answer.attaches, :count).by(-1)
-      end
-      it 'render template attach' do
-        delete :attach, params: { id: answer_attach }, format: :js
-        expect(response).to render_template :attach
-      end
-    end
-    context 'by someone else' do
-      it 'will not reduce attaches count' do
-        answer_attach
-        sign_out @user
-        sign_in user2
-        expect { delete :attach, params: { id: answer_attach }, format: :js }.to_not change(Attach, :count)
-      end
-    end
-    context 'by unauthenticated user' do
-      it 'will not reduce attaches count' do
-        answer_attach
-        sign_out @user
-        expect { delete :attach, params: { id: answer_attach }, format: :js }.to_not change(Attach, :count)
-      end
-    end
-  end
-
   describe 'POST #create' do
     let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }
     let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil }, format: :js } }
