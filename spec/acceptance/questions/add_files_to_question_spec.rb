@@ -13,12 +13,25 @@ feature 'Add files to question', %q{
     visit new_question_path
   end
 
-  scenario 'User adds files when asked question' do
+  scenario 'User adds files when asked question', js: true do
     fill_in 'Заголовок', with: 'Test question'
     fill_in 'Содержание', with: 'text text'
-    attach_file 'File', "#{Rails.root}/spec/acceptance/questions/create_question_spec.rb"
+
+    3.times do
+      click_on 'Add an attach'
+    end
+
+    inputs = all('input[type="file"]')
+    inputs[0].set("#{Rails.root}/spec/acceptance/questions/create_question_spec.rb")
+    inputs[1].set("#{Rails.root}/spec/acceptance/questions/destroy_questions_spec.rb")
+    inputs[2].set("#{Rails.root}/spec/acceptance/questions/edit_question_spec.rb")
+    inputs[3].set("#{Rails.root}/spec/acceptance/questions/questions_list_spec.rb")
 
     click_on 'Create'
+
     expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
+    expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
+    expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'
+    expect(page).to have_link 'questions_list_spec.rb', href: '/uploads/attach/file/4/questions_list_spec.rb'
   end
 end
