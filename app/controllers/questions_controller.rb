@@ -41,12 +41,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def attach
-    @attach = Attach.find(params[:id])
-    @question = @attach.attachable
-    @attach.destroy if current_user.author_of?(@question)
-  end
-
   private
 
   def load_question
