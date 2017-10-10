@@ -24,6 +24,9 @@ feature 'Destroy questions attaches', %q(
       click_on 'delete'
     end
 
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
     expect(page).to_not have_content attach.file.filename
   end
 
