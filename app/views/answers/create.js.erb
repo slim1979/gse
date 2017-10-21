@@ -1,5 +1,0 @@
-$('table > tbody:last').append(' <%= j render @answer %>');
-$('.img-<%=@answer.id %>').removeClass("thumbs-up").hide();
-$('.answer_errors').html(' <%= j render "common/errors", resource: @answer %>');
-
-$('.new_answer_body').val('');
