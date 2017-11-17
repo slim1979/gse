@@ -9,8 +9,8 @@ RSpec.describe AnswersController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }
-    let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil }, format: :js } }
+    let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :json } }
+    let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil }, format: :json } }
 
     context 'with valid attributes' do
       it 'saves answer to database' do
@@ -18,7 +18,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirect to show' do
         valid_post_create
-        expect(response).to render_template :create
+        expect(response).to render_template "answers/_new_answer"
       end
     end
 
@@ -26,9 +26,9 @@ RSpec.describe AnswersController, type: :controller do
       it 'does not save answer to db' do
         expect { invalid_post_create }.to_not change(Answer, :count)
       end
-      it 're-render template new' do
+      it 'will return unprocessable entity error' do
         invalid_post_create
-        expect(response).to render_template :create
+        expect(response.status).to eq 422
       end
     end
   end
@@ -36,24 +36,28 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATСH #update' do
     context 'Answer by it author' do
       it 'assign answer to @answer' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :json }
         expect(assigns(:answer)).to eq answer
       end
       it 'change answer body' do
-        patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
+        patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :json }
         answer.reload
         expect(answer.body).to eq 'some new text'
       end
-      it 'render update template' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-        expect(response).to render_template :update
+      it 'will have status 200 OK' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :json }
+        answer.reload
+        expect(response.status).to eq 200
+        parsed_body = JSON.parse(response.body)
+        expect(parsed_body['id']).to eq answer.id
+        expect(parsed_body['body']).to eq answer.body
       end
     end
     context 'Answer by someone else' do
       it 'will not change answer body' do
         sign_out @user
         sign_in user2
-        patch :update, params: { id: answer, answer: { body: 'someone else new text' }, format: :js }
+        patch :update, params: { id: answer, answer: { body: 'someone else new text' }, format: :json }
         answer.reload
         expect(answer.body).to_not eq 'someone else new text'
         expect(answer.body).to eq answer.body
