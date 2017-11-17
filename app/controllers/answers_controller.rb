@@ -10,16 +10,21 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if @answer.save
         format.html { render partial: 'answers/answers', layouts: false }
-        format.json { render json: @answer }
+        format.json { render partial: 'answers/new_answer' }
       else
         format.html { render html: @answer.errors.full_messages.join("\n"), status: 422 }
-        format.json { render json: @answer.errors.full_messages, status: 422 }
+        format.json { render partial: 'answers/errors', status: 422 }
       end
     end
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
+
+    respond_to do |format|
+      format.json { render json: @answer.as_json } unless @answer.errors.present?
+      format.json { render partial: 'answers/errors', status: 422 } if @answer.errors.present?
+    end
   end
 
   def destroy
