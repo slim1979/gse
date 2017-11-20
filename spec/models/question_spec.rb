@@ -6,4 +6,5 @@ RSpec.describe Question, type: :model do
   it { should have_many :attaches }
   it { should accept_nested_attributes_for :attaches }
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many :votes }
 end
