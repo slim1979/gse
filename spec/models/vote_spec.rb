@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should belong_to :user }
+  it { should belong_to :subject }
+  it { should validate_presence_of :user }
+  it { should validate_presence_of :subject }
+  it { should validate_presence_of :value }
 end
