@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       patch :best_answer_assign, on: :member
     end
   end
+  resources :votes, shallow: true do
+    patch 'like', on: :member
+    patch 'dislike', on: :member
+  end
   root 'questions#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
