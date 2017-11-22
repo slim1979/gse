@@ -4,7 +4,7 @@ class CreateVotes < ActiveRecord::Migration[5.1]
       t.belongs_to :user
       t.belongs_to :subject
       t.string :subject_type
-      t.integer :value
+      t.integer :value, default: 0
 
       t.timestamps
     end
