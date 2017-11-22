@@ -1,0 +1,6 @@
+div class="edit_form edit_form_#{@answer_id}"
+  form class="edit_answer" id="edit_answer_#{@answer_id}" data-id="#{@answer_id}" action="/answers/#{@answer_id}" accept-charset="UTF-8" data-remote="true" method="patch"
+    label for="answer_body"
+      Edit answer
+    textarea name="answer[body]" id="answer_body" #{@answer_body}
+    input type="submit" name="commit" value="Save" data-disable-with="Save"

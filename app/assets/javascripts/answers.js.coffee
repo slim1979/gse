@@ -25,17 +25,7 @@ edit = ->
     answer_body = $(".body_of_" + answer_id)[0].innerText
     $(".body_of_" + answer_id).hide();
     $(".updated_for_" + answer_id).hide();
-    edit_form = '''
-        <div class="edit_form edit_form_''' + answer_id + '''">
-          <form class="edit_answer" id="edit_answer_''' + answer_id + '''" data-id="''' + answer_id + '''"action="/answers/''' + answer_id + '''" accept-charset="UTF-8" data-remote="true" method="post">
-            <input name="utf8" type="hidden" value="✓">
-            <input type="hidden" name="_method" value="patch">
-            <label for="answer_body">Edit answer</label>
-            <textarea name="answer[body]" id="answer_body">''' + answer_body + '''</textarea>
-            <input type="submit" name="commit" value="Save" data-disable-with="Save">
-          </form>
-        </div>
-    '''
+    edit_form = JST["templates/edit_form"]({answer_id: answer_id, answer_body: answer_body})
     $(edit_form).insertAfter("#editing_errors_" + answer_id).show()
 
     # after editing answer, form is hiding, and the rest is showing
