@@ -7,8 +7,7 @@ Rails.application.routes.draw do
     end
   end
   resources :votes, shallow: true do
-    patch 'like', on: :member
-    patch 'dislike', on: :member
+    patch 'any', on: :collection
   end
   root 'questions#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
