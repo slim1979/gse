@@ -34,7 +34,8 @@ html lang="en"
                 li= link_to "Выйти", destroy_user_session_path, method: :delete
               - else
                 li= link_to "Войти", new_user_session_path
-
+            ul.navbar-text.navbar-link.navbar-right
+              = current_user.email if current_user
     .container
       .row
         .col-lg-9
