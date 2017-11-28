@@ -70,24 +70,10 @@ ready = ->
     .bind 'ajax:success', (e, data, status, xhr) ->
       response = $.parseJSON(xhr.responseText)
       # row template appended to page
-      $('.answers-table > tbody:last').append('
-        <tr class="row answer usual" id="answer_'+response.answer.id+'">
-          <td class="col-sm-2">
-            <a class="best-answer-link " id="best-answer-link-'+response.answer.id+'" data-remote="true" rel="nofollow" data-method="patch" href="/answers/'+response.answer.id+'/best_answer_assign">Best answer</a>
-              <img alt="Best answer" class="img img-'+response.answer.id+' " src="/assets/best.png" width="50" height="50" style="display: none;">
-          </td>
-          <td>
-            <div class="answer_body body_of_'+response.answer.id+' ">'+response.answer.body+'</div>
-            <div class="updated_at updated_for_'+response.answer.id+'">'+response.answer.updated_at+'</div>
-            <div id="editing_errors_'+response.answer.id+'"></div>
-          </td>
-          <td class="manage edit">
-            <a class="edit-answer-link edit_answer_'+response.answer.id+'" data-answer-id="'+response.answer.id+'" href="">Edit answer</a>
-          </td>
-          <td class="manage delete">
-            <a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/'+response.answer.id+'">Delete answer</a>
-          </td>
-        </tr>')
+      answer = response.answer
+      answer_attaches = response.attaches
+      row_template = JST["templates/new_answer_row_template"]({ answer: answer })
+      $('.answers-table > tbody:last').append(row_template)
       # attaches added to answer
       link = ('<ul>')
       $.each response.attaches, (index, value) ->
