@@ -7,9 +7,9 @@
       =image_tag('best.png', size: "50x50", alt: "Best answer", \
                   class: "img img-#{answer.id} #{answer.best_answer ? 'thumbs-up' : ''}")
       p
-        .vote = link_to 'like', any_votes_path( subject_type: Answer, subject_id: answer, votes_value: 1 ), remote: true, method: :patch
+        .vote = link_to 'like', any_votes_path( subject_type: Answer, subject_id: answer, votes_value: 1 ), remote: true, method: :patch if current_user
         div class="answer_votes_count_#{answer.id}"  = answer.votes_count
-        .vote = link_to 'dislike', any_votes_path( subject_type: Answer, subject_id: answer, votes_value: -1 ), remote: true, method: :patch
+        .vote = link_to 'dislike', any_votes_path( subject_type: Answer, subject_id: answer, votes_value: -1 ), remote: true, method: :patch if current_user
     td
       .answer_body class="body_of_#{answer.id}"     =answer.body
       .updated_at class="updated_for_#{answer.id}"  =answer.updated_at
