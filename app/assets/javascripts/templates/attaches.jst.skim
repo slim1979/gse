@@ -1,0 +1,7 @@
+ul
+  - $.each @attaches, (index, value) =>
+    li id="file_#{value.attach.id}"
+      div class="link_to_file"
+        a target="_blank" href="#{value.attach.file.url}" = value.attach_name
+      div class="delete_answer_attach"
+        a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/attaches/#{value.attach.id}" delete

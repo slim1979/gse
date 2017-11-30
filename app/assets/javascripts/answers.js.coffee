@@ -63,21 +63,10 @@ ready = ->
       response = $.parseJSON(xhr.responseText)
       # row template appended to page
       answer = response.answer
-      answer_attaches = response.attaches
       row_template = JST["templates/new_answer_row_template"]({ answer: answer })
       $('.answers-table > tbody:last').append(row_template)
       # attaches added to answer
-      link = ('<ul>')
-      $.each response.attaches, (index, value) ->
-        link += ('<li id="file_'+value.attach.id+'">')
-        link += ('<div class="link_to_file">')
-        link += ('<a target="_blank" href='+value.attach.file.url+'>'+value.attach_name+'</a>')
-        link += ('</div>')
-        link += ('<div class="delete_answer_attach">')
-        link += ('<a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/attaches/'+value.attach.id+'">  delete</a>')
-        link += ('</div>')
-        link += ('</li>')
-      link += ('</ul>')
+      link = JST["templates/attaches"]({ attaches: response.attaches })
       $(link).insertAfter('.updated_for_'+response.answer.id)
       # clean up form text after creating answer
       $('.new_answer_body').val('');
