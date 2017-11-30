@@ -40,21 +40,13 @@ edit = ->
         $('#editing_errors_' + answer.id).empty().hide();
 
       .bind 'ajax:error', (e, xhr, status, error) ->
-        # receiving respone
+        # receiving response
         response = $.parseJSON(xhr.responseText)
-        console.log response.resource
-        console.log response.resource.id
-        $('#editing_errors_' + response.resource.id).empty().hide()
         # making errors marked list with bootstrap style
-        errors = ('<div id="editing_errors_'+response.resource.id+'" class="alert fade in alert-danger"')
-        errors += ('<p>'+response.title+'</p>')
-        errors += ('<ul>')
-        $.each response.errors, (index, value) ->
-          errors += ('<li>'+value+'</li>')
-        errors += ('</ul>')
-        errors += ('</div>')
-        # insert list before new answer form
-        $(errors).insertAfter('.updated_for_' + response.resource.id)
+        $('.alert').hide()
+        errors = JST["templates/errors"]({title: response.title, resourse_id: response.resource.id, errors: response.errors })
+        # insert list before edit form
+        $(errors).insertBefore('.edit_answer')
 
 ready = ->
   # best answer toggle
