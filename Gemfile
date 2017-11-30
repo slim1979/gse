@@ -40,7 +40,6 @@ gem 'jquery-ui-rails'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'nested_form'
-gem 'mustache'
 gem 'skim'
 
 group :development, :test do
