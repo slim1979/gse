@@ -7,24 +7,18 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
 
-    respond_to do |format|
-      if @answer.save
-        format.html { render partial: 'answers/answers', layouts: false }
-        format.json { render partial: 'answers/new_answer' }
-      else
-        format.html { render html: @answer.errors.full_messages.join("\n"), status: 422 }
-        format.json { render partial: 'answers/errors', status: 422 }
-      end
+    if @answer.save
+      render partial: 'answers/new_answer'
+    else
+      render partial: 'answers/errors', status: 422
     end
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
 
-    respond_to do |format|
-      format.json { render json: @answer.as_json } unless @answer.errors.present?
-      format.json { render partial: 'answers/errors', status: 422 } if @answer.errors.present?
-    end
+    render json: @answer.as_json unless @answer.errors.present?
+    render partial: 'common/errors', resource: @answer, status: 422 if @answer.errors.present?
   end
 
   def destroy
