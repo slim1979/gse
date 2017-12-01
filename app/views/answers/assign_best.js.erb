@@ -1,0 +1,11 @@
+<% unless @error %>
+  $('.answer').removeClass("best").addClass("usual");
+  $('.best-answer-link').removeClass("now-best").show();
+  $('.img').removeClass("thumbs-up").hide();
+  $('.answer_body').css('font-weight','normal');
+
+  $('#best-answer-link-<%= @answer.id %>').addClass('now-best').hide();
+  $('#answer_<%= @answer.id %>').removeClass("usual").addClass("best").insertBefore('tr:first');
+  $('.body_of_<%= @answer.id %>').css('font-weight','bold');
+  $('.img-<%= @answer.id %>').addClass('thumbs-up').show();
+<% end %>
