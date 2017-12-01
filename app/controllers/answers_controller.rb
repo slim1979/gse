@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
     @answer.destroy if current_user.author_of? @answer
   end
 
-  def best_answer_assign
+  def assign_best
     if current_user.author_of?(@answer.question)
       @answer.best_answer_switch
     else

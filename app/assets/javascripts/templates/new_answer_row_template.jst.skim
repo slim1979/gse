@@ -1,6 +1,6 @@
 tr class="answer row usual" id="answer_#{@answer.id}"
   td class="col-sm-2"
-    a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/best_answer_assign" Best answer
+    a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Best answer
     p
     img alt="Best answer" class="img img-#{@answer.id} thumbs-up" src="/assets/best.png" width="50" height="50" style="display: none;"
     div class="vote"
