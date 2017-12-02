@@ -1,4 +1,6 @@
 class Question < ApplicationRecord
+  include VotesActions
+
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_many :attaches, as: :attachable, dependent: :destroy
