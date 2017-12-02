@@ -8,6 +8,5 @@ stady = ->
     $(this).hide();
     $('.question').hide();
     $('.edit_question_form').show();
-  
-$(document).on('page:update', stady)
+
 $(document).on('turbolinks:load', stady)
