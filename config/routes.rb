@@ -3,14 +3,10 @@ Rails.application.routes.draw do
   resources :attaches
 
   resources :questions do
-    resources :votes, shallow: true do
-      patch :click, on: :collection
-    end
+    resources :votes, shallow: true
     resources :answers, shallow: true do
       patch :assign_best, on: :member
-      resources :votes, shallow: true do
-        patch :click, on: :collection
-      end
+      resources :votes, shallow: true
     end
   end
   root 'questions#index'
