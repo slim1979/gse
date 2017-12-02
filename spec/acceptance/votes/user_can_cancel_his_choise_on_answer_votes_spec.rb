@@ -21,24 +21,36 @@ feature 'User can cancel his choise', %q{
       current_answer_votes_count = answer.votes_count
       expect(current_answer_votes_count).to eq 0
 
-      click_on 'like'
+      within '.answer' do
+        click_on 'like'
+      end
+
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content current_answer_votes_count + 1
         answer.reload
         expect(answer.votes_count).to eq 1
       end
 
-      click_on 'dislike'
+      within '.answer' do
+        click_on 'dislike'
+      end
+
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content current_answer_votes_count
       end
 
-      click_on 'dislike'
+      within '.answer' do
+        click_on 'dislike'
+      end
+
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content current_answer_votes_count - 1
       end
 
-      click_on 'like'
+      within '.answer' do
+        click_on 'like'
+      end
+
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content current_answer_votes_count
       end
