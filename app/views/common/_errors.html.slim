@@ -1,7 +1,0 @@
-- if resource.errors.any?
-  div#error_explanation.alert.fade.in.alert-danger
-    p.alert = t('common.errors')
-
-    ul
-      - resource.errors.full_messages.each do |message|
-        li= message
