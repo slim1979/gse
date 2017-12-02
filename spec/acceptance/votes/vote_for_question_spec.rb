@@ -27,30 +27,38 @@ feature 'Votes for question', %q{
     end
 
     scenario 'vote for the question - like - for the first time', js: true do
-      click_on 'like'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content @current_question_votes_count + 1
+      within '.question' do
+        click_on 'like'
+        within ".question_votes_count_#{question.id}" do
+          expect(page).to have_content @current_question_votes_count + 1
+        end
       end
     end
 
     scenario 'vote for the question - dislike - for the first time', js: true do
-      click_on 'dislike'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content @current_question_votes_count - 1
+      within '.question' do
+        click_on 'dislike'
+        within ".question_votes_count_#{question.id}" do
+          expect(page).to have_content @current_question_votes_count - 1
+        end
       end
     end
 
     scenario 'vote for the question - like - the second and subsequent times, by same user will not increase the answer rating', js: true do
-      3.times { click_on 'like' }
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content 1
+      within '.question' do
+        3.times { click_on 'like' }
+        within ".question_votes_count_#{question.id}" do
+          expect(page).to have_content 1
+        end
       end
     end
 
     scenario 'vote for the question - dislike - the second and subsequent times will not decrease the answer rating', js: true do
-      3.times { click_on 'dislike' }
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content(-1)
+      within '.question' do
+        3.times { click_on 'dislike' }
+        within ".question_votes_count_#{question.id}" do
+          expect(page).to have_content(-1)
+        end
       end
     end
   end
