@@ -27,28 +27,36 @@ feature 'Votes for answer', %q{
     end
 
     scenario 'vote for the answer - like - for the first time', js: true do
-      click_on 'like'
+      within '.answer' do
+        click_on 'like'
+      end
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content @current_answer_votes_count + 1
       end
     end
 
     scenario 'vote for the answer - dislike - for the first time', js: true do
-      click_on 'dislike'
+      within '.answer' do
+        click_on 'dislike'
+      end
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content @current_answer_votes_count - 1
       end
     end
 
     scenario 'vote for the answer - like - the second and subsequent times, by same user will not increase the answer rating', js: true do
-      3.times { click_on 'like' }
+      within '.answer' do
+        3.times { click_on 'like' }
+      end
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content 1
       end
     end
 
     scenario 'vote for the answer - dislike - the second and subsequent times will not decrease the answer rating', js: true do
-      3.times { click_on 'dislike' }
+      within '.answer' do
+        3.times { click_on 'dislike' }
+      end
       within ".answer_votes_count_#{answer.id}" do
         expect(page).to have_content(-1)
       end
