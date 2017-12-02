@@ -1,5 +1,8 @@
 .question
   = render @question
+  .vote =link_to 'like', question_votes_path(@question, votes_value: 1 ), remote: true, method: :post if current_user
+  div class="question_votes_count_#{@question.id}"  = @question.votes_count
+  .vote =link_to 'dislike', question_votes_path(@question, votes_value: -1 ), remote: true, method: :post if current_user
 - if current_user&.author_of?(@question)
   .link =link_to 'Edit question','', class: 'edit_question_link'
   .question_errors
