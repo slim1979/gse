@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
     @answer.update(answer_params) if current_user.author_of?(@answer)
 
     render json: @answer.as_json unless @answer.errors.present?
-    render partial: 'common/errors', resource: @answer, status: 422 if @answer.errors.present?
+    render partial: 'answers/errors', status: 422 if @answer.errors.present?
   end
 
   def destroy
