@@ -1,2 +1,2 @@
-json.vote @vote
-json.current_subject_votes_count @vote.subject.votes_count
+json.object @object
+json.type @object.class.to_s
