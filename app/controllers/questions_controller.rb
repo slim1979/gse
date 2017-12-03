@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
+
   def new
     @question = Question.new
     @question.attaches.new
@@ -13,12 +14,8 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
 
-    if @question.save
-      redirect_to @question
-      flash[:notice] = 'Your question created successfully!'
-    else
-      render :new
-    end
+    render json: @question if @question.save
+    render partial: 'questions/errors', status: 422 if @question.errors.present?
   end
 
   def show
@@ -31,13 +28,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    redirect_to questions_path
-
     if current_user.author_of? @question
       @question.destroy
-      flash[:notice] = 'Your question successfully deleted!'
+      render json: @question
     else
-      flash[:alert] = 'You can delete only your own content'
+      render json: { alert: 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.' }, status: 422
     end
   end
 
