@@ -22,8 +22,8 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @question = @answer.question
     @answer.destroy if current_user.author_of? @answer
+    render json: @answer
   end
 
   def assign_best
