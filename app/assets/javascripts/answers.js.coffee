@@ -37,16 +37,16 @@ edit = ->
         $('.updated_for_' + answer.id).html(answer.updated_at).show();
         $('.edit_answer_' + answer.id).show();
         # clearing editing errors
-        $('#editing_errors_' + answer.id).empty().hide();
+        $('#errors_alert').empty().hide();
 
       .bind 'ajax:error', (e, xhr, status, error) ->
         # receiving response
         response = $.parseJSON(xhr.responseText)
         # making errors marked list with bootstrap style
-        $('.alert').hide()
-        errors = JST["templates/errors"]({title: response.title, resourse_id: response.resource.id, errors: response.errors })
+        $('#errors_alert').remove()
+        errors = JST["templates/errors"]({ title: response.title, resourse_id: response.resource.id, errors: response.errors })
         # insert list before edit form
-        $(errors).insertBefore('.edit_answer')
+        $(errors).insertBefore('#editing_errors_' + response.resource.id)
 
 ready = ->
   # best answer toggle
@@ -66,8 +66,8 @@ ready = ->
       row_template = JST["templates/new_answer_row_template"]({ answer: answer })
       $('.answers-table > tbody:last').append(row_template)
       # attaches added to answer
-      link = JST["templates/attaches"]({ attaches: response.attaches })
-      $(link).insertAfter('.updated_for_'+response.answer.id)
+      attaches = JST["templates/attaches"]({ attaches: response.attaches })
+      $(attaches).insertAfter('.updated_for_'+response.answer.id)
       # clean up form text after creating answer
       $('.new_answer_body').val('');
       $('input').val('');
@@ -75,7 +75,7 @@ ready = ->
       $('.remove_nested_fields').click();
       $('.add_nested_fields').click();
       # errors cleared
-      $('.answer_errors').empty().hide()
+      $('.alert').empty().hide()
 
     # ajax error when wrong answer created
     .bind 'ajax:error', (e, xhr, status, error) ->
@@ -84,27 +84,22 @@ ready = ->
       # receiving respone
       response = $.parseJSON(xhr.responseText)
       # making errors marked list with bootstrap style
-      errors = ('<div class="answer_errors alert fade in alert-danger"')
-      errors += ('<h2>'+response.title+'</h2>')
-      errors += ('<ul>')
-      $.each response.errors, (index, value) ->
-        errors += ('<li>'+value+'</li>')
-      errors += ('</ul>')
-      errors += ('</div>')
+      errors = JST["templates/errors"]({title: response.title, resourse_id: response.resource.id, errors: response.errors })
       # insert list before new answer form
       $(errors).insertBefore('.new_answer')
   # file attaches delete
   $('.delete_answer_attach')
     .bind 'ajax:success', (e, data, status, xhr) ->
       attach = $.parseJSON(xhr.responseText)
-      console.log attach
       $('#file_'+attach.id).hide()
 
-# $(document).on 'page:update', () ->
-#   $(ready)
-#   $(edit)
+destroy_answer = ->
+  $('.delete_answer')
+    .bind 'ajax:success', (e, data, status, xhr) ->
+      response = $.parseJSON(xhr.responseText)
+      $('#answer_' + response.id).remove()
+
 $(document).on 'turbolinks:load', () ->
   $(ready)
   $(edit)
-# $(document).on 'ajax:success', () ->
-#   $(ready)
+  $(destroy_answer)
