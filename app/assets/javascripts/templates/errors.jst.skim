@@ -1,4 +1,4 @@
-div id="editing_errors_#{@resourse_id}" class="alert fade in alert-danger"
+div.alert.fade.in.alert-danger id="errors_alert"
   p.title #{@title}
   ul.errors_list
     - $.each @errors, (index,value) =>
