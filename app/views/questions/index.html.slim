@@ -1,12 +1,22 @@
-.exists_questions
-  table.table.table-hover
-    - @questions.each do |question|
-      tr
-        td
-          .badge = "#{question.answers.count}"
-          = link_to " #{question.title}", question_path(question)
-        td
-          -if current_user&.author_of?(question)
-            = link_to 'delete question', question_path(question), method: :delete, data: { confirm: 'Вы уверены?' }
+table.table.table-hover.exists_questions
+  - @questions.each do |question|
+    tr class="question_#{question.id}"
+      td
+        .badge = "#{question.answers.count}"
+        = link_to " #{question.title}", question_path(question)
+      td
+        -if current_user&.author_of?(question)
+          .manage.delete_question = link_to 'delete question', question_path(question), method: :delete, remote: true, data: { confirm: 'Вы уверены?' }
 
 p.ask_question = link_to 'Ask question'
+p
+  = nested_form_for Question.new, remote: true, html: { hidden: "hidden" } do |f|
+    p
+      = f.label :title
+      = f.text_field :title
+    p
+      = f.label :body
+      = f.text_area :body
+    p
+      = render 'common/attaches', f: f
+    .create_question = f.submit 'Create'
