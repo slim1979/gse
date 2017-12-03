@@ -1,0 +1,20 @@
+form class="new_question" id="new_question" enctype="multipart/form-data" action="/questions" accept-charset="UTF-8" method="post"
+  p
+    label for="question_title" Заголовок
+    input type="text" name="question[title]" id="question_title"
+  p
+    label for="question_body" Содержание
+    textarea name="question[body]" id="question_body"
+  p
+  p
+    a data-target=".attaches" class="add_nested_fields" data-association="attaches" data-blueprint-id="attaches_fields_blueprint" href="javascript:void(0)"Add an attach
+  p Вложения:
+  div class="attaches"
+    div class="fields"
+      label for="question_attaches_attributes_0_file" File
+      input type="file" name="question[attaches_attributes][0][file]" id="question_attaches_attributes_0_file"
+      input type="hidden" value="false" name="question[attaches_attributes][0][_destroy]" id="question_attaches_attributes_0__destroy"
+      a class="remove_nested_fields" data-association="attaches" href="javascript:void(0)" Remove this file
+  p
+  input type="submit" name="commit" value="Create" data-disable-with="Create"
+  div id="attaches_fields_blueprint" style="display: none" data-blueprint="<div class=&quot;fields&quot;><label for=&quot;question_attaches_attributes_new_attaches_file&quot;>File</label><input type=&quot;file&quot; name=&quot;question[attaches_attributes][new_attaches][file]&quot; id=&quot;question_attaches_attributes_new_attaches_file&quot; /><input type=&quot;hidden&quot; value=&quot;false&quot; name=&quot;question[attaches_attributes][new_attaches][_destroy]&quot; id=&quot;question_attaches_attributes_new_attaches__destroy&quot; /><a class=&quot;remove_nested_fields&quot; data-association=&quot;attaches&quot; href=&quot;javascript:void(0)&quot;>Remove this file</div>"
