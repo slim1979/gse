@@ -22,10 +22,10 @@
 
       div id="editing_errors_#{answer.id}"
     -if current_user&.author_of?(answer)
-      td.manage.edit
+      td.manage.edit_answer
         =link_to 'Edit answer','', class: "edit-answer-link edit_answer_#{answer.id}", data: { answer_id: answer.id }
-      td.manage.delete
-        =link_to 'Delete answer', answer_path(answer), remote: true, data: { confirm: 'Are you sure?' }, method: :delete
+      td.manage.delete_answer
+        =link_to 'Delete answer',  answer_path(answer), remote: true, data: { confirm: 'Are you sure?' }, method: :delete
     -else
       td
       td
