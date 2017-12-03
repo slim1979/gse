@@ -3,16 +3,16 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 vote = ->
-  $('.vote')
-    .bind 'ajax:success', (e, data, status, xhr) ->
+  $('body').on 'click', '.vote', (e) ->
+    $(this)
+      .bind 'ajax:success', (e, data, status, xhr) ->
+        respond = $.parseJSON(xhr.responseText)
 
-      respond = $.parseJSON(xhr.responseText)
+        object = respond.object
+        object_type = respond.object_type.toLowerCase()
 
-      object = respond.object
-      object_type = respond.type.toLowerCase()
-
-      $("." + object_type + "_votes_count_" + object.id)[0].innerText =
-        object.votes_count
+        $("." + object_type + "_votes_count_" + object.id)[0].innerText =
+          object.votes_count
 
 $(document).on 'turbolinks:load', () ->
   $(vote)
