@@ -1,18 +1,20 @@
 tr class="answer row usual" id="answer_#{@answer.id}"
   td class="col-sm-2"
     a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Best answer
+    img alt="Best answer" class="img img-#{@answer.id} " src="/assets/best.png" width="50" height="50" style="display: none;"
     p
-    img alt="Best answer" class="img img-#{@answer.id} thumbs-up" src="/assets/best.png" width="50" height="50" style="display: none;"
     div class="vote"
-      a data-remote="true" rel="nofollow" data-method="patch" href="/votes/any?subject_id=#{@answer.id}&amp;subject_type=Answer&amp;votes_value=1" like
+      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1" like
     div class="answer_votes_count_#{@answer.id}" #{@answer.votes_count}
     div class="vote"
-      a data-remote="true" rel="nofollow" data-method="patch" href="/votes/any?subject_id=#{@answer.id}&amp;subject_type=Answer&amp;votes_value=-1" dislike
+      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1" dislike
+    p
   td
     div class="answer_body body_of_#{@answer.id}" #{@answer.body}
     div class="updated_at updated_for_#{@answer.id}" #{@answer.updated_at}
+    ul
     div id="editing_errors_#{@answer.id}"
-  td.manage.edit
+  td class="manage edit_answer"
     a class="edit-answer-link edit_answer_#{@answer.id}" data-answer-id="#{@answer.id}" href="" Edit answer
-  td class="manage delete"
+  td class="manage delete_answer"
     a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}" Delete answer
