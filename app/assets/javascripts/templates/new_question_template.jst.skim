@@ -1,0 +1,10 @@
+tr class="row question_#{@question.id}"
+  td class="rating" 0
+  td class="question_body"
+    a href="/questions/#{@question.id}" #{@question.title}
+    div class="adv_info"
+      div class="info_line" автор: это Ваш вопрос, проголосовало: 0, ответов: 0
+      div class="manage favorites"
+        a rel="nofollow" href="" add to favorites
+      div class="manage delete_question"
+        a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" delete question
