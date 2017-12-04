@@ -10,17 +10,20 @@ stady = ->
     $('.edit_question_form').show()
 
 new_question = ->
-  $('.ask_question').click (e) ->
+  $('html').on 'click', '.ask_question', (e) ->
     e.preventDefault()
+    $('.new_question').remove()
     $(this).hide()
-    $('.new_question').show()
+    new_question_form = JST["templates/new_question_form"]({})
+    $(new_question_form).insertBefore('.exists_questions')
     $('form.new_question').on 'click', '.create_question', (e) ->
       $('form.new_question')
         .bind 'ajax:success', (e, data, status, xhr) ->
+          $('#errors_alert').remove()
           question = $.parseJSON(xhr.responseText)
-          new_question = JST["templates/new_question"] ({ question: question })
+          new_question = JST["templates/new_question_template"] ({ question: question })
           $('.exists_questions > tbody:last').append(new_question)
-          $('.new_question').hide()
+          $('.new_question').remove()
           $('.ask_question').show()
 
         .bind 'ajax:error', (e, xhr, status, error) ->
@@ -28,10 +31,14 @@ new_question = ->
           response = $.parseJSON(xhr.responseText)
           errors = JST["templates/errors"]({ title: response.title, resourse_id: response.resource.id, errors: response.errors })
           $(errors).insertBefore('form.new_question')
+    # 'cancel creating question' button actions
+    $('.cancel_create_question').click (cancel) ->
+      cancel.preventDefault()
+      $('.new_question').remove()
+      $('.ask_question').show()
 
-delete_question = =>
+delete_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
-    console.log 212121
     $('.exists_questions')
       .bind 'ajax:success', (e, data, status, xhr) ->
         question = $.parseJSON(xhr.responseText)
@@ -41,7 +48,6 @@ delete_question = =>
         response = $.parseJSON(xhr.responseText)
         errors = JST["templates/permission_errors"]({ alert: response.alert })
         $(errors).insertBefore('.exists_questions')
-
 
 $(document).on 'turbolinks:load', () ->
   $(stady)
