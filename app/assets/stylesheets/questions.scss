@@ -1,3 +1,44 @@
 // Place all the styles related to the Questions controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.info_line{
+  float: left;
+  margin-right: 10px;
+}
+.rating{
+  font-size: 28px;
+  font-style: oblique;
+  text-align: right;
+}
+.question_body{
+  float: right;
+  width: 100%;
+}
+.adv_info,
+.manage{
+  font-size: 12px;
+}
+.manage{
+  text-align: right;
+  float: right;
+  margin-left: 5px;
+}
+.delete_question > a {
+  color: pink;
+  &:hover{
+    color: red;
+  }
+}
+.favorites > a{
+  color: #f0e557;
+  &:hover{
+    color: #aeb800;
+  }
+}
+.exists_questions{
+  margin-top: 10px;
+}
+.solved{
+  background-color: #65eb50;
+}
