@@ -1,7 +1,0 @@
-tr class="question_#{@question.id}"
-  td
-    .badge 0
-    a href="/questions/#{@question.id}" &nbsp#{@question.title}
-  td
-    .delete_question
-      a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" delete question
