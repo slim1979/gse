@@ -3,11 +3,13 @@ tr class="answer row usual" id="answer_#{@answer.id}"
     a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Best answer
     img alt="Best answer" class="img img-#{@answer.id} " src="/assets/best.png" width="50" height="50" style="display: none;"
     p
-    div class="vote"
-      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1" like
-    div class="answer_votes_count_#{@answer.id}" #{@answer.votes_count}
-    div class="vote"
-      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1" dislike
+    div class="vote vote_box"
+      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1"
+        div class="glyphicon glyphicon-thumbs-up"
+    div class="vote_box answer_votes_count_#{@answer.id}" #{@answer.votes_count}
+    div class="vote vote_box"
+      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1"
+      	div class="glyphicon glyphicon-thumbs-down"
     p
   td
     div class="answer_body body_of_#{@answer.id}" #{@answer.body}
