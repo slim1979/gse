@@ -22,8 +22,10 @@ new_question = ->
           $('#errors_alert').remove()
           question = $.parseJSON(xhr.responseText)
           new_question = JST["templates/new_question_template"] ({ question: question })
-          $('.exists_questions > tbody:last').append(new_question)
+          $(new_question).insertAfter('.exists_questions>tbody>tr:last')
+          # form hidding
           $('.new_question').remove()
+          #link to new question form showed
           $('.ask_question').show()
 
         .bind 'ajax:error', (e, xhr, status, error) ->
@@ -42,7 +44,7 @@ delete_question = ->
     $('.exists_questions')
       .bind 'ajax:success', (e, data, status, xhr) ->
         question = $.parseJSON(xhr.responseText)
-        $('.question_' + question.id).hide()
+        $('.question_' + question.id).remove()
 
       .bind 'ajax:error', (e, xhr, status, error) ->
         response = $.parseJSON(xhr.responseText)
