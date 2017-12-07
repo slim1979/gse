@@ -18,15 +18,15 @@ feature 'Delete answer', %q{
     end
     scenario 'sees link to delete answer' do
 
-      expect(page).to have_link 'Delete answer'
+      expect(page).to have_link 'Удалить'
     end
     scenario 'tries to delete answer' do
-      click_on 'Delete answer'
+      click_on 'Удалить'
 
       expect(page).to_not have_content answer.body
     end
     scenario 're-render question show template' do
-      click_on 'Delete answer'
+      click_on 'Удалить'
 
       expect(current_path).to eq question_path(question)
     end
@@ -35,7 +35,7 @@ feature 'Delete answer', %q{
     scenario 'tries to delete someine answer' do
       visit question_path(question)
 
-      expect(page).to_not have_link 'Delete answer'
+      expect(page).to_not have_link 'Удалить'
     end
   end
 end
