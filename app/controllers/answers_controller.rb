@@ -22,8 +22,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy if current_user.author_of? @answer
-    render json: @answer
+    if current_user.author_of? @answer
+      @answer.destroy
+      render json: @answer
+    else
+      render json: { alert: 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.' }, status: 422
+    end
   end
 
   def assign_best
