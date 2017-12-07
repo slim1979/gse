@@ -20,7 +20,6 @@ feature 'Add files to answer', %q{
     3.times do
       click_on 'Add an attach'
     end
-
     inputs = all('input[type="file"]')
     inputs[0].set("#{Rails.root}/spec/acceptance/questions/create_question_spec.rb")
     inputs[1].set("#{Rails.root}/spec/acceptance/questions/destroy_questions_spec.rb")
@@ -28,7 +27,7 @@ feature 'Add files to answer', %q{
     inputs[3].set("#{Rails.root}/spec/acceptance/questions/questions_list_spec.rb")
 
     click_on 'Answer the question'
-    within '.answer' do
+    within '.answer_main' do
       expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
       expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
       expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'

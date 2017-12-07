@@ -1,4 +1,4 @@
-tr class="answer row usual answer_#{@answer.id}"
+tr class="answer answer_main row usual answer_#{@answer.id}"
   td class="col-md-1 answer_vote_box  answer_#{@answer.id}" rowspan="2"
     div class="vote"
       a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1"
