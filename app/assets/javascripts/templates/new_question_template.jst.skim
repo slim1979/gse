@@ -1,6 +1,6 @@
 tr class="row question_#{@question.id}"
   td class="rating" 0
-  td class="question_body"
+  td class="index_question_body"
     a href="/questions/#{@question.id}" #{@question.title}
     div class="adv_info"
       div class="info_line" автор: это Ваш вопрос, проголосовало: 0, ответов: 0
