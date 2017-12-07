@@ -8,5 +8,5 @@
   $('.answer_<%= @answer.id %>').removeClass("usual").addClass("best").insertBefore('tr:first');
   $('.body_of_<%= @answer.id %>').css('font-weight','bold');
   $('.answer_<%= @answer.id %> > .answer_vote_box').addClass("img");
-  // $('.img').addClass('thumbs-up').show();
+  $('.img').show();
 <% end %>
