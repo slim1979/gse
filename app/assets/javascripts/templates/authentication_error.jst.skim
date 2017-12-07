@@ -1,2 +1,2 @@
-div.alert.fade.in.alert-danger id="errors_alert"
+div.alert.fadeOut.alert-danger id="errors_alert"
   p.error #{@error}
