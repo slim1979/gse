@@ -1,36 +1,39 @@
 .question
-  h4.question_title =@question.title
+  h3.question_title =@question.title
+  .question_author = "Автор: #{@question.user.email}"
+  hr
+  .question_vote_box
+    .vote = link_to "<div class='glyphicon glyphicon-chevron-up'></div>".html_safe, question_votes_path(@question, votes_value: 1 ), remote: true, method: :post if current_user
+    .question_votes_count class="question_votes_count_#{@question.id}"  = @question.votes_count
+    .vote =link_to "<div class='glyphicon glyphicon-chevron-down'></div>".html_safe, question_votes_path(@question, votes_value: -1 ), remote: true, method: :post if current_user
   .question_body  =@question.body
-  .vote.vote_box = link_to "<div class='glyphicon glyphicon-thumbs-up'></div>".html_safe, question_votes_path(@question, votes_value: 1 ), remote: true, method: :post if current_user
-  .vote_box class="question_votes_count_#{@question.id}"  = @question.votes_count
-  .vote.vote_box =link_to "<div class='glyphicon glyphicon-thumbs-down'></div>".html_safe, question_votes_path(@question, votes_value: -1 ), remote: true, method: :post if current_user
   br
-- if current_user&.author_of?(@question)
-  .link =link_to 'Edit question','', class: 'edit_question_link'
-  .question_errors
-  .edit_question_form
-    =form_for @question, remote: true do |f|
-      p=f.label :title, 'Title'
-      p=f.text_field :title
-      p=f.label :body, 'Body'
-      p=f.text_area :body, rows: 5
-      p=f.submit 'Save'
-br
-- unless @question.attaches.count.zero?
-  p Вложения:
-  table
-    -@question.attaches.each do |attach|
-      tr.row id="file_#{attach.id}"
-        td.col-md-1=link_to attach.file.identifier, attach.file.url
-        - if current_user&.author_of?(@question)
-          td.col-md-1.delete_question_attach=link_to '  delete', attach_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
-          td.col-md-10
+  - if current_user&.author_of?(@question)
+    .link =link_to 'Edit question','', class: 'edit_question_link'
+    .question_errors
+    .edit_question_form
+      =form_for @question, remote: true do |f|
+        p=f.label :title, 'Title'
+        p=f.text_field :title
+        p=f.label :body, 'Body'
+        p=f.text_area :body, rows: 5
+        p=f.submit 'Save'
+        br
+  - unless @question.attaches.count.zero?
+    p Вложения:
+    table
+      -@question.attaches.each do |attach|
+        tr.row id="file_#{attach.id}"
+          td.col-md-1=link_to attach.file.identifier, attach.file.url
+          - if current_user&.author_of?(@question)
+            td.col-md-1.delete_question_attach=link_to '  delete', attach_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
+            td.col-md-10
 
 
-.exists_answers
-  =render 'answers/answers'
+  .exists_answers
+    =render 'answers/answers'
 
-.answer_errors
+  .answer_errors
 
 -if user_signed_in?
   .new_answer_form
