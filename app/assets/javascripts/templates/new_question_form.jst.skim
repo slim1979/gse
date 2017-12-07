@@ -12,15 +12,13 @@ form class="form form-horizontal new_question" id="new_question" enctype="multip
         td.col-md-2
           label for="question_body" Содержание
         td.col-md-10
-          textarea.form-control name="question[body]" id="question_body"
+          textarea.form-control name="question[body]" id="question_body" placeholder="Содержание вопроса"
 
       tr
         td.col-md-2 colspan="6"
           p
-            a data-target=".attaches" class="add_nested_fields" data-association="attaches" data-blueprint-id="attaches_fields_blueprint" href="javascript:void(0)" Add an attach
-          p Вложения:
+            a data-target=".attaches" class="add_nested_fields" data-association="attaches" data-blueprint-id="attaches_fields_blueprint" href="javascript:void(0)" Прикрепить файлы
           div class="attaches"
-
       tr
         td.col-md-2 class="create_question"
           input.btn.btn-md.btn-success type="submit" name="commit" value="Создать" data-disable-with="Create"
