@@ -1,7 +1,7 @@
 -if question.persisted?
   tr.row class="question_#{question.id}"
-    td.rating class="#{ question.answers.where(best_answer: true).ids.empty? ? '' : 'solved' }" = "#{question.votes_count}"
-    td.question_body
+    td.rating = "#{question.votes_count}"
+    td.index_question_body
       = link_to " #{question.title}", question_path(question)
       .adv_info
         .info_line = "автор: #{current_user&.author_of?(question) ? "это Ваш вопрос" : question.user.email}, проголосовало: #{question.votes.count}, ответов: #{question.answers.count}"
