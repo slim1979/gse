@@ -22,7 +22,7 @@ feature 'Destroy answers attaches', %q(
     expect(page).to have_content answer.body
     expect(page).to have_content answer_attach.file.filename
 
-    within '.delete_answer_attach' do
+    within '.delete_attach' do
       click_on 'delete'
     end
 
