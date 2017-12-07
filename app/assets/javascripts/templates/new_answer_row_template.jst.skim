@@ -1,22 +1,23 @@
-tr class="answer row usual" id="answer_#{@answer.id}"
-  td class="col-sm-2"
-    a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Best answer
-    img alt="Best answer" class="img img-#{@answer.id} " src="/assets/best.png" width="50" height="50" style="display: none;"
-    p
-    div class="vote vote_box"
+tr class="answer row usual answer_#{@answer.id}"
+  td class="col-md-1 answer_vote_box  answer_#{@answer.id}" rowspan="2"
+    div class="vote"
       a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1"
-        div class="glyphicon glyphicon-thumbs-up"
-    div class="vote_box answer_votes_count_#{@answer.id}" #{@answer.votes_count}
-    div class="vote vote_box"
+        div class="glyphicon glyphicon-chevron-up"
+    div class="answer_votes_count_#{@answer.id}" 0
+    div class="vote"
       a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1"
-      	div class="glyphicon glyphicon-thumbs-down"
-    p
-  td
-    div class="answer_body body_of_#{@answer.id}" #{@answer.body}
-    div class="updated_at updated_for_#{@answer.id}" #{@answer.updated_at}
-    ul
+        div class="glyphicon glyphicon glyphicon-chevron-down"
+  td class="col-md-11"
     div id="editing_errors_#{@answer.id}"
-  td class="manage edit_answer"
-    a class="edit-answer-link edit_answer_#{@answer.id}" data-answer-id="#{@answer.id}" href="" Edit answer
-  td class="manage delete_answer"
-    a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}" Delete answer
+    div class="answer_body body_of_#{@answer.id}" #{@answer.body}
+tr class="answer row usual answer_#{@answer.id} advanced_staff"
+  td class="advanced_staff"
+    div class="author float_left" #{@author_email}
+    div class="manage updated_at updated_for#{@answer.id}" изм. #{@datetime}
+    div class="manage delete_answer"
+      a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}" Удалить
+    div class="manage edit_answer"
+      a class="edit-answer-link edit_answer_#{@answer.id}" data-answer-id="#{@answer.id}" href="" Редактировать
+    - if @its_question_author
+      div class="manage best_answer"
+        a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Выбрать лучшим
