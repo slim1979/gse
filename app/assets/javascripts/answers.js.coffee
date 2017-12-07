@@ -31,10 +31,12 @@ edit = ->
     # after editing answer, form is hiding, and the rest is showing
     $('form.edit_answer')
       .bind 'ajax:success', (e, data, status, xhr) ->
-        answer = $.parseJSON(xhr.responseText)
-        $('.edit_form_'+answer.id).remove();
+        response = $.parseJSON(xhr.responseText)
+        answer = response.answer
+        datetime = response.datetime
+        $('.edit_form_'+ answer.id).remove();
         $('.body_of_' + answer.id).html(answer.body).show();
-        $('.updated_for_' + answer.id).html(answer.updated_at).show();
+        $('.updated_for_' + answer.id).html(datetime).show();
         $('.edit_answer_' + answer.id).show();
         # clearing editing errors
         $('#errors_alert').empty().hide();
@@ -50,11 +52,12 @@ edit = ->
 
 ready = ->
   # best answer toggle
-  $('.best').insertBefore('tr:first');
+  $('.best_first').insertBefore('.answers-table>tbody>tr:first')
+  $('.best_second').insertAfter('.best_first');
   $('.now-best').hide();
   $('tr.best').find('.answer_body').css('font-weight','bold');
-  $('.img').hide();
-  $('.thumbs-up').show();
+  # $('.img').hide();
+  $('.green').css('background-color','green');
 
   # answer create form events
   $('form#new_answer')
@@ -63,11 +66,15 @@ ready = ->
       response = $.parseJSON(xhr.responseText)
       # row template appended to page
       answer = response.answer
-      row_template = JST["templates/new_answer_row_template"]({ answer: answer })
+      its_question_author = response.current_user_is_author_of_object
+      author_email = response.author_email
+      datetime = response.datetime
+      attaches = response.attaches
+      row_template = JST["templates/new_answer_row_template"]({ answer: answer, its_question_author: its_question_author, author_email: author_email, datetime: datetime })
       $('.answers-table > tbody:last').append(row_template)
       # attaches added to answer
-      attaches = JST["templates/attaches"]({ attaches: response.attaches })
-      $(attaches).insertAfter('.updated_for_'+response.answer.id)
+      attaches = JST["templates/attaches"]({ attaches: attaches })
+      $(attaches).insertAfter('.body_of_' + response.answer.id)
       # clean up form text after creating answer
       $('.new_answer_body').val('');
       $('input').val('');
@@ -94,10 +101,12 @@ ready = ->
       $('#file_'+attach.id).hide()
 
 destroy_answer = ->
-  $('.delete_answer')
-    .bind 'ajax:success', (e, data, status, xhr) ->
-      response = $.parseJSON(xhr.responseText)
-      $('#answer_' + response.id).remove()
+  $('.exists_answers').on 'click', '.delete_answer', (e) ->
+    e.preventDefault()
+    $('.delete_answer')
+      .bind 'ajax:success', (e, data, status, xhr) ->
+        response = $.parseJSON(xhr.responseText)
+        $('.answer_' + response.id).remove()
 
 $(document).on 'turbolinks:load', () ->
   $(ready)
