@@ -22,44 +22,47 @@ feature 'Choose best answer', %q{
     end
 
     scenario 'sees link to best answer', js: true do
-      expect(page).to have_link 'Best answer'
+      expect(page).to have_link 'Выбрать лучшим'
     end
 
     scenario 'choosed the best answer', js: true do
-      within "#answer_#{answer3.id}" do
-        click_on 'Best answer'
+      within ".answer_#{answer3.id}>.advanced_staff" do
+        click_on 'Выбрать лучшим'
       end
       within '.answer:first-child' do
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer2.body
         expect(page).to have_content answer3.body
-        expect(page).to have_css '.thumbs-up'
-        expect(page).to_not have_link 'Best answer'
+        expect(page).to have_css '.img'
+        expect(page).to_not have_link 'Выбрать лучшим'
       end
       # answers = all('.answer')
       # expect(answers.first).to ....
     end
 
     scenario 'choosed another best answer', js: true do
-      within "#answer_#{answer3.id}" do
-        click_on 'Best answer'
+      within ".answer_#{answer3.id}>.advanced_staff" do
+        click_on 'Выбрать лучшим'
       end
 
-      within "#answer_#{answer2.id}" do
-        click_on 'Best answer'
+      within ".answer_#{answer2.id}>.advanced_staff" do
+        click_on 'Выбрать лучшим'
       end
 
       within '.answer:first-child' do
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer3.body
         expect(page).to have_content answer2.body
-        expect(page).to have_css '.thumbs-up'
-        expect(page).to_not have_link 'Best answer'
+        expect(page).to have_css '.img'
+        expect(page).to_not have_link 'Выбрать лучшим'
       end
 
-      within "#answer_#{answer3.id}" do
+      within ".body_of_#{answer3.id}" do
         expect(page).to have_content answer3.body
-        expect(page).to have_link 'Best answer'
+      end
+
+      within ".answer_#{answer3.id}>.advanced_staff" do
+        expect(page).to have_link 'Выбрать лучшим'
       end
     end
   end
@@ -67,11 +70,11 @@ feature 'Choose best answer', %q{
   scenario 'Other question author tries to choose best answer', js: true do
     sign_in user2
     visit question_path(question)
-    expect(page).to_not have_link 'Best answer'
+    expect(page).to_not have_link 'Выбрать лучшим'
   end
 
   scenario 'Unathenticated user does not sees link to best answer', js: true do
     visit question_path(question)
-    expect(page).to_not have_link 'Best answer'
+    expect(page).to_not have_link 'Выбрать лучшим'
   end
 end
