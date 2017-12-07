@@ -36,7 +36,7 @@ edit = ->
         datetime = response.datetime
         $('.edit_form_'+ answer.id).remove();
         $('.body_of_' + answer.id).html(answer.body).show();
-        $('.updated_for_' + answer.id).html(datetime).show();
+        $('.updated_for_' + answer.id).html("изм. " + datetime).show();
         $('.edit_answer_' + answer.id).show();
         # clearing editing errors
         $('#errors_alert').empty().hide();
@@ -107,8 +107,14 @@ destroy_answer = ->
       .bind 'ajax:success', (e, data, status, xhr) ->
         response = $.parseJSON(xhr.responseText)
         $('.answer_' + response.id).remove()
+      .bind 'ajax:error', (e, xhr, status, error) ->
+        $('.alert').remove()
+        response = $.parseJSON(xhr.responseText)
+        error = JST['templates/authentication_error'] ({ error: response.alert })
+        # $(error).insertBefore('.question')
+        $('.exists_answers').prepend(error)
 
 $(document).on 'turbolinks:load', () ->
-  $(ready)
-  $(edit)
-  $(destroy_answer)
+  ready()
+  edit()
+  destroy_answer()
