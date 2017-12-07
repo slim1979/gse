@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
 
-    render json: @answer.as_json unless @answer.errors.present?
+    render json: { answer: @answer, datetime: @answer.updated_at.localtime.strftime("%d/%m/%Y, %H:%M") } unless @answer.errors.present?
     render partial: 'answers/errors', status: 422 if @answer.errors.present?
   end
 
