@@ -2,6 +2,44 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+new_question = ->
+  $('.ask_question').on 'click', (e) ->
+    e.preventDefault()
+    $(this).hide()
+    # old errors messages removed
+    $('#errors_alert').remove()
+    #new question template assign
+    new_question_form = JST["templates/new_question_form"]({})
+    $(new_question_form).insertAfter('.new_question_form')
+    $('form.new_question').on 'click', '.create_question', (e) ->
+      $('form.new_question')
+      .bind 'ajax:success', (e, data, status, xhr) ->
+        $('#errors_alert').remove()
+        question = $.parseJSON(xhr.responseText)
+        new_question = JST["templates/new_question_template"] ({ question: question })
+        $('.exists_questions>tbody:last').append(new_question)
+        # form hidding
+        $('.new_question').remove()
+        #link to new question form showed
+        $('.ask_question').show()
+
+      .bind 'ajax:error', (e, xhr, status, error) ->
+        $('#errors_alert').remove()
+        response = $.parseJSON(xhr.responseText)
+        if response.title && response.errors
+          errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+        else
+          errors = JST["templates/authentication_error"]({ error: response.error })
+        $(errors).insertAfter('.new_question_form')
+
+    # 'cancel creating question' button actions
+    $('.cancel_create_question').click (cancel) ->
+      cancel.preventDefault()
+      $('#errors_alert').remove()
+      $('.new_question').remove()
+      $('.ask_question').show()
+
+
 stady = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault()
@@ -9,35 +47,6 @@ stady = ->
     $('.question').hide()
     $('.edit_question_form').show()
 
-new_question = ->
-  $('html').on 'click', '.ask_question', (e) ->
-    e.preventDefault()
-    $('.new_question').remove()
-    $(this).hide()
-    new_question_form = JST["templates/new_question_form"]({})
-    $(new_question_form).insertBefore('.exists_questions')
-    $('form.new_question').on 'click', '.create_question', (e) ->
-      $('form.new_question')
-        .bind 'ajax:success', (e, data, status, xhr) ->
-          $('#errors_alert').remove()
-          question = $.parseJSON(xhr.responseText)
-          new_question = JST["templates/new_question_template"] ({ question: question })
-          $(new_question).insertAfter('.exists_questions>tbody>tr:last')
-          # form hidding
-          $('.new_question').remove()
-          #link to new question form showed
-          $('.ask_question').show()
-
-        .bind 'ajax:error', (e, xhr, status, error) ->
-          $('#errors_alert').remove()
-          response = $.parseJSON(xhr.responseText)
-          errors = JST["templates/errors"]({ title: response.title, resourse_id: response.resource.id, errors: response.errors })
-          $(errors).insertBefore('form.new_question')
-    # 'cancel creating question' button actions
-    $('.cancel_create_question').click (cancel) ->
-      cancel.preventDefault()
-      $('.new_question').remove()
-      $('.ask_question').show()
 
 delete_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
@@ -52,6 +61,6 @@ delete_question = ->
         $(errors).insertBefore('.exists_questions')
 
 $(document).on 'turbolinks:load', () ->
-  $(stady)
-  $(new_question)
-  $(delete_question)
+  new_question();
+  stady();
+  delete_question();
