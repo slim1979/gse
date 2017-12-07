@@ -25,9 +25,13 @@ feature 'Delete answer', %q{
 
       expect(page).to_not have_content answer.body
     end
-    scenario 're-render question show template' do
-      click_on 'Удалить'
+    scenario 're-render question show template', js: true do
+      within '.advanced_staff>.delete_answer' do
+        click_on 'Удалить'
+      end
 
+      expect(page).to have_content question.title
+      expect(page).to have_content question.body
       expect(current_path).to eq question_path(question)
     end
   end
