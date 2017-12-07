@@ -8,39 +8,47 @@ feature 'Create question', %q(
 
   given(:user) { create(:user) }
 
-  scenario 'Authenticated user created the question' do
+  scenario 'Authenticated user created the question', js: true do
 
     sign_in(user)
 
     visit questions_path
-    click_on 'Ask question'
-    fill_in 'Заголовок', with: 'Test question'
-    fill_in 'Содержание', with: 'text text'
-    click_on 'Create'
+    click_on 'Задать вопрос'
+    within 'form' do
+      fill_in 'Заголовок', with: 'Test question'
+      fill_in 'Содержание', with: 'text text'
+    end
+
+    click_on 'Создать'
+    wait_for_ajax
 
     expect(page).to have_content 'Test question'
-    expect(page).to have_content 'Your question created successfully!'
   end
 
-  scenario 'Authenticated user created invalid question' do
+  scenario 'Authenticated user created invalid question', js: true do
 
     sign_in(user)
 
     visit questions_path
-    click_on 'Ask question'
+    click_on 'Задать вопрос'
     fill_in 'Заголовок', with: nil
     fill_in 'Содержание', with: nil
-    click_on 'Create'
+    click_on 'Создать'
 
     expect(page).to have_content 'При заполнении формы возникли ошибки:'
     expect(page).to have_content 'Заголовок не может быть пустым'
     expect(page).to have_content 'Содержание не может быть пустым'
   end
 
-  scenario 'Unauthenticated user created the question' do
+  scenario 'Unauthenticated user created the question', js: true do
 
     visit questions_path
-    click_on 'Ask question'
+    click_on 'Задать вопрос'
+    within 'form' do
+      fill_in 'Заголовок', with: 'Test question'
+      fill_in 'Содержание', with: 'text text'
+    end
+    click_on 'Создать'
 
     expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
   end

@@ -1,4 +1,4 @@
-form class="form form-horizontal new_question" id="new_question" enctype="multipart/form-data" action="/questions" accept-charset="UTF-8" data-remote="true" method="post" style="display: block;"
+form class="form form-horizontal new_question" id="new_question" enctype="multipart/form-data" data-type="json" action="/questions" accept-charset="UTF-8" data-remote="true" method="post" style="display: block;"
   input name="utf8" type="hidden" value="✓"
   table
     tbody
@@ -24,4 +24,4 @@ form class="form form-horizontal new_question" id="new_question" enctype="multip
           input.btn.btn-md.btn-success type="submit" name="commit" value="Создать" data-disable-with="Create"
         td.col-md-2 class="cancel_create_question"
           a.btn.btn-md.btn-link href="/questions" Отмена
-    div id="attaches_fields_blueprint" style="display: none" data-blueprint="<div class=&quot;fields&quot;><label for=&quot;question_attaches_attributes_new_attaches_file&quot;>File</label><input type=&quot;file&quot; name=&quot;question[attaches_attributes][new_attaches][file]&quot; id=&quot;question_attaches_attributes_new_attaches_file&quot; /><input type=&quot;hidden&quot; value=&quot;false&quot; name=&quot;question[attaches_attributes][new_attaches][_destroy]&quot; id=&quot;question_attaches_attributes_new_attaches__destroy&quot; /><a class=&quot;remove_nested_fields&quot; data-association=&quot;attaches&quot; href=&quot;javascript:void(0)&quot;>Remove this file</a></div>">
+    div id="attaches_fields_blueprint" style="display: none" data-blueprint="<div class=fields><label for=question_attaches_attributes_new_attaches_file>File</label><input type=file name=question[attaches_attributes][new_attaches][file] id=question_attaches_attributes_new_attaches_file /><input type=hidden value=false name=question[attaches_attributes][new_attaches][_destroy] id=question_attaches_attributes_new_attaches__destroy /><a class=remove_nested_fields data-association=attaches href=javascript:void(0)>Remove this file</a></div>">

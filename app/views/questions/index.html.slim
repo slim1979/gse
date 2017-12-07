@@ -1,4 +1,5 @@
 p.ask_question = link_to 'Задать вопрос'
+.new_question_form
 table.table.table-hover.exists_questions
   tbody
     = render @questions.order('votes_count DESC')
