@@ -52,12 +52,9 @@ edit = ->
 
 ready = ->
   # best answer toggle
-  $('.best_first').insertBefore('.answers-table>tbody>tr:first')
-  $('.best_second').insertAfter('.best_first');
+  $('.best').insertBefore('.exists_answers>div:first')
   $('.now-best').hide();
-  $('tr.best').find('.answer_body').css('font-weight','bold');
-  # $('.img').hide();
-  $('.green').css('background-color','green');
+  $('.best').find('.answer_body').css('font-weight','bold');
 
   # answer create form events
   $('form#new_answer')
@@ -71,7 +68,7 @@ ready = ->
       datetime = response.datetime
       attaches = response.attaches
       row_template = JST["templates/new_answer_row_template"]({ answer: answer, its_question_author: its_question_author, author_email: author_email, datetime: datetime })
-      $('.answers-table > tbody:last').append(row_template)
+      $(row_template).insertAfter('.exists_answers>div:last')
       # attaches added to answer
       attaches = JST["templates/attaches"]({ attaches: attaches })
       $(attaches).insertAfter('.body_of_' + response.answer.id)
