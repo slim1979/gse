@@ -1,9 +1,9 @@
 -if answer.persisted?
   .answer class="#{answer.best_answer ? 'best' : 'usual'} answer_#{answer.id}"
     .answer_vote_box class="#{answer.best_answer ? 'img' : ''}"
-      .vote = link_to "<div class='glyphicon glyphicon-chevron-up'></div>".html_safe, answer_votes_path( answer, votes_value: 1 ), remote: true, method: :post if current_user
+      .vote = link_to "<div class='glyphicon glyphicon-chevron-up'></div>".html_safe, answer_votes_path( answer, votes_value: 1 ), class: 'like', remote: true, method: :post if current_user
       div class="answer_votes_count_#{answer.id}"  = answer.votes_count
-      .vote = link_to "<div class='glyphicon glyphicon glyphicon-chevron-down'></div>".html_safe, answer_votes_path( answer, votes_value: -1 ), remote: true, method: :post if current_user
+      .vote = link_to "<div class='glyphicon glyphicon glyphicon-chevron-down'></div>".html_safe, answer_votes_path( answer, votes_value: -1 ), class: 'dislike' , remote: true, method: :post if current_user
     .main
       div id="editing_errors_#{answer.id}"
       .answer_body class="body_of_#{answer.id}" =answer.body
