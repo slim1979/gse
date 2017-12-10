@@ -1,11 +1,11 @@
 div class="answer usual answer_#{@answer.id}"
   div class="answer_vote_box"
     div class="vote"
-      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1"
+      a class="like" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=1"
         div class="glyphicon glyphicon-chevron-up"
     div class="answer_votes_count_#{@answer.id}" 0
     div class="vote"
-      a data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1"
+      a class="dislike" data-remote="true" rel="nofollow" data-method="post" href="/answers/#{@answer.id}/votes?votes_value=-1"
         div class="glyphicon glyphicon glyphicon-chevron-down"
   div class="main"
     div id="editing_errors_#{@answer.id}"
