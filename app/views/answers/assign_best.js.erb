@@ -5,8 +5,7 @@
   $('.answer_body').css('font-weight','normal');
 
   $('#best-answer-link-<%= @answer.id %>').addClass('now-best').hide();
-  $('.answer_<%= @answer.id %>').removeClass("usual").addClass("best").insertBefore('tr:first');
+  $('.answer_<%= @answer.id %>').removeClass("usual").addClass("best").insertBefore('.exists_answers>div:first');
   $('.body_of_<%= @answer.id %>').css('font-weight','bold');
   $('.answer_<%= @answer.id %> > .answer_vote_box').addClass("img");
-  $('.img').show();
 <% end %>
