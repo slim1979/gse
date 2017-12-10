@@ -1,10 +1,10 @@
 -if answer.persisted?
-  tr.answer.answer_main class="row #{answer.best_answer ? 'best best_first' : 'usual'} answer_#{answer.id}"
-    td.col-md-1.answer_vote_box class="#{answer.best_answer ? 'img' : ''}" rowspan='2'
+  .answer class="#{answer.best_answer ? 'best' : 'usual'} answer_#{answer.id}"
+    .answer_vote_box class="#{answer.best_answer ? 'img' : ''}"
       .vote = link_to "<div class='glyphicon glyphicon-chevron-up'></div>".html_safe, answer_votes_path( answer, votes_value: 1 ), remote: true, method: :post if current_user
       div class="answer_votes_count_#{answer.id}"  = answer.votes_count
       .vote = link_to "<div class='glyphicon glyphicon glyphicon-chevron-down'></div>".html_safe, answer_votes_path( answer, votes_value: -1 ), remote: true, method: :post if current_user
-    td.col-md-11
+    .main
       div id="editing_errors_#{answer.id}"
       .answer_body class="body_of_#{answer.id}" =answer.body
       ul
@@ -13,8 +13,7 @@
             .link_to_file =link_to attach.file.identifier, attach.file.url, target: '_blank'
             - if current_user&.author_of?(answer)
               .delete_attach =link_to '  delete', attach_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
-  tr.answer.row.advanced_staff class="#{answer.best_answer ? 'best best_second' : 'usual'} answer_#{answer.id}"
-    td.advanced_staff
+    .advanced_staff
       .author.float_left = "#{answer.user.email}"
       .manage.updated_at class="updated_for_#{answer.id}"  ="изм. #{answer.updated_at.localtime.strftime("%d/%m/%Y, %H:%M")}"
       -if current_user&.author_of?(answer)
