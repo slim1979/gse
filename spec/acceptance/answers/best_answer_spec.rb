@@ -29,7 +29,8 @@ feature 'Choose best answer', %q{
       within ".answer_#{answer3.id}>.advanced_staff" do
         click_on 'Выбрать лучшим'
       end
-      within '.answer:first-child' do
+      wait_for_ajax
+      within '.exists_answers>div:first-child' do
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer2.body
         expect(page).to have_content answer3.body
@@ -49,7 +50,7 @@ feature 'Choose best answer', %q{
         click_on 'Выбрать лучшим'
       end
 
-      within '.answer:first-child' do
+      within '.exists_answers>div:first-child' do
         expect(page).to_not have_content answer1.body
         expect(page).to_not have_content answer3.body
         expect(page).to have_content answer2.body
