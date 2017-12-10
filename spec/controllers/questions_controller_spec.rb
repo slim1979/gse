@@ -8,11 +8,20 @@ RSpec.describe QuestionsController, type: :controller do
   let(:questions) { create_list(:question, 2, user: @user) }
   let(:answer) { create(:answer, question: question, user: @user) }
   let(:attach) { create(:attach, attachable: question) }
+  let(:response_is_equal_with_assigns_question) {
+    parsed_body = JSON.parse(response.body)
+    question_as_json = assigns(:question).as_json
+    parsed_body['created_at'] = parsed_body['created_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
+    parsed_body['updated_at'] = parsed_body['updated_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
+    question_as_json['created_at'] = question_as_json['created_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
+    question_as_json['updated_at'] = question_as_json['updated_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
+    expect(parsed_body).to eq question_as_json
+  }
 
   sign_in_user
 
   describe 'GET #index' do
-    before { get :index }
+    before { get :index, format: :js }
     it 'populates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
     end
@@ -22,7 +31,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, params: { id: question } }
+    before { get :show, params: { id: question }, format: :js }
 
     it 'assign request question to @question' do
       expect(assigns(:question)).to eq question
@@ -36,7 +45,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-    before { get :new }
+    before { get :new, format: :js }
 
     it 'assigns new Question to a @question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -44,14 +53,11 @@ RSpec.describe QuestionsController, type: :controller do
     it 'build new attachment to question' do
       expect(assigns(:question).attaches.first).to be_a_new(Attach)
     end
-    it 'renders template new' do
-      expect(response).to render_template :new
-    end
   end
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) } }
-    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) } }
+    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) }, format: :json }
+    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) }, format: :json }
 
     context 'with valid attributes' do
       it 'saves new question to DB' do
@@ -59,9 +65,9 @@ RSpec.describe QuestionsController, type: :controller do
         # which is create a question object
         expect { valid_post_create }.to change(Question, :count).by(1)
       end
-      it 'redirect to show' do
+      it 'will render question as json' do
         valid_post_create
-        expect(response).to redirect_to question_path(assigns(:question))
+        response_is_equal_with_assigns_question
       end
     end
 
@@ -71,7 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 're-renders new template' do
         invalid_post_create
-        expect(response).to render_template :new
+        expect(response).to render_template :_errors
       end
     end
   end
@@ -141,7 +147,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'redirect to index view' do
         delete :destroy, params: { id: question}
-        expect(response).to redirect_to questions_path
+        response_is_equal_with_assigns_question
       end
     end
 
@@ -155,7 +161,8 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to index view' do
         sign_in user2
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response.status).to eq 422
+        expect(response.body).to have_content 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.'
       end
     end
   end
