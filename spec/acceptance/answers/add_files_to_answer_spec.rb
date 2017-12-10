@@ -9,14 +9,13 @@ feature 'Add files to answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  background do
+  before do
     sign_in user
     visit question_path(question)
   end
 
   scenario 'User adds files when asked question', js: true do
     fill_in 'Содержание', with: 'text text'
-
     3.times do
       click_on 'Add an attach'
     end
@@ -27,7 +26,8 @@ feature 'Add files to answer', %q{
     inputs[3].set("#{Rails.root}/spec/acceptance/questions/questions_list_spec.rb")
 
     click_on 'Answer the question'
-    within '.answer_main' do
+    wait_for_ajax
+    within '.main' do
       expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
       expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
       expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'
