@@ -17,28 +17,28 @@ feature 'Several users votes for the answer', %q{
   scenario 'The multi-user voting pressuresa in the ranking of answer', js: true do
     sign_in author_of_question
     visit question_path(question)
-    within "#answer_#{answer.id}" do
+    within ".answer_#{answer.id}" do
       click_on 'like'
     end
     sign_out
 
     sign_in some_other_user
     visit question_path(question)
-    within "#answer_#{answer.id}" do
+    within ".answer_#{answer.id}" do
       click_on 'like'
     end
     sign_out
 
     sign_in some_other_user2
     visit question_path(question)
-    within "#answer_#{answer.id}" do
+    within ".answer_#{answer.id}" do
       click_on 'like'
     end
     sign_out
 
     sign_in some_other_user3
     visit question_path(question)
-    within "#answer_#{answer.id}" do
+    within ".answer_#{answer.id}" do
       click_on 'dislike'
     end
     sign_out
