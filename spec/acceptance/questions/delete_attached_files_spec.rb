@@ -20,7 +20,7 @@ feature 'Destroy questions attaches', %q(
     expect(page).to have_content question.body
     expect(page).to have_content attach.file.filename
 
-    within '.delete_question_attach' do
+    within '.delete_attach' do
       click_on 'delete'
     end
 
