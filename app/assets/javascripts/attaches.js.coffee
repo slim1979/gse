@@ -7,7 +7,6 @@ delete_attach = ->
     $('body')
       .bind 'ajax:success', (e, data, status, xhr) ->
         response = $.parseJSON(xhr.responseText)
-        console.log response
         $('#file_' + response.id).remove()
 
 $(document).on 'turbolinks:load', ->
