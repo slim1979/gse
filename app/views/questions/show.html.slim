@@ -3,9 +3,9 @@
   .question_author = "Автор: #{@question.user.email}"
   hr
   .question_vote_box
-    .vote = link_to "<div class='glyphicon glyphicon-chevron-up'></div>".html_safe, question_votes_path(@question, votes_value: 1 ), class: 'like', remote: true, method: :post if current_user
+    .vote = link_to 'like', question_votes_path(@question, votes_value: 1 ), class: 'like', remote: true, method: :post if current_user
     .question_votes_count class="question_votes_count_#{@question.id}"  = @question.votes_count
-    .vote =link_to "<div class='glyphicon glyphicon-chevron-down'></div>".html_safe, question_votes_path(@question, votes_value: -1 ), class: 'dislike', remote: true, method: :post if current_user
+    .vote =link_to 'dislike', question_votes_path(@question, votes_value: -1 ), class: 'dislike', remote: true, method: :post if current_user
   .question_body  =@question.body
   br
   - if current_user&.author_of?(@question)
