@@ -8,13 +8,15 @@ class QuestionsController < ApplicationController
   end
 
   def index
+    @question = Question.new
+    @question.attaches.new
     @questions = Question.all
   end
 
   def create
     @question = current_user.questions.new(question_params)
 
-    render json: @question if @question.save
+    render json: @question, status: 200 if @question.save
     render partial: 'questions/errors', status: 422 if @question.errors.present?
   end
 
