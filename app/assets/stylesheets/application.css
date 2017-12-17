@@ -18,6 +18,27 @@
  /*@import 'bootstrap';*/
  /*@import 'bootstrap-sprockets';*/
 
+ .float_left{
+   float: left;
+ }
+ .padding_left_5px{
+   padding-left: 5px;
+ }
+ .padding_left_10px{
+   padding-left: 10px;
+ }
+ .padding_left_15px{
+   padding-left: 15px;
+ }
+ .margin_left_5px{
+   margin-left: 5px;
+ }
+ .margin_left_10px{
+   margin-left: 10px;
+ }
+ .margin_left_15px{
+   margin-left: 15px;
+ }
 
 .edit_form {
   display: none;
