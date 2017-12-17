@@ -9,10 +9,10 @@ edit = ->
     e.preventDefault()
 
     # catching current fired edit form answer id
-    if $('.edit_answer').data('id')
-      previous_answer_id = $('.edit_answer').data('id')
+    if $('form.edit_answer').data('id')
+      previous_answer_id = $('form.edit_answer').data('id')
     # all visible forms are hidden to prevent errors
-    $('.edit_form_' + previous_answer_id).remove()
+    $('.edit_form').remove()
     # links to edit forms, body and update time on previous
     # answer are visible
     $('.edit-answer-link').show()
