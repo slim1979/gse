@@ -1,7 +1,6 @@
-p =f.link_to_add "Add an attach", :attaches, data: { target: '.attaches'}
-p Вложения:
+p =f.link_to_add "Прикрепить файлы", :attaches, data: { target: '.attaches'}
 .attaches
   = f.fields_for :attaches, remote: true do |a|
     =a.label :file
     =a.file_field :file
-    =a.link_to_remove "Remove this file"
+    =a.link_to_remove "Удалить файл"
