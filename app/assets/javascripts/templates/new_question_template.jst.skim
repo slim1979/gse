@@ -5,6 +5,6 @@ tr class="row question_#{@question.id}"
     div class="adv_info"
       div class="info_line" автор: это Ваш вопрос, проголосовало: 0, ответов: 0
       div class="manage favorites"
-        a rel="nofollow" href="" add to favorites
+        a rel="nofollow" href="" в избранное
       div class="manage delete_question"
-        a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" delete question
+        a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" удалить
