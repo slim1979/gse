@@ -1,17 +1,20 @@
-p.ask_question = link_to 'Задать вопрос'
+div = link_to 'Задать вопрос','', class: "ask_question"
 .new_question_form
-= nested_form_for @question, remote: true do |f|
-    p
-      = f.label :title
-      = f.text_field :title
-    p
-      = f.label :body
-      = f.text_area :body
-    p
-      = render 'common/attaches', f: f
-    = f.submit 'Создать', class: 'create_question btn btn-success'
-    = f.submit 'Сбросить', type: 'reset', class: 'clear_form btn btn-default margin_left_5px'
-    a.btn.btn-link.cancel Отменить
+= nested_form_for @question, remote: true, data: { type: :json } do |f|
+  p
+    = f.label :title
+    = f.text_field :title, class: 'form-control'
+  p
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+  p
+    =f.link_to_add "Прикрепить файлы", :attaches, data: { target: '.attaches'}
+    .attaches
+    = render 'common/attaches', f: f
+  = f.submit 'Создать', class: 'create_question btn btn-success'
+  = f.submit 'Сбросить', type: 'reset', class: 'clear_form btn btn-default margin_left_5px'
+  a.btn.btn-link.cancel Отменить
+
 table.table.table-hover.exists_questions
   tbody
     = render @questions.order('votes_count DESC')
