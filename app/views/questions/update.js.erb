@@ -5,5 +5,6 @@
   $('.question_errors').hide();
   $('.question').show();
   $('.edit_question_link').show();
-  $('.question').html(' <%= render @question %>');
+  $('.question_title').html('<%= @question.title %>');
+  $('.question_body').html('<%= @question.body %>');
 <% end %>
