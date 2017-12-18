@@ -20,7 +20,7 @@ creating_question = =>
           $('.exists_questions>tbody:last').append(new_question)
           # form hidding
           $('form#new_question')[0].reset()
-          $('.new_question').hide()
+          $('.new_question').off().hide()
           #link to new question form showed
           $('.ask_question').show()
 
@@ -45,7 +45,7 @@ stady = ->
     e.preventDefault()
     $(this).hide()
     $('.question').hide()
-    $('.edit_question_form').show()
+    $('.edit_question_form').show().insertBefore('.exists_answers')
 
 delete_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
