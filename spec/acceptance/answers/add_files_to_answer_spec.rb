@@ -17,7 +17,7 @@ feature 'Add files to answer', %q{
   scenario 'User adds files when asked question', js: true do
     fill_in 'Содержание', with: 'text text'
     3.times do
-      click_on 'Add an attach'
+      click_on 'Прикрепить файлы'
     end
     inputs = all('input[type="file"]')
     inputs[0].set("#{Rails.root}/spec/acceptance/questions/create_question_spec.rb")

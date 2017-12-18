@@ -25,12 +25,9 @@ feature 'Edit question', %q(
     scenario 'tries to edit his question', js: true do
 
       click_on 'Edit question'
-
-      within '.edit_question_form' do
-        fill_in 'Title', with: 'New title'
-        fill_in 'Body', with: 'New body'
-        click_on 'Save'
-      end
+      fill_in 'Title', with: 'New title'
+      fill_in 'Body', with: 'New body'
+      click_on 'Save'
 
       expect(page).to_not have_content question.title
       expect(page).to_not have_content question.body
