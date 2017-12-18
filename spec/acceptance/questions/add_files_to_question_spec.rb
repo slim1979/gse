@@ -20,7 +20,7 @@ feature 'Add files to question', %q{
     fill_in 'Заголовок', with: 'Question title'
     fill_in 'Содержание', with: 'Question text'
 
-    4.times do
+    3.times do
       click_on 'Прикрепить файлы'
     end
 
