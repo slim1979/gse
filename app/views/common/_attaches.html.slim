@@ -1,5 +1,3 @@
-p =f.link_to_add "Прикрепить файлы", :attaches, data: { target: '.attaches'}
-.attaches
   = f.fields_for :attaches, remote: true do |a|
     =a.label :file
     =a.file_field :file
