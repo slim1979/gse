@@ -11,9 +11,9 @@ div = link_to 'Задать вопрос','', class: "ask_question"
     =f.link_to_add "Прикрепить файлы", :attaches, data: { target: '.attaches'}
     .attaches
     = render 'common/attaches', f: f
-  = f.submit 'Создать', class: 'create_question btn btn-success'
-  = f.submit 'Сбросить', type: 'reset', class: 'clear_form btn btn-default margin_left_5px'
-  a.btn.btn-link.cancel Отменить
+  = f.submit 'Создать', title: "Создать вопрос", class: 'create_question btn btn-success'
+  = f.submit 'Сбросить', type: 'reset', title: "Сбросить к начальному состоянию", class: 'clear_form btn btn-default margin_left_5px'
+  a.btn.btn-link.cancel title="Отменить создание вопроса" Отменить
 
 table.table.table-hover.exists_questions
   tbody
