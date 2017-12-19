@@ -27,6 +27,12 @@ class QuestionsController < ApplicationController
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
+
+    if @question.errors.any?
+      render partial: 'questions/errors', status: 422
+    else
+      render json: @question
+    end
   end
 
   def destroy
