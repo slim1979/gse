@@ -44,8 +44,29 @@ stady = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault()
     $(this).hide()
-    $('.question').hide()
+    $('.question_attributes').hide()
     $('.edit_question_form').show().insertBefore('.exists_answers')
+
+    $('.edit_question_form')
+      .bind 'ajax:success', (e, data, status, xhr) ->
+        $('#errors_alert').remove()
+        question = $.parseJSON(xhr.responseText)
+        $('.edit_question_form').hide()
+        $('.question_errors').hide()
+        $('.question_attributes').show()
+        $('.edit_question_link').show()
+        $('.question_title').html(question.title)
+        $('.question_body').html(question.body)
+
+      .bind 'ajax:error', (e, xhr, status, error) ->
+        $('#errors_alert').remove()
+        response = $.parseJSON(xhr.responseText)
+        if response.title && response.errors
+          errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+        else
+          errors = JST["templates/authentication_error"]({ error: response.error })
+        $(errors).insertBefore('.edit_question_form')
+
 
 delete_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
