@@ -12,11 +12,12 @@ div class="answer usual answer_#{@answer.id}"
     div class="answer_body body_of_#{@answer.id}" #{@answer.body}
     ul
   div class="advanced_staff"
-    div class="author float_left" #{@author_email}
+    div class="author float_left" #{@author.email}
     div class="manage updated_at updated_for_#{@answer.id}" изм. #{@datetime}
-    div class="manage delete_answer"
-      a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}" Удалить
-    div class="manage edit_answer"
-      a class="edit-answer-link edit_answer_#{@answer.id}" data-answer-id="#{@answer.id}" href="" Редактировать
-    div class="manage best_answer"
-      a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Выбрать лучшим
+    - if gon.author_id == @author.id
+      div class="manage delete_answer"
+        a data-confirm="Are you sure?" data-remote="true" rel="nofollow" data-method="delete" href="/answers/#{@answer.id}" Удалить
+      div class="manage edit_answer"
+        a class="edit-answer-link edit_answer_#{@answer.id}" data-answer-id="#{@answer.id}" href="" Редактировать
+      div class="manage best_answer"
+        a class="best-answer-link " id="best-answer-link-#{@answer.id}" data-remote="true" rel="nofollow" data-method="patch" href="/answers/#{@answer.id}/assign_best" Выбрать лучшим
