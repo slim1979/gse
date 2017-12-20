@@ -10,10 +10,25 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
 
+  after_create :publish_answer
+
   def best_answer_switch
     transaction do
       question.answers.where(best_answer: true).update_all(best_answer: false)
       update!(best_answer: true)
     end
+  end
+
+  private
+
+  def publish_answer
+    return if errors.any?
+    ActionCable.server.broadcast(
+      'answers',
+      ApplicationController.render(
+        partial: 'answers/new_answer',
+        locals: { answer: self }
+      )
+    )
   end
 end
