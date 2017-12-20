@@ -1,17 +1,13 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_question, only: :create
+  before_action :set_question, :gon_user, only: :create
   before_action :set_answer, except: %i[create attach]
 
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-
-    if @answer.save
-      render partial: 'answers/new_answer'
-    else
-      render partial: 'answers/errors', status: 422
-    end
+    render json: { status: 200 } if @answer.save
+    render partial: 'answers/errors', status: 422 if @answer.errors.any?
   end
 
   def update
@@ -50,5 +46,9 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attaches_attributes: %i[id file _destroy])
+  end
+
+  def gon_user
+    gon.author_id = current_user if current_user
   end
 end
