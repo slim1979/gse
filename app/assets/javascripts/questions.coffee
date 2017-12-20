@@ -1,8 +1,25 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
-creating_question = =>
+$ ->
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      console.log 'Подключено'
+      @perform 'follow'
+    ,
+    received: (data) ->
+      $('#errors_alert').remove()
+      response = $.parseJSON(data)
+      if response.publish
+        question = response.publish.question
+        author = response.publish.author
+        new_question = JST["templates/new_question_template"] ({ question: question, author: author})
+        $('.exists_questions>tbody:last').append(new_question)
+      else if response.destroy
+        question_id = response.destroy.question.id
+        $('.question_' + question_id).remove()
+  })
+creating_question = ->
   $('.ask_question').on 'click', (e) ->
     e.preventDefault()
     $(this).hide()
@@ -15,9 +32,6 @@ creating_question = =>
       $('form#new_question')
         .bind 'ajax:success', (e, data, status, xhr) ->
           $('#errors_alert').remove()
-          question = $.parseJSON(xhr.responseText)
-          new_question = JST["templates/new_question_template"] ({ question: question })
-          $('.exists_questions>tbody:last').append(new_question)
           # form hidding
           $('form#new_question')[0].reset()
           $('.new_question').off().hide()
@@ -44,6 +58,7 @@ stady = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault()
     $(this).hide()
+    console.log 'eidt'
     $('.question_attributes').hide()
     $('.edit_question_form').show().insertBefore('.exists_answers')
 
@@ -67,14 +82,9 @@ stady = ->
           errors = JST["templates/authentication_error"]({ error: response.error })
         $(errors).insertBefore('.edit_question_form')
 
-
 delete_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
     $('.exists_questions')
-      .bind 'ajax:success', (e, data, status, xhr) ->
-        question = $.parseJSON(xhr.responseText)
-        $('.question_' + question.id).remove()
-
       .bind 'ajax:error', (e, xhr, status, error) ->
         response = $.parseJSON(xhr.responseText)
         errors = JST["templates/permission_errors"]({ alert: response.alert })
