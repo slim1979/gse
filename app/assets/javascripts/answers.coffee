@@ -2,6 +2,25 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 # edit answer form created dynamically
+$ ->
+  App.cable.subscriptions.create('AnswersChannel', {
+    connected: ->
+      console.log 'Подключено к AnswersChannel'
+      @perform 'follow'
+      ,
+    received: (data) ->
+      response = $.parseJSON(data)
+      if response.publish
+        answer = response.publish.answer
+        author = response.publish.author
+        datetime = response.publish.datetime
+        attaches = response.publish.attaches
+        row_template = JST["templates/new_answer_row_template"]({ answer: answer, author: author, datetime: datetime })
+        $(row_template).insertAfter('.exists_answers>div:last')
+        # attaches added to answer
+        attaches = JST["templates/attaches"]({ attaches: attaches })
+        $(attaches).insertAfter('.body_of_' + answer.id)
+    })
 edit = ->
   # edit answer form created dynamically
   # $('.edit-answer-link').click (e) ->
@@ -60,21 +79,9 @@ ready = ->
   $('form#new_answer')
     # ajax success when valid answer created
     .bind 'ajax:success', (e, data, status, xhr) ->
-      response = $.parseJSON(xhr.responseText)
       # row template appended to page
-      answer = response.answer
-      its_question_author = response.current_user_is_author_of_object
-      author_email = response.author_email
-      datetime = response.datetime
-      attaches = response.attaches
-      row_template = JST["templates/new_answer_row_template"]({ answer: answer, its_question_author: its_question_author, author_email: author_email, datetime: datetime })
-      $(row_template).insertAfter('.exists_answers>div:last')
-      # attaches added to answer
-      attaches = JST["templates/attaches"]({ attaches: attaches })
-      $(attaches).insertAfter('.body_of_' + response.answer.id)
       # clean up form text after creating answer
-      $('.new_answer_body').val('');
-      $('input').val('');
+      $('form#new_answer')[0].reset()
       # delete all loader files and create one
       $('.remove_nested_fields').click();
       $('.add_nested_fields').click();
