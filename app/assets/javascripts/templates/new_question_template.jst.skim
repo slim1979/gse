@@ -3,8 +3,12 @@ tr class="row question_#{@question.id}"
   td class="index_question_body"
     a href="/questions/#{@question.id}" #{@question.title}
     div class="adv_info"
-      div class="info_line" автор: это Ваш вопрос, проголосовало: 0, ответов: 0
+      - if @author.id == gon.author_id
+        div class="info_line" автор: Это Ваш вопрос, проголосовало: 0, ответов: 0
+      - else
+        div class="info_line" автор: #{@author.email}, проголосовало: 0, ответов: 0
       div class="manage favorites"
         a rel="nofollow" href="" в избранное
       div class="manage delete_question"
-        a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" удалить
+        - if @author.id == gon.author_id
+          a data-confirm="Вы уверены?" data-remote="true" rel="nofollow" data-method="delete" href="/questions/#{@question.id}" удалить
