@@ -1,11 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
-
-  def new
-    @question = Question.new
-    @question.attaches.new
-  end
+  before_action :gon_user, unless: :devise_controller?
 
   def index
     @question = Question.new
@@ -14,9 +10,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    render json: @question, status: 200 if @question.save
+    @question = current_user.questions.create(question_params)
     render partial: 'questions/errors', status: 422 if @question.errors.present?
   end
 
@@ -52,5 +46,9 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, :best_answer, attaches_attributes: %i[id _destroy file])
+  end
+
+  def gon_user
+    gon.author_id = current_user.id if current_user
   end
 end
