@@ -14,15 +14,41 @@ feature 'Create question', %q(
 
     visit questions_path
     click_on 'Задать вопрос'
-    within 'form' do
-      fill_in 'Заголовок', with: 'Test question'
-      fill_in 'Содержание', with: 'text text'
-    end
+    fill_in 'Заголовок', with: 'Test question'
+    fill_in 'Содержание', with: 'text text'
 
     click_on 'Создать'
-    wait_for_ajax
-
     expect(page).to have_content 'Test question'
+  end
+
+  context 'multiple sessions', js: true do
+    scenario "question appears to another user's page" do
+      Capybara.using_session('user') do
+        sign_in user
+        visit questions_path
+      end
+
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        click_on 'Задать вопрос'
+        within 'form' do
+          fill_in 'Заголовок', with: 'Test question'
+          fill_in 'Содержание', with: 'text text'
+        end
+
+        click_on 'Создать'
+        wait_for_ajax
+
+        expect(page).to have_content 'Test question'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Test question'
+      end
+    end
   end
 
   scenario 'Authenticated user created invalid question', js: true do
