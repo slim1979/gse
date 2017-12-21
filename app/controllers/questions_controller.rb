@@ -11,6 +11,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.create(question_params)
+    render json: { status: 200 } unless @question.errors.present?
     render partial: 'questions/errors', status: 422 if @question.errors.present?
   end
 

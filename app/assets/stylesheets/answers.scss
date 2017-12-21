@@ -4,12 +4,12 @@
 .answer{
   display: grid;
   grid-template-columns: 100px auto;
-  grid-template-rows: auto 40px auto;
+  grid-template-rows: auto 40px minmax(1px, max-content);
   border: 1px solid lightGrey;
   margin: 5px;
   padding: 10px;
   padding-bottom: 0px;
-  width: 60%;
+  // width: 60%;
 }
 .answer_vote_box{
   margin-right: 10px;
