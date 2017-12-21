@@ -59,7 +59,7 @@ stady = ->
     e.preventDefault()
     $(this).hide()
     console.log 'eidt'
-    $('.question_attributes').hide()
+    $('.question').hide()
     $('.edit_question_form').show().insertBefore('.exists_answers')
 
     $('.edit_question_form')
@@ -68,7 +68,7 @@ stady = ->
         question = $.parseJSON(xhr.responseText)
         $('.edit_question_form').hide()
         $('.question_errors').hide()
-        $('.question_attributes').show()
+        $('.question').show()
         $('.edit_question_link').show()
         $('.question_title').html(question.title)
         $('.question_body').html(question.body)
