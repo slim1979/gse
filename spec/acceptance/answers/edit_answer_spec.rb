@@ -13,28 +13,28 @@ feature 'Answer editing', %q{
   given!(:answer)   { create(:answer, user: user, question: question) }
   given!(:answer2)  { create(:answer, user: user2, question: question2) }
 
-  scenario 'Unauthenticated user tried to edit answer' do
+  scenario 'Unauthenticated user tried to edit answer', js: true do
     visit question_path(question)
 
     expect(page).to_not have_link 'edit answer'
   end
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     before do
       sign_in user
       visit question_path(question)
     end
 
     scenario 'see link to edit his answer' do
-      within '.edit' do
-        expect(page).to have_link 'Edit answer'
+      within '.edit_answer' do
+        expect(page).to have_link 'Редактировать'
       end
     end
 
     scenario 'tried to edit his answer', js: true do
       within '.answer' do
-        click_on 'Edit answer'
-        fill_in 'Answer', with: 'some new answer'
+        click_on 'Редактировать'
+        fill_in 'Edit answer', with: 'some new answer'
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
@@ -46,7 +46,7 @@ feature 'Answer editing', %q{
     scenario 'tried to edit someone else answer' do
       visit question_path(question2)
 
-      expect(page).to_not have_link 'Edit answer'
+      expect(page).to_not have_link 'Редактировать'
     end
   end
 end
