@@ -1,4 +1,4 @@
-.question
+div class="question question_#{@question.id}"
   .question_attributes
     h3.question_title =@question.title
     .question_author = "Автор: #{@question.user.email}"
@@ -9,6 +9,7 @@
       .vote =link_to 'dislike', question_votes_path(@question, votes_value: -1 ), class: 'dislike', remote: true, method: :post if current_user
     .question_body  =@question.body
     br
+    = link_to 'Комментировать','', class: 'new_comment_link', data: { class: ".question_#{@question.id}" }
     - if current_user&.author_of?(@question)
       .link =link_to 'Edit question','', class: 'edit_question_link'
       .question_errors
@@ -29,6 +30,8 @@
             - if current_user&.author_of?(@question)
               td.col-md-1.delete_attach =link_to '  delete', attach_path(attach), method: :delete, remote: true, data: { confirm: 'Are you sure?' }
               td.col-md-10
+  .comments
+    = render 'common/comments_form', commented: @question
 
 .exists_answers
   div
