@@ -35,11 +35,36 @@ feature 'Answer the question', %q(
     end
   end
 
-  scenario 'Unauthenticated user can\'t answer the question' do
+  context 'multiple sessions', js: true do
+    scenario "answer appears to another user's page" do
+      Capybara.using_session('user') do
+        sign_in user
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.new_answer' do
+          fill_in 'Содержание', with: 'Some text to solve problem'
+          click_on 'Answer the question'
+        end
+        expect(page).to have_content 'Some text to solve problem'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Some text to solve problem'
+      end
+    end
+  end
+
+  scenario 'Unauthenticated user can\'t answer the question', js: true do
     visit questions_path
     click_on question.title
 
     expect(page).to_not have_css '.new_answer'
-    expect(page).to_not have_content 'Ответить на вопрос'
+    expect(page).to_not have_content 'Answer the question'
   end
 end
