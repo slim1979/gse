@@ -4,8 +4,10 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :votes, shallow: true
+    resources :comments
     resources :answers, shallow: true do
       patch :assign_best, on: :member
+      resources :comments
       resources :votes, shallow: true
     end
   end
