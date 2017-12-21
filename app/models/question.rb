@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :attaches, as: :attachable, dependent: :destroy
   has_many :votes, as: :subject, dependent: :destroy
+  has_many :comments, as: :commented, dependent: :destroy
 
   validates :title, :body, presence: true
 
