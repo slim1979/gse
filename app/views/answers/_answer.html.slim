@@ -16,6 +16,7 @@
     .advanced_staff
       .author.float_left = "#{answer.user.email}"
       .manage.updated_at class="updated_for_#{answer.id}"  ="изм. #{answer.updated_at.localtime.strftime("%d/%m/%Y, %H:%M")}"
+      .manage.comment_link = link_to 'Комментировать','', class: 'new_comment_link', data: { class: ".answer_#{answer.id}" }
       -if current_user&.author_of?(answer)
         .manage.delete_answer
           =link_to 'Удалить',  answer_path(answer), remote: true, data: { confirm: 'Are you sure?' }, method: :delete
@@ -25,3 +26,6 @@
         .manage.best_answer
           =link_to 'Выбрать лучшим', assign_best_answer_path(answer), method: :patch, remote: true,\
             class: "best-answer-link #{answer.best_answer ? 'now-best' : ''}", id: "best-answer-link-#{answer.id}"
+    .comments
+      = render answer.comments
+    =render 'common/comments_form', commented: answer
