@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120213218) do
+ActiveRecord::Schema.define(version: 20171220183848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 20171120213218) do
     t.bigint "attachable_id"
     t.string "attachable_type"
     t.index ["attachable_id", "attachable_type"], name: "index_attaches_on_attachable_id_and_attachable_type"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "body"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -61,6 +70,10 @@ ActiveRecord::Schema.define(version: 20171120213218) do
     t.inet "last_sign_in_ip"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "users2s", id: :serial, force: :cascade do |t|
+    t.string "email", limit: 255
   end
 
   create_table "votes", force: :cascade do |t|
