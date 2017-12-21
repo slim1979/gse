@@ -1,0 +1,5 @@
+.new_comment_form
+  =form_for [commented, Comment.new], remote: true, data: { type: :json } do |form|
+    p = form.label :body
+    p = form.text_area :body, class: 'new_comment'
+    p = form.submit
