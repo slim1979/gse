@@ -44,17 +44,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before { get :new, format: :js }
-
-    it 'assigns new Question to a @question' do
-      expect(assigns(:question)).to be_a_new(Question)
-    end
-    it 'build new attachment to question' do
-      expect(assigns(:question).attaches.first).to be_a_new(Attach)
-    end
-  end
-
   describe 'POST #create' do
     let(:valid_post_create) { post :create, params: { question: attributes_for(:question) }, format: :json }
     let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) }, format: :json }
@@ -95,13 +84,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.title).to eq 'new title'
         expect(question.body).to eq 'new body'
       end
-      it 're-render show template' do
-        expect(response).to render_template :update
-      end
     end
 
     context 'invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :js }
+      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :json }
 
       it 'does not change question attributes' do
         question.reload
@@ -111,28 +97,26 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq question.body
       end
       it 're-render edit template' do
-        expect(response).to render_template :update
+        expect(response).to render_template 'questions/_errors'
       end
     end
   end
 
   describe 'PATCH #update question by authenticated someone else' do
-    context 'valid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
-
-      it 'will not change question attributes' do
+    context 'with valid attributes' do
+      before do
         sign_out @user
         sign_in user2
 
         patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
+      end
+
+      it 'will not change question attributes' do
         question.reload
         expect(question.title).to_not eq 'new title'
         expect(question.body).to_not eq 'new body'
         expect(question.title).to eq question.title
         expect(question.body).to eq question.body
-      end
-      it 're-render show template' do
-        expect(response).to render_template :update
       end
     end
   end
