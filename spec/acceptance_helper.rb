@@ -6,7 +6,8 @@ RSpec.configure do |config|
   config.extend AcceptanceMacros, type: :feature
 
   Capybara.javascript_driver = :webkit
-
+  Capybara.current_driver = Capybara.javascript_driver
+  Capybara.server = :puma
   config.use_transactional_fixtures = false
 
   config.before( :suite ) do
@@ -32,20 +33,4 @@ RSpec.configure do |config|
       end
     end
   end
-
-  # config.before(:each) do
-  #   DatabaseCleaner.strategy = :transaction
-  # end
-  #
-  # config.before(:each, js: true) do
-  #   DatabaseCleaner.strategy = :truncation
-  # end
-  #
-  # config.before(:each) do
-  #   DatabaseCleaner.start
-  # end
-  #
-  # config.after(:each) do
-  #   DatabaseCleaner.clean
-  # end
 end
