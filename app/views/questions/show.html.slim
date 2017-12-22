@@ -4,7 +4,7 @@ div class="question question_#{@question.id}"
     .vote = link_to 'like', question_votes_path(@question, votes_value: 1 ), class: 'like', remote: true, method: :post if current_user
     .question_votes_count class="question_votes_count_#{@question.id}"  = @question.votes_count
     .vote =link_to 'dislike', question_votes_path(@question, votes_value: -1 ), class: 'dislike', remote: true, method: :post if current_user
-  .main
+  .main.question_main
     .question_body
       =@question.body
       - unless @question.attaches.count.zero?
@@ -20,7 +20,7 @@ div class="question question_#{@question.id}"
     .author.float_left = "Автор: #{@question.user.email}"
     .manage.comment_link = link_to 'Комментировать','', class: 'new_comment_link', data: { class: ".question_#{@question.id}" }
     - if current_user&.author_of?(@question)
-      .manage.delete_answer = link_to 'Удалить', question_path(@question), method: :delete, remote: true, data: { confirm: 'Вы уверены?' }
+      .manage.delete_question = link_to 'Удалить', question_path(@question), method: :delete, remote: true, data: { confirm: 'Вы уверены?' }
       .manage.edit_question =link_to 'Редактировать','', class: 'edit_question_link'
       .question_errors
       .edit_question_form
