@@ -27,7 +27,8 @@ feature 'Add files to answer', %q{
 
     click_on 'Answer the question'
     wait_for_ajax
-    within '.main' do
+    expect(page).to have_css '.answer'
+    within '.answer' do
       expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
       expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
       expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'
