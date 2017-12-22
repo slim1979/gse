@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user2) { create(:user) }
   let(:question) { create(:question, user: @user) }
-  # the better way to assign variable instead of @questions = FactoryGirl.create_list etc...
-  # FactoryGirl. no longer needed, since we add config.include FactoryGirl::Syntax::Methods in rails_helper.rb
+  # the better way to assign variable instead of @questions = FactoryBot.create_list etc...
+  # FactoryBot. no longer needed, since we add config.include FactoryBot::Syntax::Methods in rails_helper.rb
   let(:questions) { create_list(:question, 2, user: @user) }
   let(:answer) { create(:answer, question: question, user: @user) }
   let(:attach) { create(:attach, attachable: question) }
