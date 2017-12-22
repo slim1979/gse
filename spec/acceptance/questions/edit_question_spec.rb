@@ -19,7 +19,7 @@ feature 'Edit question', %q(
     end
 
     scenario 'see the link to edit his question', js: true do
-      expect(page).to have_link 'Edit question'
+      expect(page).to have_link 'Редактировать'
     end
 
     scenario 'tries to edit his question', js: true do
@@ -39,7 +39,7 @@ feature 'Edit question', %q(
     scenario 'tries to edit someone else question', js: true do
       visit question_path(question2)
 
-      expect(page).to_not have_link 'Edit question'
+      expect(page).to_not have_link 'Редактировать'
     end
 
   end
@@ -47,7 +47,7 @@ feature 'Edit question', %q(
     scenario 'tries to edit question' do
       visit question_path(question)
 
-      expect(page).to_not have_link 'Edit question'
+      expect(page).to_not have_link 'Редактировать'
     end
   end
 end
