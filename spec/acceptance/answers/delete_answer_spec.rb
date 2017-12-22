@@ -21,12 +21,14 @@ feature 'Delete answer', %q{
       expect(page).to have_link 'Удалить'
     end
     scenario 'tries to delete answer' do
-      click_on 'Удалить'
+      within '.delete_answer' do
+        click_on 'Удалить'
+      end
 
       expect(page).to_not have_content answer.body
     end
     scenario 're-render question show template', js: true do
-      within '.advanced_staff>.delete_answer' do
+      within '.delete_answer' do
         click_on 'Удалить'
       end
 
