@@ -14,10 +14,12 @@ $ ->
       object_id = response.new_comment.self['commented_id']
       comment = response.new_comment.self
       user = response.new_comment.user
+      datetime = response.new_comment.datetime
       object = $('.' + object_type + '_' + object_id)
-      template = JST['templates/new_comment']({ comment: comment, user: user })
-      - if object.find('.comments>div').length > 0
-        object.find('.comments>div:last').append(template)
+      template = JST['templates/new_comment']({ comment: comment, user: user, datetime: datetime })
+      - if object.find('.comments div').length > 0
+        last_div = object.find('.comments div:last')
+        $(template).insertAfter(last_div)
       else
         object.find('.comments').append(template)
     })
