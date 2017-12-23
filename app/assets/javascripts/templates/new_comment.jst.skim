@@ -1,2 +1,1 @@
-.comment #{@comment.body} - 
-  <a href="/"> #{@user.email} </a>
+.comment #{@comment.body} - <a href="/"> #{@user.email}</a>, <span>#{@datetime}</span>
