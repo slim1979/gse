@@ -7,13 +7,8 @@ $ ->
       subscribeToQuestions()
 
     received: (data) ->
-      $('#errors_alert').remove()
+      console.log data
       controller(data)
-      # response = $.parseJSON(data)
-      # if response.publish
-      # else if response.destroy
-      #   question_id = response.destroy.question.id
-      #   $('.question_' + question_id).remove()
   })
 
 subscribeToQuestions = ->
@@ -24,6 +19,7 @@ subscribeToQuestions = ->
     App.questions_subscribe.perform 'unfollow'
 
 controller = (data) ->
+  $('#errors_alert').remove()
   response = $.parseJSON(data)
   if response.publish
     publish_question(response.publish)
@@ -38,6 +34,23 @@ creating_question = ->
     $('#errors_alert').remove()
     $('.new_question').show()
 
+  $('form#new_question')
+    .bind 'ajax:error', (e, xhr, status, error) ->
+      $('#errors_alert').remove()
+      response = $.parseJSON(xhr.responseText)
+      if response.title && response.errors
+        errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+      else
+        errors = JST["templates/authentication_error"]({ error: response.error })
+      $(errors).insertAfter('.new_question_form')
+
+    # 'cancel creating question' button actions
+    $('.cancel').click (cancel) ->
+      cancel.preventDefault()
+      $('#errors_alert').remove()
+      $('.new_question').hide()
+      $('.ask_question').show()
+
 publish_question = (response) ->
   #new question form show
   if response
@@ -49,22 +62,6 @@ publish_question = (response) ->
     $('.new_question').off().hide()
     #link to new question form showed
     $('.ask_question').show()
-
-        # .bind 'ajax:error', (e, xhr, status, error) ->
-        #   $('#errors_alert').remove()
-        #   response = $.parseJSON(xhr.responseText)
-        #   if response.title && response.errors
-        #     errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
-        #   else
-        #     errors = JST["templates/authentication_error"]({ error: response.error })
-        #   $(errors).insertAfter('.new_question_form')
-
-    # 'cancel creating question' button actions
-    $('.cancel').click (cancel) ->
-      cancel.preventDefault()
-      $('#errors_alert').remove()
-      $('.new_question').hide()
-      $('.ask_question').show()
 
 edit_question = ->
   $('.edit_question_link').click (e) ->
