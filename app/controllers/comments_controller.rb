@@ -3,9 +3,10 @@ class CommentsController < ApplicationController
   before_action :get_commented
 
   def create
-    @comment = @object.comments.build(comment_params)
-    @comment.user = current_user
-    render json: { status: 200 } if @comment.save
+    @comment = @object.comments.create(
+      body: comment_params[:body],
+      user: current_user
+    )
   end
 
   private
