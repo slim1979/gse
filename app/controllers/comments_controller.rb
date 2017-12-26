@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
   def get_commented
     # detecting the object kind
     type = [Answer, Question].detect { |klass| params["#{klass.name.underscore}_id"] }
-    # finding the object by id and vote for object by current user
+    # finding the object by id
     @object = type.find(params["#{type.name.underscore}_id"])
   end
 
