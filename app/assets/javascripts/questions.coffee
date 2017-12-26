@@ -7,7 +7,6 @@ $ ->
       subscribeToQuestions()
 
     received: (data) ->
-      console.log data
       controller(data)
   })
 
@@ -52,22 +51,19 @@ creating_question = ->
       $('.ask_question').show()
 
 publish_question = (response) ->
-  #new question form show
-  if response
-    $('#errors_alert').remove()
-    new_question = JST["templates/new_question_template"] ({ question: response.question, author: response.author})
-    $('.exists_questions>tbody:last').append(new_question)
-    # form hidding
-    $('form#new_question')[0].reset()
-    $('.new_question').off().hide()
-    #link to new question form showed
-    $('.ask_question').show()
+  $('#errors_alert').remove()
+  new_question = JST["templates/new_question_template"] ({ question: response.question, author: response.author})
+  $('.exists_questions>tbody:last').append(new_question)
+  # form hidding
+  $('form#new_question')[0].reset()
+  $('.new_question').off().hide()
+  #link to new question form showed
+  $('.ask_question').show()
 
 edit_question = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault()
     $(this).hide()
-    console.log 'eidt'
     $('.question').hide()
     $('.edit_question_form').show().insertBefore('.exists_answers')
 
@@ -91,7 +87,10 @@ edit_question = ->
           errors = JST["templates/authentication_error"]({ error: response.error })
         $(errors).insertBefore('.edit_question_form')
 
-destroy_question = ->
+destroy_question = (response) ->
+  $('.question_' + response.question.id).remove()
+
+destroy_question_alerts = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
     $('.exists_questions')
       .bind 'ajax:error', (e, xhr, status, error) ->
@@ -103,4 +102,4 @@ $(document).on 'turbolinks:load', () ->
   subscribeToQuestions()
   creating_question()
   edit_question()
-  destroy_question()
+  destroy_question_alerts()
