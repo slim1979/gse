@@ -19,5 +19,5 @@ public/uploads
 /yarn-error.log
 
 .byebug_history
-
+/.idea
 config/database.yml
