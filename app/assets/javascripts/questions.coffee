@@ -2,24 +2,37 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  App.cable.subscriptions.create('QuestionsChannel', {
+  App.questions_subscribe = App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
-      console.log 'Подключено'
-      @perform 'follow'
-    ,
+      subscribeToQuestions()
+
     received: (data) ->
       $('#errors_alert').remove()
-      response = $.parseJSON(data)
-      if response.publish
-        question = response.publish.question
-        author = response.publish.author
-        new_question = JST["templates/new_question_template"] ({ question: question, author: author})
-        $('.exists_questions>tbody:last').append(new_question)
-      else if response.destroy
-        question_id = response.destroy.question.id
-        $('.question_' + question_id).remove()
+      controller(data)
+      # response = $.parseJSON(data)
+      # if response.publish
+      # else if response.destroy
+      #   question_id = response.destroy.question.id
+      #   $('.question_' + question_id).remove()
   })
-creating_question = ->
+
+subscribeToQuestions = ->
+  if App.questions_subscribe
+    exists_questions = $('.exists_questions').data('list')
+    if exists_questions
+      console.log ''
+      App.questions_subscribe.perform 'follow'
+    else
+      App.questions_subscribe.perform 'unfollow'
+
+controller = (data) ->
+  response = $.parseJSON(data)
+  if response.publish
+    creating_question(response.publish)
+  else if response.destroy
+    destroy_question(response.destroy)
+
+creating_question = (response) ->
   $('.ask_question').on 'click', (e) ->
     e.preventDefault()
     $(this).hide()
@@ -27,25 +40,26 @@ creating_question = ->
     $('#errors_alert').remove()
     $('.new_question').show()
 
-    #new question form show
-    $('form#new_question').on 'click', '.create_question', (e) ->
-      $('form#new_question')
-        .bind 'ajax:success', (e, data, status, xhr) ->
-          $('#errors_alert').remove()
-          # form hidding
-          $('form#new_question')[0].reset()
-          $('.new_question').off().hide()
-          #link to new question form showed
-          $('.ask_question').show()
+publish_question = (response) ->
+  #new question form show
+  if response
+    $('#errors_alert').remove()
+    new_question = JST["templates/new_question_template"] ({ question: response.question, author: response.author})
+    $('.exists_questions>tbody:last').append(new_question)
+    # form hidding
+    $('form#new_question')[0].reset()
+    $('.new_question').off().hide()
+    #link to new question form showed
+    $('.ask_question').show()
 
-        .bind 'ajax:error', (e, xhr, status, error) ->
-          $('#errors_alert').remove()
-          response = $.parseJSON(xhr.responseText)
-          if response.title && response.errors
-            errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
-          else
-            errors = JST["templates/authentication_error"]({ error: response.error })
-          $(errors).insertAfter('.new_question_form')
+        # .bind 'ajax:error', (e, xhr, status, error) ->
+        #   $('#errors_alert').remove()
+        #   response = $.parseJSON(xhr.responseText)
+        #   if response.title && response.errors
+        #     errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+        #   else
+        #     errors = JST["templates/authentication_error"]({ error: response.error })
+        #   $(errors).insertAfter('.new_question_form')
 
     # 'cancel creating question' button actions
     $('.cancel').click (cancel) ->
@@ -54,7 +68,7 @@ creating_question = ->
       $('.new_question').hide()
       $('.ask_question').show()
 
-stady = ->
+edit_question = ->
   $('.edit_question_link').click (e) ->
     e.preventDefault()
     $(this).hide()
@@ -82,7 +96,7 @@ stady = ->
           errors = JST["templates/authentication_error"]({ error: response.error })
         $(errors).insertBefore('.edit_question_form')
 
-delete_question = ->
+destroy_question = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
     $('.exists_questions')
       .bind 'ajax:error', (e, xhr, status, error) ->
@@ -91,6 +105,7 @@ delete_question = ->
         $(errors).insertBefore('.exists_questions')
 
 $(document).on 'turbolinks:load', () ->
-  creating_question();
-  stady();
-  delete_question();
+  subscribeToQuestions()
+  creating_question()
+  edit_question()
+  destroy_question()
