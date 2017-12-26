@@ -1,27 +1,32 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-# edit answer form created dynamically
+
 $ ->
-  App.cable.subscriptions.create('AnswersChannel', {
+  App.answers_subscribe = App.cable.subscriptions.create 'AnswersChannel',
     connected: ->
-      console.log 'Подключено к AnswersChannel'
-      @perform 'follow'
-      ,
-    received: (data) ->
-      response = $.parseJSON(data)
-      if response.publish
-        answer = response.publish.answer
-        author = response.publish.author
-        datetime = response.publish.datetime
-        attaches = response.publish.attaches
-        row_template = JST["templates/new_answer_row_template"]({ answer: answer, author: author, datetime: datetime })
-        $(row_template).insertAfter('.exists_answers>div:last')
-        # attaches added to answer
-        attaches = JST["templates/attaches"]({ attaches: attaches })
-        $(attaches).insertAfter('.body_of_' + answer.id)
-    })
-edit = ->
+       subscribe_to_stream()
+
+    received: (info) ->
+      little_controller(info)
+
+subscribe_to_stream = ->
+  if App.answers_subscribe
+    question_id = $('.question').data('id')
+
+    if question_id
+       App.answers_subscribe.perform 'follow', id: question_id
+    else
+       App.answers_subscribe.perform 'unfollow'
+
+little_controller = (info) ->
+  response = $.parseJSON(info)
+  if response.publish
+    new_answer(response.publish)
+  else if response.destroy
+    destroy_answer(response.destroy)
+
+edit_answer = ->
   # edit answer form created dynamically
   # $('.edit-answer-link').click (e) ->
   $('.exists_answers').on 'click', '.edit-answer-link', (e) ->
@@ -69,7 +74,18 @@ edit = ->
         # insert list before edit form
         $(errors).insertBefore('#editing_errors_' + response.resource.id)
 
-ready = ->
+new_answer = (response) ->
+  if response
+    row_template = JST["templates/new_answer_row_template"]({
+      answer: response.answer,
+      author: response.author,
+      datetime: response.datetime
+      })
+    $(row_template).insertAfter('.exists_answers>div:last')
+    # attaches added to answer
+    attaches = JST["templates/attaches"]({ attaches: response.attaches })
+    $(attaches).insertAfter('.body_of_' + response.answer.id)
+
   # best answer toggle
   $('.best').insertBefore('.exists_answers>div:first')
   $('.now-best').hide();
@@ -78,8 +94,7 @@ ready = ->
   # answer create form events
   $('form#new_answer')
     # ajax success when valid answer created
-    .bind 'ajax:success', (e, data, status, xhr) ->
-      # row template appended to page
+    .bind 'ajax:success', () ->
       # clean up form text after creating answer
       $('form#new_answer')[0].reset()
       # delete all loader files and create one
@@ -104,21 +119,18 @@ ready = ->
       attach = $.parseJSON(xhr.responseText)
       $('#file_'+attach.id).hide()
 
-destroy_answer = ->
-  $('.exists_answers').on 'click', '.delete_answer', (e) ->
-    e.preventDefault()
-    $('.delete_answer')
-      .bind 'ajax:success', (e, data, status, xhr) ->
-        response = $.parseJSON(xhr.responseText)
-        $('.answer_' + response.id).remove()
-      .bind 'ajax:error', (e, xhr, status, error) ->
-        $('.alert').remove()
-        response = $.parseJSON(xhr.responseText)
-        error = JST['templates/authentication_error'] ({ error: response.alert })
-        # $(error).insertBefore('.question')
-        $('.exists_answers').prepend(error)
+destroy_answer = (response) ->
+  if response
+    $('.answer_' + response.answer.id).remove()
+        # .bind 'ajax:error', (e, xhr, status, error) ->
+        #   $('.alert').remove()
+        #   # response = $.parseJSON(xhr.responseText)
+        #   error = JST['templates/authentication_error'] ({ error: response.alert })
+        #   # $(error).insertBefore('.question')
+        #   $('.exists_answers').prepend(error)
 
 $(document).on 'turbolinks:load', () ->
-  ready()
-  edit()
+  subscribe_to_stream()
+  new_answer()
+  edit_answer()
   destroy_answer()
