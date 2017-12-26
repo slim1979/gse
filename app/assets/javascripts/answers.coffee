@@ -5,19 +5,18 @@
 $ ->
   App.answers_subscribe = App.cable.subscriptions.create 'AnswersChannel',
     connected: ->
-       subscribe_to_stream()
+      subscribe_to_stream()
 
     received: (info) ->
       little_controller(info)
 
 subscribe_to_stream = ->
-  if App.answers_subscribe
-    question_id = $('.question').data('id')
+  question_id = $('.question').data('id')
 
-    if question_id
-       App.answers_subscribe.perform 'follow', id: question_id
-    else
-       App.answers_subscribe.perform 'unfollow'
+  if question_id
+     App.answers_subscribe.perform 'follow', id: question_id
+  else
+     App.answers_subscribe.perform 'unfollow'
 
 little_controller = (info) ->
   response = $.parseJSON(info)

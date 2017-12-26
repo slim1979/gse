@@ -17,13 +17,11 @@ $ ->
   })
 
 subscribeToQuestions = ->
-  if App.questions_subscribe
-    exists_questions = $('.exists_questions').data('list')
-    if exists_questions
-      console.log ''
-      App.questions_subscribe.perform 'follow'
-    else
-      App.questions_subscribe.perform 'unfollow'
+  exists_questions = $('.exists_questions').data('list')
+  if exists_questions
+    App.questions_subscribe.perform 'follow'
+  else
+    App.questions_subscribe.perform 'unfollow'
 
 controller = (data) ->
   response = $.parseJSON(data)
