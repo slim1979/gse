@@ -105,16 +105,6 @@ RSpec.describe AnswersController, type: :controller do
         answer
         expect { delete :destroy, params: { id: answer }, format: :js }.to change(question.answers, :count).by(-1)
       end
-      it 'will render destroy template' do
-        delete :destroy, params: { id: answer }, format: :js
-        parsed_body = JSON.parse(response.body)
-        answer_as_json = answer.as_json
-        parsed_body['created_at'] = parsed_body['created_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
-        parsed_body['updated_at'] = parsed_body['updated_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
-        answer_as_json['created_at'] = answer_as_json['created_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
-        answer_as_json['updated_at'] = answer_as_json['updated_at'].to_time.localtime.strftime('%d/%m/%Y, %T')
-        expect(parsed_body).to eq answer_as_json
-      end
     end
     context 'Answer by other author' do
       it 'will not decrease answers count' do
