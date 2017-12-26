@@ -24,7 +24,7 @@ feature 'Edit question', %q(
 
     scenario 'tries to edit his question', js: true do
 
-      click_on 'Edit question'
+      click_on 'Редактировать'
       fill_in 'Title', with: 'New title'
       fill_in 'Body', with: 'New body'
       click_on 'Save'
