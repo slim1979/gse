@@ -1,4 +1,4 @@
-div class="question question_#{@question.id}"
+div class="question question_#{@question.id}" data-id="#{@question.id}"
   h3.question_title =@question.title
   .question_vote_box
     .vote = link_to 'like', question_votes_path(@question, votes_value: 1 ), class: 'like', remote: true, method: :post if current_user
