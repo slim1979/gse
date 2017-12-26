@@ -26,11 +26,11 @@ subscribeToQuestions = ->
 controller = (data) ->
   response = $.parseJSON(data)
   if response.publish
-    creating_question(response.publish)
+    publish_question(response.publish)
   else if response.destroy
     destroy_question(response.destroy)
 
-creating_question = (response) ->
+creating_question = ->
   $('.ask_question').on 'click', (e) ->
     e.preventDefault()
     $(this).hide()
