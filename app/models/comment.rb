@@ -8,10 +8,15 @@ class Comment < ApplicationRecord
 
   private
 
+  def object_id
+    commented.question_id || commented.id
+  end
+
   def publish_comment
     return if errors.any?
     ActionCable.server.broadcast(
-      'comments',
+      # 'comments',
+      "questions/#{object_id}/comments",
       ApplicationController.render(
         partial: 'comments/new_comment',
         locals: { comment: self }
