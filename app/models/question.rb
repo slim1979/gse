@@ -10,8 +10,9 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
-  after_create :publish_question
-  after_destroy :destroy_question
+  after_create_commit :publish_question
+  after_update_commit :update_question
+  after_destroy_commit :destroy_question
 
   private
 
@@ -23,6 +24,18 @@ class Question < ApplicationRecord
         json: { publish: { question: self, author: user } }
       )
     )
+  end
+
+  def update_question
+    return if errors.any?
+    ["questions/#{id}/question_update", "questions"].each do |stream|
+      ActionCable.server.broadcast(
+      stream,
+      ApplicationController.render(
+        json: { update: { question: self } }
+        )
+      )
+    end
   end
 
   def destroy_question

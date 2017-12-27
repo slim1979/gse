@@ -15,6 +15,6 @@ div = link_to 'Задать вопрос','', class: "ask_question"
   = f.submit 'Сбросить', type: 'reset', title: "Сбросить к начальному состоянию", class: 'clear_form btn btn-default margin_left_5px'
   a.btn.btn-link.cancel title="Отменить создание вопроса" Отменить
 
-table.table.table-hover.exists_questions
+table.table.table-hover.exists_questions data-list="questions"
   tbody
     = render @questions.order('votes_count DESC')

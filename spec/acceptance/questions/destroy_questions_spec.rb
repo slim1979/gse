@@ -18,7 +18,6 @@ feature 'Destroy question', %q(
     visit root_path
     click_on 'удалить'
 
-
     expect(page).to_not have_content own_question.title
     expect(page).to_not have_content own_question.body
   end

@@ -2,87 +2,101 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
-  App.cable.subscriptions.create('QuestionsChannel', {
+  App.questions_subscribe = App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
-      console.log 'Подключено'
-      @perform 'follow'
-    ,
+      subscribeToQuestions()
+
     received: (data) ->
-      $('#errors_alert').remove()
-      response = $.parseJSON(data)
-      if response.publish
-        question = response.publish.question
-        author = response.publish.author
-        new_question = JST["templates/new_question_template"] ({ question: question, author: author})
-        $('.exists_questions>tbody:last').append(new_question)
-      else if response.destroy
-        question_id = response.destroy.question.id
-        $('.question_' + question_id).remove()
+      controller(data)
   })
-creating_question = ->
+
+subscribeToQuestions = ->
+  exists_questions = $('.exists_questions').data('list')
+  question_id = $('.question').data('id')
+
+  if exists_questions
+    App.questions_subscribe.perform 'follow'
+  else
+    App.questions_subscribe.perform 'unfollow'
+
+  if question_id
+    App.questions_subscribe.perform 'question_update', id: question_id
+  else
+    App.questions_subscribe.perform 'unfollow'
+
+controller = (data) ->
+  $('#errors_alert').remove()
+  response = $.parseJSON(data)
+  if response.publish
+    publish_question(response.publish)
+  else if response.destroy
+    destroy_question(response.destroy)
+  else if response.update
+    update_question(response.update)
+
+call_creating_question = ->
+  $('#errors_alert').remove()
   $('.ask_question').on 'click', (e) ->
     e.preventDefault()
     $(this).hide()
     # old errors messages removed
-    $('#errors_alert').remove()
     $('.new_question').show()
 
-    #new question form show
-    $('form#new_question').on 'click', '.create_question', (e) ->
-      $('form#new_question')
-        .bind 'ajax:success', (e, data, status, xhr) ->
-          $('#errors_alert').remove()
-          # form hidding
-          $('form#new_question')[0].reset()
-          $('.new_question').off().hide()
-          #link to new question form showed
-          $('.ask_question').show()
-
-        .bind 'ajax:error', (e, xhr, status, error) ->
-          $('#errors_alert').remove()
-          response = $.parseJSON(xhr.responseText)
-          if response.title && response.errors
-            errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
-          else
-            errors = JST["templates/authentication_error"]({ error: response.error })
-          $(errors).insertAfter('.new_question_form')
+  $('form#new_question')
+    .bind 'ajax:error', (e, xhr, status, error) ->
+      response = $.parseJSON(xhr.responseText)
+      if response.title && response.errors
+        errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+      else
+        errors = JST["templates/authentication_error"]({ error: response.error })
+      $(errors).insertAfter('.new_question_form')
 
     # 'cancel creating question' button actions
     $('.cancel').click (cancel) ->
       cancel.preventDefault()
-      $('#errors_alert').remove()
       $('.new_question').hide()
       $('.ask_question').show()
 
-stady = ->
+publish_question = (response) ->
+  new_question = JST["templates/new_question_template"] ({ question: response.question, author: response.author})
+  $('.exists_questions>tbody:last').append(new_question)
+  # form hidding
+  $('form#new_question')[0].reset()
+  $('.new_question').off().hide()
+  #link to new question form showed
+  $('.ask_question').show()
+
+call_edit_question = ->
+  $('#errors_alert').remove()
   $('.edit_question_link').click (e) ->
     e.preventDefault()
     $(this).hide()
-    console.log 'eidt'
     $('.question').hide()
     $('.edit_question_form').show().insertBefore('.exists_answers')
 
-    $('.edit_question_form')
-      .bind 'ajax:success', (e, data, status, xhr) ->
-        $('#errors_alert').remove()
-        question = $.parseJSON(xhr.responseText)
-        $('.edit_question_form').hide()
-        $('.question_errors').hide()
-        $('.question').show()
-        $('.edit_question_link').show()
-        $('.question_title').html(question.title)
-        $('.question_body').html(question.body)
+  $('.edit_question_form')
+    .bind 'ajax:error', (e, xhr, status, error) ->
+      response = $.parseJSON(xhr.responseText)
+      if response.title && response.errors
+        errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
+      else
+        errors = JST["templates/authentication_error"]({ error: response.error })
+      $(errors).insertBefore('.edit_question_form')
 
-      .bind 'ajax:error', (e, xhr, status, error) ->
-        $('#errors_alert').remove()
-        response = $.parseJSON(xhr.responseText)
-        if response.title && response.errors
-          errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
-        else
-          errors = JST["templates/authentication_error"]({ error: response.error })
-        $(errors).insertBefore('.edit_question_form')
+update_question = (response) ->
+  $('.edit_question_form').hide()
+  $('.question_errors').hide()
+  $('.question').show()
+  $('.edit_question_link').show()
+  $('.question_title').html(response.question.title)
+  $('.question_body').html(response.question.body)
+  $('.question_body').html(response.question.body)
+  $('.question_votes_count').html(response.question.votes_count)
 
-delete_question = ->
+destroy_question = (response) ->
+  $('.question_' + response.question.id).remove()
+
+destroy_question_alerts = ->
   $('.exists_questions').on 'click', '.delete_question', (e) ->
     $('.exists_questions')
       .bind 'ajax:error', (e, xhr, status, error) ->
@@ -91,6 +105,7 @@ delete_question = ->
         $(errors).insertBefore('.exists_questions')
 
 $(document).on 'turbolinks:load', () ->
-  creating_question();
-  stady();
-  delete_question();
+  subscribeToQuestions()
+  call_creating_question()
+  call_edit_question()
+  destroy_question_alerts()
