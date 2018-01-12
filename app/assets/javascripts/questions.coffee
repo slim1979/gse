@@ -11,15 +11,12 @@ $ ->
   })
 
 subscribeToQuestions = ->
-  exists_questions = $('.exists_questions').data('list')
+  current_page = document.location.pathname
   question_id = $('.question').data('id')
 
-  if exists_questions
+  if current_page = '/'
     App.questions_subscribe.perform 'follow'
-  else
-    App.questions_subscribe.perform 'unfollow'
-
-  if question_id
+  else if current_page = '/questions/' + question_id
     App.questions_subscribe.perform 'question_update', id: question_id
   else
     App.questions_subscribe.perform 'unfollow'
