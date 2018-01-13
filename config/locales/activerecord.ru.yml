@@ -21,6 +21,11 @@ ru:
         update: 'Изменить'
     destroy:
       confirm: 'Вы уверены?'
-  errors:
-    messages:
-      blank: 'не может быть пустым'
+    errors:
+      models:
+        question:
+          attributes:
+            title:
+              blank: 'Заголовок не может быть пустым'
+            body:
+              blank: 'Содержание не может быть пустым'
