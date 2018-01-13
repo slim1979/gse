@@ -1,4 +1,4 @@
-  = f.fields_for :attaches, remote: true do |a|
+  = f.fields_for :attaches, object_type.attaches.new, remote: true do |a|
     =a.label :file
     =a.file_field :file
     =a.link_to_remove "Удалить файл"
