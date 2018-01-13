@@ -1,3 +1,9 @@
 ru:
   common:
     errors: 'При заполнении формы возникли ошибки:'
+  errors:
+    models:
+      question:
+        attributes:
+          title: 'Содержание'
+          body: 'Тело'
