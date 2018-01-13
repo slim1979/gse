@@ -1,5 +1,5 @@
 div.alert.fade.in.alert-danger id="errors_alert"
-  p.title #{@title}
+  p.title При заполнении формы произошли ошибки:
   ul.errors_list
     - $.each @errors, (index,value) =>
         li = value
