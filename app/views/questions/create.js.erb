@@ -1,0 +1,5 @@
+<% unless @question.errors.any?  %>
+  $('form#new_question')[0].reset()
+  $('.new_question').off().hide()
+  $('.ask_question').show()
+<% end  %>
