@@ -22,10 +22,5 @@ ru:
     destroy:
       confirm: 'Вы уверены?'
     errors:
-      models:
-        question:
-          attributes:
-            title:
-              blank: 'Заголовок не может быть пустым'
-            body:
-              blank: 'Содержание не может быть пустым'
+      messages:
+        blank: ' не может быть пустым'
