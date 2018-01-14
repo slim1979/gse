@@ -1,5 +1,8 @@
-<% unless @question.errors.any?  %>
-  $('form#new_question')[0].reset()
-  $('.new_question').off().hide()
-  $('.ask_question').show()
-<% end  %>
+<% if @question.errors.any? %>
+  $('#errors_alert').remove()
+  $(' <%= j render "common/errors", resource: @question %>').insertAfter('.new_question_form');
+<% else %>
+  $('form#new_question')[0].reset();
+  $('.new_question').off().hide();
+  $('.ask_question').show();
+<% end %>
