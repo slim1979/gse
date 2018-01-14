@@ -22,7 +22,6 @@ div class="question question_#{@question.id}" data-id="#{@question.id}"
     - if current_user&.author_of?(@question)
       .manage.delete_question = link_to 'Удалить', question_path(@question), method: :delete, remote: true, data: { confirm: 'Вы уверены?' }
       .manage.edit_question =link_to 'Редактировать','', class: 'edit_question_link'
-      .question_errors
       .edit_question_form
         =form_for @question, remote: true do |f|
           p=f.label :title, 'Title'
