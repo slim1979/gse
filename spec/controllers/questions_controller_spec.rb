@@ -12,7 +12,7 @@ RSpec.describe QuestionsController, type: :controller do
   sign_in_user
 
   describe 'GET #index' do
-    before { get :index, format: :js }
+    before { get :index }
     it 'populates an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
     end
@@ -22,22 +22,22 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    before { get :show, params: { id: question }, format: :js }
+    before { get :show, params: { id: question } }
 
     it 'assign request question to @question' do
       expect(assigns(:question)).to eq question
     end
-    it 'build new attachment to answer' do
-      expect(assigns(:answer).attaches.first).to be_a_new(Attach)
-    end
+    # it 'build new attachment to answer' do
+    #   expect(assigns(:answer).attaches.first).to be_a_new(Attach)
+    # end
     it 'renders show template' do
       expect(response).to render_template :show
     end
   end
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) }, format: :json }
-    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) }, format: :json }
+    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) }, format: :js }
+    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) }, format: :js }
 
     context 'with valid attributes' do
       it 'saves new question to DB' do
@@ -57,7 +57,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 're-renders new template' do
         invalid_post_create
-        expect(response).to render_template :_errors
+        expect(response).to render_template :create
       end
     end
   end
@@ -78,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :json }
+      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :js }
 
       it 'does not change question attributes' do
         question.reload
@@ -88,7 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq question.body
       end
       it 're-render edit template' do
-        expect(response).to render_template 'questions/_errors'
+        expect(response).to render_template 'update'
       end
     end
   end
@@ -118,11 +118,11 @@ RSpec.describe QuestionsController, type: :controller do
       before { question }
 
       it 'delete question' do
-        expect { delete :destroy, params: { id: question} }.to change(Question, :count).by(-1)
+        expect { delete :destroy, params: { id: question }, format: :js }.to change(Question, :count).by(-1)
       end
       it 'redirect to index view' do
-        delete :destroy, params: { id: question}
-        # response_is_equal_with_assigns_question
+        delete :destroy, params: { id: question }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -131,12 +131,11 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'will not delete question' do
         sign_in user2
-        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+        expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
       end
       it 'redirect to index view' do
         sign_in user2
-        delete :destroy, params: { id: question }
-        expect(response.status).to eq 422
+        delete :destroy, params: { id: question }, format: :js
         expect(response.body).to have_content 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.'
       end
     end
