@@ -1,0 +1,11 @@
+<% if current_user.author_of? @question %>
+  // flashing a notice
+  $('<%= j bootstrap_flash %>').insertBefore('.ask_question');
+  // fadding out
+  $('.alert-success').addClass('fadeOut');
+  $('.fadeOut').one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function(e){
+    $('.alert').remove();
+  });
+<% else %>
+  $('<%= j flash[:alert] %>').insertAfter('.errors_explanation');
+<% end %>
