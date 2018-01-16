@@ -39,15 +39,6 @@ call_creating_question = ->
     # old errors messages removed
     $('.new_question').show()
 
-  $('form#new_question')
-    .bind 'ajax:error', (e, xhr, status, error) ->
-      response = $.parseJSON(xhr.responseText)
-      if response.title && response.errors
-        errors = JST["templates/errors"]({ title: response.title, errors: response.errors })
-      else
-        errors = JST["templates/authentication_error"]({ error: response.error })
-      $(errors).insertAfter('.new_question_form')
-
     # 'cancel creating question' button actions
     $('.cancel').click (cancel) ->
       cancel.preventDefault()
@@ -57,11 +48,8 @@ call_creating_question = ->
 publish_question = (response) ->
   new_question = JST["templates/new_question_template"] ({ question: response.question, author: response.author})
   $('.exists_questions>tbody:last').append(new_question)
-  # form hidding
-  $('form#new_question')[0].reset()
-  $('.new_question').off().hide()
-  #link to new question form showed
-  $('.ask_question').show()
+  $('.question_' + response.question.id).css('background-color','grey').animate({ backgroundColor: 'transparent'}, 3000);
+
 
 call_edit_question = ->
   $('#errors_alert').remove()
@@ -81,10 +69,6 @@ call_edit_question = ->
       $(errors).insertBefore('.edit_question_form')
 
 update_question = (response) ->
-  $('.edit_question_form').hide()
-  $('.question_errors').hide()
-  $('.question').show()
-  $('.edit_question_link').show()
   $('.question_title').html(response.question.title)
   $('.question_body').html(response.question.body)
   $('.question_body').html(response.question.body)
