@@ -9,4 +9,4 @@ ru:
         # alert: '%{resource_name} could not be updated.'
       destroy:
         notice: '%{resource_name} был успешно удален.'
-        # alert: '%{resource_name} could not be destroyed.'
+        alert: 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.'
