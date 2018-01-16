@@ -2,11 +2,11 @@ ru:
   flash:
     actions:
       create:
-        notice: '%{resource_name} was successfully created.'
+        notice: '%{resource_name} был успешно создан.'
         alert: '%{resource_name} could not be created.'
       update:
-        notice: '%{resource_name} was successfully updated.'
+        notice: '%{resource_name} был успешно изменен.'
         # alert: '%{resource_name} could not be updated.'
       destroy:
-        notice: '%{resource_name} was successfully destroyed.'
-        alert: '%{resource_name} could not be destroyed.'
+        notice: '%{resource_name} был успешно удален.'
+        # alert: '%{resource_name} could not be destroyed.'
