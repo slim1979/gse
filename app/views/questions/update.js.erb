@@ -1,0 +1,15 @@
+$('#errors_alert').remove();
+<% if @question.errors.any? %>
+  $(' <%= j render "common/errors", resource: @question %>').insertBefore('.edit_question_form');
+<% else %>
+  $('<%= j bootstrap_flash %>').insertBefore('.question');
+  $('.edit_question_form').hide();
+  $('.question_errors').hide();
+  $('.question').show();
+  $('.edit_question_link').show();
+  // fadding out
+  $('.alert-success').addClass('fadeOut');
+  $('.fadeOut').one("webkitAnimationEnd oanimationend msAnimationEnd animationend", function(e){
+    $('.alert').remove();
+  });
+<% end %>
