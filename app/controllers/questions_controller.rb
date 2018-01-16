@@ -3,35 +3,28 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show edit update destroy]
   before_action :gon_user, unless: :devise_controller?
 
+  respond_to :html, only: %i[index show]
+  respond_to :js, except: %i[index show]
+
   def index
-    @question = Question.new
-    @question.attaches.new
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def create
-    @question = current_user.questions.create(question_params)
-    render json: { status: 200 } unless @question.errors.present?
-    render partial: 'questions/errors', status: 422 if @question.errors.present?
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def show
-    @answer = @question.answers.new
-    @answer.attaches.build
+    respond_with @question
   end
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
-    render partial: 'questions/errors', status: 422 if @question.errors.any?
+    respond_with @question
   end
 
   def destroy
-    if current_user.author_of? @question
-      @question.destroy
-      render json: @question
-    else
-      render json: { alert: 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.' }, status: 422
-    end
+    respond_with(@question.destroy) if current_user.author_of? @question
   end
 
   private
