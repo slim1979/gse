@@ -1,0 +1,12 @@
+$('.alert').remove();
+<% if @answer.errors.any? %>
+  $('.new_answer_body')
+    .stop().css('background-color','pink').attr('placeholder','Введите текст ответа').animate({backgroundColor: 'transparent'}, 3000);
+<% else %>
+  // clean up form text after creating answer
+  $('form#new_answer')[0].reset()
+  // delete all loader files and create one
+  $('.remove_nested_fields').click();
+  $('.add_nested_fields').click();
+  $('.new_answer_body').attr('placeholder','')
+<% end %>
