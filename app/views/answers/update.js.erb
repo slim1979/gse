@@ -1,6 +1,4 @@
 <% if @answer.errors.any? %>
-  // $(' <%= j render "common/errors", resource: @answer %>').insertBefore()
-  // $('#answer_body_<%= @answer.id %>')
   $('#answer_body_<%= @answer.id %>')
     .stop().css('background-color','pink').attr('placeholder','Введите текст ответа').animate({backgroundColor: 'transparent'}, 3000);
 <% else %>
