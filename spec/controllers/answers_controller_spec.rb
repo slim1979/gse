@@ -113,13 +113,6 @@ RSpec.describe AnswersController, type: :controller do
         sign_in user2
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
-      it 'will render destroy template' do
-        sign_out @user
-        sign_in user2
-        delete :destroy, params: { id: answer }, format: :js
-        response_body = JSON.parse(response.body)
-        expect(response_body['alert']).to eq 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.'
-      end
     end
     context 'Answer by unauthenticated user' do
       it 'will not decrease answers count' do
