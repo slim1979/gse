@@ -3,18 +3,15 @@ class AnswersController < ApplicationController
   before_action :set_question, :gon_user, only: :create
   before_action :set_answer, except: %i[create attach]
 
+  respond_to :js
+
   def create
-    @answer = @question.answers.build(answer_params)
-    @answer.user = current_user
-    render json: { status: 200 } if @answer.save
-    render partial: 'answers/errors', status: 422 if @answer.errors.any?
+    respond_with(@answer = @question.answers.create(answer_params))
   end
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
-
-    render json: { answer: @answer, datetime: @answer.updated_at.localtime.strftime("%d/%m/%Y, %H:%M") } unless @answer.errors.present?
-    render partial: 'answers/errors', status: 422 if @answer.errors.present?
+    respond_with(@answer)
   end
 
   def destroy
@@ -44,7 +41,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, attaches_attributes: %i[id file _destroy])
+    params.require(:answer).permit(:body, attaches_attributes: %i[id file _destroy]).merge!(user: current_user)
   end
 
   def gon_user

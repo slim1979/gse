@@ -1,3 +1,4 @@
+.errors_explanation
 div class="question question_#{@question.id}" data-id="#{@question.id}"
   h3.question_title =@question.title
   .question_vote_box
@@ -42,7 +43,7 @@ div class="question question_#{@question.id}" data-id="#{@question.id}"
 
 -if user_signed_in?
   .new_answer_form
-    =nested_form_for [@question, @answer = @question.answers.new], remote: true, data: { type: :json } do |form|
+    =nested_form_for [@question, @answer = @question.answers.new], remote: true do |form|
       p = form.label :body
       p = form.text_area :body, rows: 5, class: 'new_answer_body'
       p = form.link_to_add "Прикрепить файлы", :attaches, data: { target: '.attaches'}

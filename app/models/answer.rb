@@ -11,8 +11,9 @@ class Answer < ApplicationRecord
 
   accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
 
-  after_create :publish_answer
-  after_destroy :destroy_answer
+  after_create_commit :publish_answer
+  after_update_commit :update_answer
+  after_destroy_commit :destroy_answer
 
   def best_answer_switch
     transaction do
@@ -30,6 +31,16 @@ class Answer < ApplicationRecord
       ApplicationController.render(
         partial: 'answers/new_answer',
         locals: { answer: self }
+      )
+    )
+  end
+
+  def update_answer
+    return if errors.any?
+    ActionCable.server.broadcast(
+      "questions/#{question.id}/answers",
+      ApplicationController.render(
+        json: { update: { answer: self, datetime: updated_at.localtime.strftime("%d/%m/%Y, %H:%M") } }
       )
     )
   end
