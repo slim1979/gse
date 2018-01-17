@@ -55,7 +55,9 @@ update_answer = (response) ->
   # after editing answer, form is hiding, and the rest is showing
   answer = response.answer
   datetime = response.datetime
+  best_answer_toggle(answer.id) if answer.best_answer == true
   $('.body_of_' + answer.id).html(answer.body).show();
+  $('.answer_votes_count_' + answer.id).html(answer.votes_count);
   $('.updated_for_' + answer.id).html("изм. " + datetime).show();
 
 new_answer = (response) ->
@@ -69,11 +71,27 @@ new_answer = (response) ->
   attaches = JST["templates/attaches"]({ attaches: response.attaches })
   $(attaches).insertAfter('.body_of_' + response.answer.id)
 
-best_answer_toggle = ->
-  # best answer toggle
+best_answer_show_on_page_load = ->
   $('.best').insertBefore('.exists_answers>div:first')
   $('.now-best').hide();
   $('.best').find('.answer_body').css('font-weight','bold');
+
+best_answer_toggle = (id)->
+  # best answer toggle
+  $('.answer').removeClass("best").addClass("usual");
+  $('.best-answer-link').removeClass("now-best").show();
+  $('.answer_vote_box').removeClass("img");
+  $('.answer_body').css('font-weight','normal');
+
+  $('.answer_'+id)
+    .removeClass("usual")
+    .addClass("best")
+    .insertBefore('.exists_answers>div:first')
+    .css('background-color','silver')
+    .animate({backgroundColor: 'transparent'}, 3000)
+  $('.body_of_'+id).css('font-weight','bold');
+  $('.answer_'+id+' > .answer_vote_box').addClass("img");
+  $('#best-answer-link-'+id).addClass('now-best').hide();
 
   # file attaches delete
   $('.delete_answer_attach')
@@ -82,10 +100,11 @@ best_answer_toggle = ->
       $('#file_'+attach.id).hide()
 
 destroy_answer = (response) ->
-  $('.answer_' + response.answer.id).remove()
+  $('.answer_' + response.answer.id).animate({opacity: 0}, 500, (e) ->
+    this.remove())
 
 $(document).on 'turbolinks:load', () ->
   subscribe_to_stream()
-  best_answer_toggle()
+  best_answer_show_on_page_load()
   edit_answer_call()
   # destroy_answer()
