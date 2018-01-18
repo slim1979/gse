@@ -21,7 +21,6 @@ subscribe_to_stream = ->
 
 controller = (info) ->
   response = $.parseJSON(info)
-  console.log response
   destroy_attach(response.destroy) if response.destroy
 
 destroy_attach = (attach) ->
