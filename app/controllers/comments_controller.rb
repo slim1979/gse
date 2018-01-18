@@ -1,17 +1,16 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :get_commented
+  before_action :load_commented
+
+  respond_to :html
 
   def create
-    @comment = @object.comments.create(
-      body: comment_params[:body],
-      user: current_user
-    )
+    respond_with(@comment = @object.comments.create(body: comment_params[:body], user: current_user))
   end
 
   private
 
-  def get_commented
+  def load_commented
     # detecting the object kind
     type = [Answer, Question].detect { |klass| params["#{klass.name.underscore}_id"] }
     # finding the object by id
