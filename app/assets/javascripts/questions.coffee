@@ -85,8 +85,15 @@ destroy_question_alerts = ->
         errors = JST["templates/permission_errors"]({ alert: response.alert })
         $(errors).insertBefore('.exists_questions')
 
+errors_alert = ->
+  $('body')
+    .bind 'ajax:error', (e, data, status, xhr) ->
+      errors = JST["templates/authentication_error"]({ error: data.responseText })
+      $(errors).insertAfter('.errors_explanation')
+
 $(document).on 'turbolinks:load', () ->
   subscribeToQuestions()
   call_creating_question()
   call_edit_question()
   destroy_question_alerts()
+  errors_alert()
