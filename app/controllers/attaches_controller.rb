@@ -1,9 +1,17 @@
 class AttachesController < ApplicationController
   before_action :authenticate_user!
-  def destroy
-    @attach = Attach.find(params[:id])
-    @attach.destroy if current_user.author_of?(@attach.attachable)
+  before_action :load_attach
 
-    render json: @attach
+  respond_to :json
+
+  def destroy
+    @attach.destroy if current_user.author_of?(@attach.attachable)
+    respond_with @attach
+  end
+
+  private
+
+  def load_attach
+    @attach = Attach.find(params[:id])
   end
 end
