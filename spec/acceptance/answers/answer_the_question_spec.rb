@@ -29,9 +29,11 @@ feature 'Answer the question', %q(
         fill_in 'Содержание', with: nil
         click_on 'Answer the question'
       end
-
-      expect(page).to have_content 'При заполнении формы возникли ошибки:'
-      expect(page).to have_content 'Содержание не может быть пустым'
+      wait_for_ajax
+      within '.new_answer' do
+        error_alert = find('textarea[placeholder="Введите текст ответа"]')
+        expect(error_alert).to_not eq nil
+      end
     end
   end
 
