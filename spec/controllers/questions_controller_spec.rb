@@ -133,11 +133,6 @@ RSpec.describe QuestionsController, type: :controller do
         sign_in user2
         expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
       end
-      it 'redirect to index view' do
-        sign_in user2
-        delete :destroy, params: { id: question }, format: :js
-        expect(response.body).to have_content 'У Вас недостаточно прав на это действие. Обратитесь в техподдержку.'
-      end
     end
   end
 end
