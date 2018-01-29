@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, omniauth_providers: [:facebook]
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, omniauth_providers: [:facebook]
   has_many :authorizations, dependent: :destroy
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
@@ -17,8 +18,14 @@ class User < ApplicationRecord
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
-    email = auth.info[:email]
-    user = User.where(email: email).first
-    user.authorizations.create(provider: auth.provider, uid: auth.uid) if user
+    # new_autorization(auth)
+  end
+
+  def self.new_autorization(auth)
+    password = Devise.friendly_token[0, 20]
+    email = [Devise.friendly_token[0, 8], '@temporary_mail.ru'].join
+    user = User.create(email: email, password: password, password_confirmation: password)
+    user.authorizations.create(provider: auth.provider, uid: auth.uid)
+    user
   end
 end
