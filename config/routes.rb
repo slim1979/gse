@@ -5,7 +5,9 @@ Rails.application.routes.draw do
     post 'emails', to: 'omniauth_callbacks#request_email'
   end
   resources :attaches
-
+  resources :authorizations do
+    get :confirm_email, on: :member
+  end
   resources :questions do
     resources :votes, shallow: true
     resources :comments
