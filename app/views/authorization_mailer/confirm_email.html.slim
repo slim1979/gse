@@ -1,2 +1,2 @@
 p Подтвердите адрес электронной почты
-p = link_to 'Подтверждаю', confirm_email_authorization_url(@authorization)
+p = link_to 'Подтверждаю', confirm_email_authorization_url(@authorization, email: @email)
