@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20180129234453) do
     t.bigint "user_id"
     t.string "provider"
     t.string "uid"
+    t.string "email"
+    t.string "confirmed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_authorizations_on_user_id"
