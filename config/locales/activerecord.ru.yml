@@ -22,5 +22,14 @@ ru:
     destroy:
       confirm: 'Вы уверены?'
     errors:
+      models:
+        user:
+          attributes:
+            email:
+              given: 'занят'
+              invalid: '%{errors}'
       messages:
         blank: ' не может быть пустым'
+        record_invalid: '%{errors}'
+
+# ru.activerecord.errors.models.user.attributes.email.invalid
