@@ -3,19 +3,18 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @user = User.where(email: email_params[:body]).first
     @session = session['device.facebook_data']
     if @user
-      @user.new_authorization(@session)
+      @user.first_or_create_authorization(@session)
     else
       @user = User.both_user_and_authorization_create(email_params[:body], @session)
     end
   end
 
   def facebook
-    auth = request.env['omniauth.auth']
+    auth = session['device.facebook_data'] = request.env['omniauth.auth']
     user = User.find_for_oauth(auth)
     if user
       check_for_is_authorization_confirmed?(user, auth)
     else
-      session['device.facebook_data'] = auth
       render 'omniauth_callbacks/get_email'
     end
   end
