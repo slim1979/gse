@@ -14,7 +14,7 @@ feature 'The user register itself on the website', %q(
     fill_in 'Пароль', with: 'qwerty'
     fill_in 'Подтверждение пароля', with: 'qwerty'
     click_on 'Sign up'
-    expect(page).to have_content 'Добро пожаловать! Вы зарегистрировались'
+    expect(page).to have_content 'В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи.'
     expect(current_path).to eq root_path
   end
 end
