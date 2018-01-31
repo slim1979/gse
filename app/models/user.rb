@@ -26,8 +26,8 @@ class User < ApplicationRecord
     user
   end
 
-  def new_authorization(auth)
-    new_authorization = self.authorizations.create(provider: auth['provider'], uid: auth['uid'])
+  def first_or_create_authorization(auth)
+    new_authorization = self.authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
     send_confirmation_email(self, new_authorization)
   end
 
