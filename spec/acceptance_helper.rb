@@ -4,10 +4,11 @@ RSpec.configure do |config|
 
   config.include AcceptanceInstanceHelper, type: :feature
   config.extend AcceptanceMacros, type: :feature
-
+  OmniAuth.config.test_mode = true
   Capybara.javascript_driver = :webkit
-  Capybara.current_driver = Capybara.javascript_driver
+  # Capybara.current_driver = Capybara.javascript_driver
   Capybara.server = :puma
+  # Capybara.server_port = 31337
   config.use_transactional_fixtures = false
 
   config.before( :suite ) do
