@@ -21,13 +21,14 @@ class User < ApplicationRecord
 
   def self.both_user_and_authorization_create(email, auth)
     password = Devise.friendly_token[0, 20]
-    user = User.create(email: email, password: password, password_confirmation: password)
-    user.new_autorization(auth)
-    user
+    user = User.new(email: email, password: password, password_confirmation: password)
+    user.skip_confirmation_notification!
+    user.save!
+    user.first_or_create_authorization(auth)
   end
 
   def first_or_create_authorization(auth)
-    new_authorization = self.authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
+    new_authorization = authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
     send_confirmation_email(self, new_authorization)
   end
 
