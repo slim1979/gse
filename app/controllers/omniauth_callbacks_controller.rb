@@ -1,12 +1,13 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def request_email
-    @user = User.where(email: email_params[:body]).first
+    @user = User.where(email: email_params[:address]).first
     @session = session['device.facebook_data']
     if @user
       @user.first_or_create_authorization(@session)
     else
-      @user = User.both_user_and_authorization_create(email_params[:body], @session)
+      User.both_user_and_authorization_create(email_params[:address], @session)
     end
+    redirect_to new_user_session_path
   end
 
   def facebook
@@ -31,6 +32,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def email_params
-    params.require(:email).permit(:body)
+    params.require(:email).permit(:address)
   end
 end
