@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   # . if class method, # if instance method
   describe 'oauth' do
     let!(:user) { create(:user) }
-    let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '12345')}
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '12345') }
 
     context '.find_for_oauth' do
       context 'user already has authorization' do
@@ -46,25 +46,23 @@ RSpec.describe User, type: :model do
         end
       end
     end
-  end
 
-  # context 'user has no authorization' do
-  #   context 'user already exists' do
-  #     it 'does not create user' do
-  #       email = user.email
-  #       user = User.where(email: email).first
-  #       expect { user.first_or_create_authorization(auth) }.to_not change(User, :count)
-  #     end
-  #     it 'creates authorization for user' do
-  #       expect { user.first_or_create_authorization(auth) }.to change(user.authorizations, :count).by(1)
-  #     end
-  #     it 'creates authorization with provider and uid' do
-  #       user.first_or_create_authorization(auth)
-  #       authorization = user.authorizations.first
-  #
-  #       expect(authorization.provider).to eq auth.provider
-  #       expect(authorization.uid).to eq auth.uid
-  #     end
-  #   end
-  # end
+    context '.both_user_and_authorization_create' do
+      context 'there is no user and no authorization yet' do
+        before { @email = 'some@test.vv' }
+        it 'will show the number of users is 0' do
+          expect(User.where(email: @email).count).to eq 0
+        end
+        it 'will create a new user' do
+          expect { User.both_user_and_authorization_create(@email, auth) }.to change(User, :count).by(1)
+        end
+        it ' and authorization for him' do
+          User.both_user_and_authorization_create(@email, auth)
+          user = User.last
+          expect(user.authorizations.first.provider).to eq 'facebook'
+          expect(user.authorizations.first.uid).to eq '12345'
+        end
+      end
+    end
+  end
 end
