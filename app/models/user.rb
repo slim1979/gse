@@ -16,14 +16,12 @@ class User < ApplicationRecord
 
   def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
-    authorization.user if authorization
+    authorization&.user
   end
 
   def self.both_user_and_authorization_create(email, auth)
     password = Devise.friendly_token[0, 20]
-    user = User.new(email: email, password: password, password_confirmation: password)
-    user.skip_confirmation_notification!
-    user.save!
+    user = User.create(email: email, password: password, password_confirmation: password)
     user.first_or_create_authorization(auth)
   end
 
@@ -34,7 +32,7 @@ class User < ApplicationRecord
 
   def authorization_confirmed?(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
-    authorization.email if authorization
+    authorization&.email
   end
 
   private
