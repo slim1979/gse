@@ -1,4 +1,5 @@
+p = "#{social.capitalize} не предоставил данные о Вашей электронной почте,\n но необходима для авторизации на нашем сайте."
 = form_for @email = Email.new do |f|
-  p = f.label :address
+  p = f.label :address, 'Введите адрес электронной почты для продолжения регистрации'
   p = f.text_field :address
   p = f.submit
