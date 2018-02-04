@@ -19,7 +19,7 @@ feature 'Authentication with socials', %q{
       visit new_user_session_path
 
       click_on 'Sign in with Facebook'
-      fill_in 'Address', with: 'some@email.com'
+      fill_in :email_address, with: 'some@email.com'
       click_on 'Create Email'
       open_email('some@email.com')
       current_email.click_link 'Подтверждаю'
