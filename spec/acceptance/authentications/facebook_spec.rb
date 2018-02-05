@@ -25,7 +25,7 @@ feature 'Authentication with socials', %q{
       current_email.click_link 'Подтверждаю'
       expect(current_path).to eq new_user_session_path
       click_on 'Sign in with Facebook'
-      expect(page).to have_content 'лицокнига'
+      expect(page).to have_content 'facebook'
     end
   end
 end
