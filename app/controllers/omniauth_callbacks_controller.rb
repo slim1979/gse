@@ -13,6 +13,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     email_missed unless email
   end
 
+  def twitter
+    auth_data = session['device.twitter_data'] = request.env['omniauth.auth']
+    email = request.env['omniauth.auth']['info']['email']
+    email_received(auth_data, email) if email
+    email_missed unless email
+  end
+
   private
 
   def email_received(auth, email)
@@ -44,7 +51,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def check_for_is_authorization_confirmed?(user, auth)
     if user.authorization_confirmed?(auth)
       sign_in_and_redirect user, event: :authentication
-      set_flash_message(:notice, :success, kind: 'лицокнига') if is_navigational_format?
+      set_flash_message(:notice, :success, kind: social_network) if is_navigational_format?
     else
       render 'omniauth_callbacks/resend_confirmation_email'
     end
