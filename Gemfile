@@ -60,6 +60,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'database_cleaner'
   gem 'pry-rails'
   gem 'capybara-email'
