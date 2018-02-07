@@ -8,9 +8,6 @@ feature 'Add files to question', %q{
 
   given(:user) { create(:user) }
 
-  before do
-  end
-
   scenario 'User adds files when asked question', js: true do
     sign_in user
     visit questions_path
@@ -19,7 +16,6 @@ feature 'Add files to question', %q{
 
     fill_in 'Заголовок', with: 'Question title'
     fill_in 'Содержание', with: 'Question text'
-
     3.times do
       click_on 'Прикрепить файлы'
     end
@@ -31,12 +27,15 @@ feature 'Add files to question', %q{
     inputs[3].set("#{Rails.root}/spec/acceptance/questions/questions_list_spec.rb")
 
     click_on 'Создать'
+    wait_for_ajax
 
     click_on 'Question title'
 
-    expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
-    expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
-    expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'
-    expect(page).to have_link 'questions_list_spec.rb', href: '/uploads/attach/file/4/questions_list_spec.rb'
+    within '.question' do
+      expect(page).to have_link 'create_question_spec.rb'
+      expect(page).to have_link 'destroy_questions_spec.rb'
+      expect(page).to have_link 'edit_question_spec.rb'
+      expect(page).to have_link 'questions_list_spec.rb'
+    end
   end
 end
