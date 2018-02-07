@@ -29,10 +29,10 @@ feature 'Add files to answer', %q{
     wait_for_ajax
     expect(page).to have_css '.answer'
     within '.answer' do
-      expect(page).to have_link 'create_question_spec.rb', href: '/uploads/attach/file/1/create_question_spec.rb'
-      expect(page).to have_link 'destroy_questions_spec.rb', href: '/uploads/attach/file/2/destroy_questions_spec.rb'
-      expect(page).to have_link 'edit_question_spec.rb', href: '/uploads/attach/file/3/edit_question_spec.rb'
-      expect(page).to have_link 'questions_list_spec.rb', href: '/uploads/attach/file/4/questions_list_spec.rb'
+      expect(page).to have_link 'create_question_spec.rb'
+      expect(page).to have_link 'destroy_questions_spec.rb'
+      expect(page).to have_link 'edit_question_spec.rb'
+      expect(page).to have_link 'questions_list_spec.rb'
     end
   end
 end
