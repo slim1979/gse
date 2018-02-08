@@ -6,6 +6,9 @@ feature 'Authentication with socials', %q{
   I want to be able to login with my social account
 } do
 
+  given!(:user) { create(:user) }
+  given(:auth) { create(:authorization, user: user, email: user.email) }
+
   describe 'User doesn\'t have any account on this site yet' do
 
     scenario 'and user can see link to login with socials' do
@@ -24,6 +27,15 @@ feature 'Authentication with socials', %q{
       expect(current_path).to eq root_path
       auth = Authorization.last
       expect(page).to have_content "Вход осуществлен с помощью #{auth.provider.capitalize}"
+    end
+  end
+
+  describe 'User already have account on site', js: true do
+    scenario 'user tries to login on site with exist account via facebook' do
+      auth
+      visit new_user_session_path
+      click_on 'Sign in with Facebook'
+      expect(page).to have_content "Вход в систему выполнен с учётной записью из #{auth.provider.capitalize}"
     end
   end
 end
