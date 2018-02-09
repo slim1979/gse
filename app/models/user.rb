@@ -14,25 +14,36 @@ class User < ApplicationRecord
     resource.user_id == id
   end
 
-  def self.find_for_oauth(auth)
-    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
-    authorization&.user
+  def self.find_for_oauth(auth, email)
+    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid']).first
+    return authorization.user if authorization
+
+    user = User.where(email: email).first
+    if user
+      user.first_or_create_authorization(auth)
+    else
+      User.both_user_and_authorization_create(auth, email) if email
+    end
   end
 
-  def self.both_user_and_authorization_create(email, auth)
+  def self.both_user_and_authorization_create(auth, email)
     password = Devise.friendly_token[0, 20]
-    user = User.create(email: email, password: password, password_confirmation: password)
+    user = User.new(email: email, password: password, password_confirmation: password)
+    user.skip_confirmation_notification!
+    user.save!
     user.first_or_create_authorization(auth)
+    user
   end
 
   def first_or_create_authorization(auth)
     new_authorization = authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
     send_confirmation_email(self, new_authorization)
+    self
   end
 
   def authorization_confirmed?(auth)
-    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
-    authorization&.email
+    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid']).first
+    authorization&.confirmed_at?
   end
 
   private
