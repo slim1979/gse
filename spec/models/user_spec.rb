@@ -54,10 +54,10 @@ RSpec.describe User, type: :model do
           expect(User.where(email: @email).count).to eq 0
         end
         it 'will create a new user' do
-          expect { User.both_user_and_authorization_create(@email, auth) }.to change(User, :count).by(1)
+          expect { User.both_user_and_authorization_create(auth, @email) }.to change(User, :count).by(1)
         end
         it ' and authorization for him' do
-          User.both_user_and_authorization_create(@email, auth)
+          User.both_user_and_authorization_create(auth, @email)
           user = User.last
           expect(user.authorizations.first.provider).to eq 'facebook'
           expect(user.authorizations.first.uid).to eq '12345'
