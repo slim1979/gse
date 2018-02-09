@@ -14,8 +14,8 @@ RSpec.describe User, type: :model do
     context '.find_for_oauth' do
       context 'user already has authorization' do
         it 'returns the user' do
-          user.authorizations.create(provider: 'facebook', uid: '12345')
-          expect(User.find_for_oauth(auth)).to eq user
+          user.authorizations.create(provider: 'facebook', uid: '12345', email: user.email)
+          expect(User.find_for_oauth(auth, nil)).to eq user
         end
       end
     end
