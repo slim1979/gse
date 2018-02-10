@@ -7,6 +7,11 @@
     .main.answer_main
       div id="editing_errors_#{answer.id}"
       .answer_body class="body_of_#{answer.id}" =answer.body
+      .edit_form class="edit_form_#{answer.id}"
+        = form_for answer, remote: true, data: { id: answer.id } do |f|
+          p = f.label "body_#{answer.id}", 'Содержание'
+          p = f.text_area :body, class: 'form-control', rows: 5, id: "answer_body_#{answer.id}"
+          p = f.submit 'Save'
       ul
         -answer.attaches.each do |attach|
           li id="file_#{attach.id}"

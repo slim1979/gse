@@ -35,7 +35,9 @@ edit_answer_call = ->
     if $('form.edit_answer').data('id')
       previous_answer_id = $('form.edit_answer').data('id')
     # all visible forms are hidden to prevent errors
-    $('.edit_form').remove()
+    # changed from $('.edit_form').remove() to $('.edit_form').hide()
+    # because tests doesnt pass with skim templates. form is now on page, not from template
+    $('.edit_form').hide()
     # links to edit forms, body and update time on previous
     # answer are visible
     $('.edit-answer-link').show()
@@ -48,8 +50,10 @@ edit_answer_call = ->
     answer_body = $(".body_of_" + answer_id)[0].innerText
     $(".body_of_" + answer_id).hide();
     $(".updated_for_" + answer_id).hide();
-    edit_form = JST["templates/edit_form"]({answer_id: answer_id, answer_body: answer_body})
-    $(edit_form).insertAfter("#editing_errors_" + answer_id).show()
+    # new instead of inserting skim template
+    $('.edit_form_' + answer_id).show();
+    # edit_form = JST["templates/edit_form"]({answer_id: answer_id, answer_body: answer_body})
+    # $(edit_form).insertAfter("#editing_errors_" + answer_id).show()
 
 update_answer = (response) ->
   # after editing answer, form is hiding, and the rest is showing

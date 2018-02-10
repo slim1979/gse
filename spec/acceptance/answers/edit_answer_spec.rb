@@ -34,7 +34,7 @@ feature 'Answer editing', %q{
     scenario 'tried to edit his answer', js: true do
       within '.answer' do
         click_on 'Редактировать'
-        fill_in 'Edit answer', with: 'some new answer'
+        fill_in 'Содержание', with: 'some new answer'
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
