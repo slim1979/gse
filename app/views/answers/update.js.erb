@@ -2,7 +2,7 @@
   $('#answer_body_<%= @answer.id %>')
     .stop().css('background-color','pink').attr('placeholder','Введите текст ответа').animate({backgroundColor: 'transparent'}, 3000);
 <% else %>
-  $('.edit_form_<%= @answer.id %>').remove();
+  $('.edit_form_<%= @answer.id %>').hide();
   $('.body_of_<%= @answer.id %>').html('<%= @answer.body %>').show();
   $('.updated_for_<%= @answer.id %>').html('изм. <%= @answer.updated_at.localtime.strftime("%d/%m/%Y, %H:%M") %>').show();
   $('.edit_answer_<%= @answer.id %>').show();
