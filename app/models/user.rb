@@ -43,11 +43,6 @@ class User < ApplicationRecord
     authorizations.where(provider: auth['provider'], uid: auth['uid']).first
   end
 
-  def authorization_confirmed?(auth)
-    authorization = Authorization.where(provider: auth['provider'], uid: auth['uid']).first
-    authorization&.confirmed_at?
-  end
-
   def send_confirmation_email(user, authorization)
     AuthorizationMailer.confirm_email(user, authorization.id).deliver_now
   end
