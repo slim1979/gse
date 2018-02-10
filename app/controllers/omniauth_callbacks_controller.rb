@@ -37,8 +37,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: auth['provider'].capitalize) if is_navigational_format?
     else
-      user.first_or_create_authorization(auth)
-      render 'omniauth_callbacks/resend_confirmation_email', locals: { email: user.email }
+      user.send_confirmation_email(user, user.current_authorization(auth))
+      render 'omniauth_callbacks/send_confirmation_email', locals: { email: user.email }
     end
   end
 
