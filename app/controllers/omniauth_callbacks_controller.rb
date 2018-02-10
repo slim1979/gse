@@ -33,11 +33,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def check_for_is_authorization_confirmed?(auth, user)
-    if user.authorization_confirmed?(auth)
+    authorization = user.current_authorization(auth)
+    if authorization.confirmed_at?
       sign_in_and_redirect user, event: :authentication
       set_flash_message(:notice, :success, kind: auth['provider'].capitalize) if is_navigational_format?
     else
-      user.send_confirmation_email(user, user.current_authorization(auth))
+      user.send_confirmation_email(user, authorization)
       render 'omniauth_callbacks/send_confirmation_email', locals: { email: user.email }
     end
   end
