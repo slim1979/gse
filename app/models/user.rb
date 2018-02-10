@@ -32,21 +32,21 @@ class User < ApplicationRecord
     user.skip_confirmation_notification!
     user.save!
     user.first_or_create_authorization(auth)
-    user
   end
 
   def first_or_create_authorization(auth)
-    new_authorization = authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
-    send_confirmation_email(self, new_authorization)
+    authorizations.where(provider: auth['provider'], uid: auth['uid']).first_or_create
     self
+  end
+
+  def current_authorization(auth)
+    authorizations.where(provider: auth['provider'], uid: auth['uid']).first
   end
 
   def authorization_confirmed?(auth)
     authorization = Authorization.where(provider: auth['provider'], uid: auth['uid']).first
     authorization&.confirmed_at?
   end
-
-  private
 
   def send_confirmation_email(user, authorization)
     AuthorizationMailer.confirm_email(user, authorization.id).deliver_now
