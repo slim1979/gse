@@ -39,11 +39,6 @@ RSpec.describe User, type: :model do
         it 'will not create new authorization' do
           expect { user.first_or_create_authorization(auth) }.to_not change(Authorization, :count)
         end
-        it 'will form letter and will put it in queue' do
-          user.first_or_create_authorization(auth)
-          last_email = ActionMailer::Base.deliveries.last
-          expect(last_email.to).to eq ["#{user.email}"]
-        end
       end
     end
 
