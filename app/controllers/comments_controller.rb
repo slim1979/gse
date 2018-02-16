@@ -4,6 +4,8 @@ class CommentsController < ApplicationController
 
   respond_to :html
 
+  authorize_resource
+
   def create
     respond_with(@comment = @object.comments.create(body: comment_params[:body], user: current_user))
   end

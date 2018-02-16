@@ -2,8 +2,10 @@ class AttachesController < ApplicationController
   before_action :authenticate_user!
   before_action :load_attach
 
+  authorize_resource
+
   def destroy
-    @attach.destroy if current_user.author_of?(@attach.attachable)
+    @attach.destroy
   end
 
   private
