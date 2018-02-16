@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :comment do
-    answer nil
+    body
   end
 end
