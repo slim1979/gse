@@ -5,22 +5,24 @@ class AnswersController < ApplicationController
 
   respond_to :js
 
+  authorize_resource
+
   def create
     respond_with(@answer = @question.answers.create(answer_params))
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params)
     respond_with(@answer)
   end
 
   def destroy
-    @answer.destroy if current_user.author_of? @answer
-    respond_with(@answer)
+    # @answer.destroy
+    respond_with(@answer.destroy)
   end
 
   def assign_best
-    @answer.best_answer_switch if current_user.author_of?(@answer.question)
+    @answer.best_answer_switch
     respond_with(@answer)
   end
 
