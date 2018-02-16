@@ -23,7 +23,7 @@ subscribeToQuestions = ->
 
 controller = (data) ->
   $('#errors_alert').remove()
-  response = $.parseJSON(data)
+  response = JSON.parse(data)
   if response.publish
     publish_question(response.publish)
   else if response.destroy
@@ -88,8 +88,9 @@ destroy_question_alerts = ->
 errors_alert = ->
   $('body')
     .bind 'ajax:error', (e, data, status, xhr) ->
-      errors = JST["templates/authentication_error"]({ error: data.responseText })
-      $(errors).insertAfter('.errors_explanation')
+      unless typeof JSON == 'object'
+        errors = JST["templates/authentication_error"]({ error: data.responseText })
+        $(errors).insertAfter('.errors_explanation')
 
 $(document).on 'turbolinks:load', () ->
   subscribeToQuestions()
