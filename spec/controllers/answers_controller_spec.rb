@@ -93,9 +93,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.best_answer).to_not eq true
         expect(answer.best_answer).to eq false
       end
-      it 'render best_answer template' do
-        expect(response).to render_template :assign_best
-      end
     end
   end
 
