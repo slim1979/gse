@@ -13,8 +13,9 @@ RSpec.describe VotesController, type: :controller do
     let(:vote_like_for_question) { post :create, params: { question_id: question, votes_value: 1 }, format: :json }
     let(:vote_dislike_for_question) { post :create, params: { question_id: question, votes_value: -1 }, format: :json }
 
+    before { sign_in user }
+
     it 'vote \'like\' for answer will increase its rating' do
-      sign_in user
       expect {
         vote_like_for_answer
         answer.reload
@@ -22,7 +23,6 @@ RSpec.describe VotesController, type: :controller do
     end
 
     it 'vote \'dislike\' for answer will decrease its rating' do
-      sign_in user
       expect {
         vote_dislike_for_answer
         answer.reload
@@ -30,7 +30,6 @@ RSpec.describe VotesController, type: :controller do
     end
 
     it 'vote \'like\' for question will increase its rating' do
-      sign_in user
       expect {
         vote_like_for_question
         question.reload
@@ -38,7 +37,6 @@ RSpec.describe VotesController, type: :controller do
     end
 
     it 'vote \'dislike\' for question will decrease its rating' do
-      sign_in user
       expect {
         vote_dislike_for_question
         question.reload
