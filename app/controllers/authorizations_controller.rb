@@ -1,4 +1,6 @@
 class AuthorizationsController < ApplicationController
+  authorize_resource
+
   def confirm_email
     authorization = Authorization.confirm_me_with(params[:id], params[:email])
     flash[:notice] = "Рады приветствовать Вас на нашем сайте! Вход осуществлен с помощью #{authorization.provider.capitalize}"
