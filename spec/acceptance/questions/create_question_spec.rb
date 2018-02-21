@@ -69,13 +69,6 @@ feature 'Create question', %q(
   scenario 'Unauthenticated user created the question', js: true do
 
     visit questions_path
-    click_on 'Задать вопрос'
-    within 'form' do
-      fill_in 'Заголовок', with: 'Test question'
-      fill_in 'Содержание', with: 'text text'
-    end
-    click_on 'Создать'
-
-    expect(page).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
+    expect(page).to_not have_content 'Задать вопрос'
   end
 end
