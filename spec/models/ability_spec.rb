@@ -30,23 +30,24 @@ describe Ability do
     let(:other_comment) { create :comment, commented: other_question, user: other }
     let(:other_attach) { create :attach, attachable: other_answer }
 
-    it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
     it { should be_able_to :assign_best, answer }
+    it { should be_able_to :manage, attach }
+    it { should_not be_able_to :manage, :all }
     it { should_not be_able_to :assign_best, own_answer_on_other_question }
     it { should_not be_able_to :assign_best, other_answer }
-    it { should be_able_to :manage, attach }
     it { should_not be_able_to :manage, other_attach }
 
-    [Question, Answer, Comment].each do |klass|
+    [Question, Answer, Comment, Vote].each do |klass|
       context klass do
         it { should be_able_to :create, klass }
+        unless klass == Vote
+          it { should be_able_to :update, send(klass.name.underscore), user: user }
+          it { should_not be_able_to :update, send("other_#{klass.name.downcase}"), user: user }
 
-        it { should be_able_to :update, send(klass.name.underscore), user: user }
-        it { should_not be_able_to :update, send("other_#{klass.name.downcase}"), user: user }
-
-        it { should be_able_to :destroy, send(klass.name.underscore), user: user }
-        it { should_not be_able_to :destroy, send("other_#{klass.name.downcase}"), user: user }
+          it { should be_able_to :destroy, send(klass.name.underscore), user: user }
+          it { should_not be_able_to :destroy, send("other_#{klass.name.downcase}"), user: user }
+        end
       end
     end
   end
