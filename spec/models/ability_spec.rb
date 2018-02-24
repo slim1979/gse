@@ -33,12 +33,19 @@ describe Ability do
     it { should be_able_to :read, :all }
     it { should be_able_to :assign_best, answer }
     it { should be_able_to :manage, attach }
+    it { should be_able_to :vote, other_question }
+    it { should be_able_to :vote, other_answer }
+
+    it { should_not be_able_to :vote, question }
+    it { should_not be_able_to :vote, answer }
     it { should_not be_able_to :manage, :all }
     it { should_not be_able_to :assign_best, own_answer_on_other_question }
     it { should_not be_able_to :assign_best, other_answer }
+    it { should_not be_able_to :vote, answer }
+    it { should_not be_able_to :vote, question }
     it { should_not be_able_to :manage, other_attach }
 
-    [Question, Answer, Comment, Vote].each do |klass|
+    [Question, Answer, Comment].each do |klass|
       context klass do
         it { should be_able_to :create, klass }
         unless klass == Vote
