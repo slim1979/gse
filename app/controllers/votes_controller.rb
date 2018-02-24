@@ -4,9 +4,10 @@ class VotesController < ApplicationController
 
   respond_to :json
 
-  authorize_resource
+  # authorize_resource
 
   def create
+    authorize! :vote, @object
     @object.vote(current_user, params[:votes_value].to_i)
     respond_with(@object)
   end

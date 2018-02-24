@@ -4,7 +4,7 @@ RSpec.describe VotesController, type: :controller do
 
   let!(:user)      { create(:user) }
   let!(:user2)     { create(:user) }
-  let!(:question) { create(:question, user: user) }
+  let!(:question) { create(:question, user: user2) }
   let!(:answer)   { create(:answer, user: user2, question: question) }
 
   describe 'POST#create' do
