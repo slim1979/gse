@@ -7,7 +7,7 @@ class VotesController < ApplicationController
   # authorize_resource
 
   def create
-    authorize! :vote, @object
+    authorize! :vote, @object, message: 'Нельзя голосовать за свой контент'
     @object.vote(current_user, params[:votes_value].to_i)
     respond_with(@object)
   end
