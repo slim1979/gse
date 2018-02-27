@@ -18,8 +18,8 @@ describe 'Profile API' do
       let(:access_token) { create(:access_token) }
 
       it 'returns status 200' do
-        get '/api/v1/profiles/me', params: { format: :json, access_token: access_token }
-        expect(response).to be_success
+        get '/api/v1/profiles/me', params: { format: :json, access_token: access_token.token }
+        expect(response.status).to eq 200
       end
     end
   end
