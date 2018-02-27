@@ -5,7 +5,6 @@ require 'capybara/email/rspec'
 require 'shoulda/matchers'
 require 'pry'
 require 'cancan/matchers'
-require 'doorkeeper'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
