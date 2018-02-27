@@ -8,7 +8,7 @@ feature 'User can cancel his choise', %q{
 
   given(:author_of_question)  { create(:user) }
   given(:author_of_answer)    { create(:user) }
-  given(:question)            { create(:question, user: author_of_question) }
+  given!(:question)            { create(:question, user: author_of_question) }
   given!(:answer)             { create(:answer, user: author_of_answer, question: question) }
 
   describe 'Authenticated user' do
