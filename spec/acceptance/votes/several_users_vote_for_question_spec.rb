@@ -13,13 +13,6 @@ feature 'Several users votes for the question', %q{
   given(:question)            { create(:question, user: author_of_question) }
 
   scenario 'The multi-user voting pressuresa in the ranking of question', js: true do
-    sign_in author_of_question
-    visit question_path(question)
-    within ".question" do
-      click_on 'like'
-    end
-    sign_out
-
     sign_in some_other_user
     visit question_path(question)
     within ".question" do
@@ -44,7 +37,7 @@ feature 'Several users votes for the question', %q{
     visit question_path(question)
 
     within ".question_votes_count_#{question.id}" do
-      expect(page).to have_content 2
+      expect(page).to have_content 1
     end
   end
 end

@@ -7,11 +7,12 @@ feature 'User can cancel his choise, when votes for question', %q{
 } do
 
   given(:author_of_question)  { create(:user) }
+  given(:other_user)          { create(:user) }
   given!(:question)           { create(:question, user: author_of_question) }
 
   describe 'Authenticated user' do
     before do
-      sign_in author_of_question
+      sign_in other_user
       visit question_path(question)
     end
 
