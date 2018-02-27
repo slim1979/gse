@@ -4,6 +4,13 @@ Rails.application.routes.draw do
   devise_scope :user do
     post 'emails', to: 'omniauth_callbacks#request_email'
   end
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
   resources :attaches
   resources :authorizations do
     get :confirm_email, on: :member
