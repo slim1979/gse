@@ -35,6 +35,7 @@ describe Ability do
     it { should be_able_to :manage, attach }
     it { should be_able_to :vote, other_question }
     it { should be_able_to :vote, other_answer }
+    it { should be_able_to :load, :profile }
 
     it { should_not be_able_to :vote, question }
     it { should_not be_able_to :vote, answer }
@@ -48,13 +49,12 @@ describe Ability do
     [Question, Answer, Comment].each do |klass|
       context klass do
         it { should be_able_to :create, klass }
-        unless klass == Vote
-          it { should be_able_to :update, send(klass.name.underscore), user: user }
-          it { should_not be_able_to :update, send("other_#{klass.name.downcase}"), user: user }
 
-          it { should be_able_to :destroy, send(klass.name.underscore), user: user }
-          it { should_not be_able_to :destroy, send("other_#{klass.name.downcase}"), user: user }
-        end
+        it { should be_able_to :update, send(klass.name.underscore), user: user }
+        it { should_not be_able_to :update, send("other_#{klass.name.downcase}"), user: user }
+
+        it { should be_able_to :destroy, send(klass.name.underscore), user: user }
+        it { should_not be_able_to :destroy, send("other_#{klass.name.downcase}"), user: user }
       end
     end
   end
