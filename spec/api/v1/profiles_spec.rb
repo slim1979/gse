@@ -13,6 +13,7 @@ describe 'Profile API' do
         expect(response.status).to eq 401
       end
     end
+
     context 'authorized' do
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token) }
