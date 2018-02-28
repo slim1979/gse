@@ -36,6 +36,7 @@ describe Ability do
     it { should be_able_to :vote, other_question }
     it { should be_able_to :vote, other_answer }
     it { should be_able_to :load, :profile }
+    it { should be_able_to :load, :users_list }
 
     it { should_not be_able_to :vote, question }
     it { should_not be_able_to :vote, answer }

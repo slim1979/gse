@@ -25,6 +25,7 @@ class Ability
     can :assign_best, Answer, question: { user_id: user.id }
     can :manage, Attach, attachable: { user_id: user.id }
     can :load, :profile
+    can :load, :users_list
   end
 
   def admin_abilities
