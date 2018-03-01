@@ -1,18 +1,20 @@
 require 'rails_helper'
-
-describe 'GET index' do
-  describe 'unauthorized' do
-    it "return 401 status if there is no access token on index" do
-      get '/api/v1/questions', params: { format: :json }
+%w[/ /show].each do |path|
+  describe 'Unauthorized' do
+    it "return 401 status if there is no access token on #{path}" do
+      get "/api/v1/questions#{path}", params: { format: :json }
       expect(response.status).to eq 401
     end
 
-    it "return 401 status if access token is invalid on index" do
-      get '/api/v1/questions', params: { format: :json, access_token: '1213131' }
+    it "return 401 status if access token is invalid on #{path}" do
+      get "/api/v1/questions#{path}", params: { format: :json, access_token: '1213131' }
       expect(response.status).to eq 401
     end
   end
+end
 
+
+describe 'GET index' do
   describe 'authorized' do
     let(:access_token) { create(:access_token) }
     let(:user)         { create(:user) }
@@ -48,4 +50,8 @@ describe 'GET index' do
       end
     end
   end
+end
+
+describe 'GET show' do
+
 end
