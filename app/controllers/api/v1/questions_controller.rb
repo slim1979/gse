@@ -6,4 +6,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     @questions = Question.all
     respond_with @questions
   end
+
+  def show
+  end
 end
