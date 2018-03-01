@@ -1,4 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  before_action :load_question, only: %i[show edit update destroy]
 
   authorize_resource
 
@@ -8,5 +9,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
+    respond_with @question
+  end
+
+  private
+
+  def load_question
+    @question = Question.find(params[:id])
   end
 end
