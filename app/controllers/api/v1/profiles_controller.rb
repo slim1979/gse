@@ -8,10 +8,4 @@ class Api::V1::ProfilesController < Api::V1::BaseController
     authorize! :load, :users_list
     respond_with(@users = User.where.not(id: current_resource_owner.id))
   end
-
-  protected
-
-  def current_ability
-    @current_ability ||= Ability.new(current_resource_owner)
-  end
 end
