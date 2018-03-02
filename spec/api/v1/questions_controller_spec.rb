@@ -72,9 +72,12 @@ describe 'Questions API' do
   end
 
   describe 'POST create' do
+    let(:valid_post_create)  { post '/api/v1/questions', params: { format: :json, question: attributes_for(:question), user: user, access_token: access_token.token } }
+    let(:invalid_post_create){ post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user } }
+
     context 'with valid attributes' do
       before do
-        post '/api/v1/questions', params: { format: :json, question: attributes_for(:question), user: user, access_token: access_token.token }
+        valid_post_create
       end
 
       it 'return status 200' do
@@ -93,7 +96,7 @@ describe 'Questions API' do
     end
     context 'with invalid attributes' do
       before do
-        post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user }
+        invalid_post_create
       end
 
       it 'return status unprocessible entity' do
@@ -101,7 +104,7 @@ describe 'Questions API' do
       end
 
       it 'will not create question' do
-        expect{ post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user } }.to_not change(Question, :count)
+        expect{ invalid_post_create }.to_not change(Question, :count)
       end
     end
   end
