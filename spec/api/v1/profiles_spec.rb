@@ -45,18 +45,4 @@ describe 'Profile API' do
       end
     end
   end
-
-  describe 'unauthorized' do
-    %w[/me /].each do |path|
-      it "return 401 status if there is no access token on #{path}" do
-        get "/api/v1/profiles#{path}", params: { format: :json }
-        expect(response.status).to eq 401
-      end
-
-      it "return 401 status if access token is invalid on #{path}" do
-        get "/api/v1/profiles#{path}", params: { format: :json, access_token: '1213131' }
-        expect(response.status).to eq 401
-      end
-    end
-  end
 end
