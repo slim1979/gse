@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         get :me, on: :collection
       end
       resources :questions do
-        resources :answers, shallow: true
+        resources :answers
       end
     end
   end
