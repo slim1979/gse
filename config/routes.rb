@@ -1,21 +1,29 @@
 Rails.application.routes.draw do
   use_doorkeeper
+
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+
   devise_scope :user do
     post 'emails', to: 'omniauth_callbacks#request_email'
   end
+
   namespace :api do
     namespace :v1 do
       resources :profiles do
         get :me, on: :collection
       end
-      resources :questions
+      resources :questions do
+        resources :answers, shallow: true
+      end
     end
   end
+
   resources :attaches
+
   resources :authorizations do
     get :confirm_email, on: :member
   end
+
   resources :questions do
     resources :votes, shallow: true
     resources :comments
@@ -25,6 +33,7 @@ Rails.application.routes.draw do
       resources :votes, shallow: true
     end
   end
+
   root 'questions#index'
   mount ActionCable.server => '/cable'
 end
