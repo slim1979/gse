@@ -78,4 +78,42 @@ describe 'Answers API' do
       end
     end
   end
+
+  describe 'POST create' do
+    let(:valid_post_create) { post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: attributes_for(:answer), user: user, access_token: access_token.token } }
+    let(:invalid_post_create) { post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: { body: nil }, user: user, access_token: access_token.token } }
+
+    context 'with valid attributes' do
+      before do
+        valid_post_create
+      end
+
+      it 'return status 200' do
+        success_response
+      end
+
+      it 'return question object' do
+        expect { post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: attributes_for(:answer), user: user, access_token: access_token.token } }.to change(Answer, :count).by(1)
+      end
+
+      %w[id body created_at updated_at votes_count user_id].each do |attrib|
+        it "contain question #{attrib}" do
+          expect(response.body).to be_json_eql(Answer.last.send(attrib.to_sym).to_json).at_path("answer/#{attrib}")
+        end
+      end
+    end
+    context 'with invalid attributes' do
+      before do
+        invalid_post_create
+      end
+
+      it 'return status unprocessible entity' do
+        expect(response.status).to eq 422
+      end
+
+      it 'will not create question' do
+        expect{ invalid_post_create }.to_not change(Answer, :count)
+      end
+    end
+  end
 end
