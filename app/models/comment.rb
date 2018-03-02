@@ -3,7 +3,7 @@ class Comment < ApplicationRecord
   belongs_to :commented, polymorphic: true
 
   validates :body, :user, presence: true
-
+  default_scope { order(id: 'ASC') }
   after_create :publish_comment
 
   private
