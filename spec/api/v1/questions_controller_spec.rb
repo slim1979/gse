@@ -59,7 +59,7 @@ describe 'Questions API' do
       end
     end
 
-    %w[answers comments attaches].each do |path|
+    %w[comments attaches].each do |path|
       it "contain #{path}" do
         expect(response.body).to have_json_size(1).at_path("question/#{path}")
       end
