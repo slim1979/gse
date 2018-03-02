@@ -3,6 +3,8 @@ class Attach < ApplicationRecord
 
   mount_uploader :file, FileUploader
 
+  default_scope { order(id: 'ASC') }
+
   validates :file, presence: true
 
   after_destroy_commit :destroy_attaches
