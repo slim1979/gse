@@ -12,9 +12,18 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     respond_with @question, serializer: QuestionWithoutAnswersSerializer, root: 'question'
   end
 
+  def create
+    @question = current_resource_owner.questions.create(question_params)
+    respond_with @question
+  end
+
   private
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def question_params
+    params.require(:question).permit(:title, :body, :best_answer, attaches_attributes: %i[id _destroy file])
   end
 end
