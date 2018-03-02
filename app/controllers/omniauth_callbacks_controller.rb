@@ -8,7 +8,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def request_email
-    authorization_with(session['devise.omniauth_data'], email_params[:address])
+    authorization_with(session['devise.omniauth_data'], params[:address])
   end
 
   private
@@ -41,9 +41,5 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user.send_confirmation_email(user, authorization)
       render 'omniauth_callbacks/send_confirmation_email', locals: { email: user.email }
     end
-  end
-
-  def email_params
-    params.require(:email).permit(:address)
   end
 end
