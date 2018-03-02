@@ -1,17 +1,22 @@
 require 'rails_helper'
 
 describe 'Questions API' do
+  let(:access_token) { create(:access_token) }
+  let(:user)         { create(:user) }
+  let!(:questions)   { create_list(:question, 4, user: user) }
+  let!(:question)    { questions.first }
+  let!(:answer)      { create(:answer, question: question, user: user) }
+
+  def success_response
+    expect(response).to be_success
+  end
+
   describe 'GET index' do
-    let(:access_token) { create(:access_token) }
-    let(:user)         { create(:user) }
-    let!(:questions)   { create_list(:question, 4, user: user) }
-    let(:question)     { questions.first }
-    let!(:answer)      { create(:answer, question: question, user: user) }
 
     before { get '/api/v1/questions', params: { format: :json, access_token: access_token.token} }
 
     it 'will return status 200' do
-      expect(response).to be_success
+      success_response
     end
 
     it 'returns list of questions' do
@@ -38,10 +43,6 @@ describe 'Questions API' do
   end
 
   describe 'GET show' do
-    let(:access_token) { create(:access_token) }
-    let(:user)         { create(:user) }
-    let!(:question)    { create(:question, user: user) }
-    let!(:answer)      { create(:answer, question: question, user: user) }
     let!(:comment)     { create(:comment, commented: question, user: user) }
     let!(:attach)      { create(:attach, attachable: question) }
 
@@ -50,7 +51,7 @@ describe 'Questions API' do
     end
 
     it 'return status 200' do
-      expect(response).to be_success
+      success_response
     end
 
     %w[id title body created_at updated_at].each do |attr|
@@ -67,6 +68,41 @@ describe 'Questions API' do
 
     it 'attachment object contains url' do
       expect(response.body).to be_json_eql(attach.file.url.to_json).at_path('question/attaches/0/file/url')
+    end
+  end
+
+  describe 'POST create' do
+    context 'with valid attributes' do
+      before do
+        post '/api/v1/questions', params: { format: :json, question: attributes_for(:question), user: user, access_token: access_token.token }
+      end
+
+      it 'return status 200' do
+        success_response
+      end
+
+      it 'return question object' do
+        expect { post '/api/v1/questions', params: { format: :json, question: attributes_for(:question), user: user, access_token: access_token.token } }.to change(Question, :count).by(1)
+      end
+
+      %w[id title body created_at updated_at votes_count user_id].each do |attrib|
+        it "contain question #{attrib}" do
+          expect(response.body).to be_json_eql(Question.last.send(attrib.to_sym).to_json).at_path("question/#{attrib}")
+        end
+      end
+    end
+    context 'with invalid attributes' do
+      before do
+        post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user }
+      end
+
+      it 'return status unprocessible entity' do
+        expect(response.status).to eq 422
+      end
+
+      it 'will not create question' do
+        expect{ post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user } }.to_not change(Question, :count)
+      end
     end
   end
 end
