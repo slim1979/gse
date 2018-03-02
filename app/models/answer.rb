@@ -7,6 +7,8 @@ class Answer < ApplicationRecord
   has_many :votes, as: :subject, dependent: :destroy
   has_many :comments, as: :commented, dependent: :destroy
 
+  default_scope { order(id: 'ASC') }
+
   validates :body, presence: true
 
   accepts_nested_attributes_for :attaches, reject_if: proc { |attrib| attrib['file'].nil? }
