@@ -1,0 +1,6 @@
+class QuestionWithoutAnswersSerializer < ActiveModel::Serializer
+  attributes :id, :title, :body, :created_at, :updated_at, :user_id, :votes_count
+
+  has_many :comments
+  has_many :attaches
+end
