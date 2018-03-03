@@ -36,30 +36,21 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question: attributes_for(:question) }, format: :js }
-    let(:invalid_post_create) { post :create, params: { question: attributes_for(:invalid_question) }, format: :js }
-
-    context 'with valid attributes' do
-      it 'saves new question to DB' do
-        expect { valid_post_create }.to change(Question, :count).by(1)
-      end
-
-      it 'will return status 200 OK' do
-        valid_post_create
-        expect(response).to be_success
-      end
-
-      it 'will render create template' do
-        valid_post_create
-        expect(response).to render_template :create
-      end
+    def valid_post_create
+      post :create, params: { question: attributes_for(:question) }, format: :js
     end
 
-    it_behaves_like 'Create with invalid attributes'
+    def invalid_post_create
+      post :create, params: { question: attributes_for(:invalid_question) }, format: :js
+    end
 
     def load_params
-      @request_params = { request: invalid_post_create, object: Question, render: :create }
+      @shared_params = { object: Question, render: :create }
     end
+
+    it_behaves_like 'Create with valid attributes'
+
+    it_behaves_like 'Create with invalid attributes'
   end
 
   describe 'PATCH #update question by it autor' do

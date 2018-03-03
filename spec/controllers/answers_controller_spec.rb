@@ -9,29 +9,28 @@ RSpec.describe AnswersController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
-    let(:valid_post_create) { post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js } }
-    let(:invalid_post_create) { post :create, params: { question_id: question, answer: { body: nil }, format: :js } }
+    def valid_post_create
+      post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
+    end
+
+    def invalid_post_create
+      post :create, params: { question_id: question, answer: { body: nil }, format: :js }
+    end
 
     context 'with valid attributes' do
-      it 'saves answer to database' do
-        expect { valid_post_create }.to change(question.answers, :count).by(1)
-      end
+      it_behaves_like 'Create with valid attributes'
 
-      it 'will return status 200' do
-        valid_post_create
-        expect(response).to be_success
-      end
-
-      it 'will render answers/_new_answer template' do
-        valid_post_create
-        expect(response).to render_template "answers/_new_answer"
+      def load_params
+        @shared_params = { object: question.answers, render: "answers/_new_answer" }
       end
     end
 
-    it_behaves_like 'Create with invalid attributes'
+    context 'with invalid attributes' do
+      it_behaves_like 'Create with invalid attributes'
 
-    def load_params
-      @request_params = { request: invalid_post_create, object: Answer, render: :create }
+      def load_params
+        @shared_params = { object: Answer, render: :create }
+      end
     end
   end
 
