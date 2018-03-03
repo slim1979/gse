@@ -16,6 +16,8 @@ describe 'Answers API' do
 
   describe 'GET index' do
 
+    it_behaves_like 'Unauthorized'
+
     before do
       get "/api/v1/questions/#{question.id}/answers", params: { format: :json, access_token: access_token.token }
     end
@@ -33,9 +35,19 @@ describe 'Answers API' do
         expect(response.body).to be_json_eql(answer.send(attrib.to_sym).to_json).at_path("answers/0/#{attrib}")
       end
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}/answers", params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET show' do
+    it_behaves_like 'Unauthorized'
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}/answers/#{answer.id}", params: { format: :json }.merge(options)
+    end
+
     before do
       get "/api/v1/questions/#{question.id}/answers/#{answer.id}", params: { format: :json, access_token: access_token.token }
     end
@@ -82,6 +94,11 @@ describe 'Answers API' do
   describe 'POST create' do
     let(:valid_post_create) { post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: attributes_for(:answer), user: user, access_token: access_token.token } }
     let(:invalid_post_create) { post "/api/v1/questions/#{question.id}/answers", params: { format: :json, answer: { body: nil }, user: user, access_token: access_token.token } }
+    it_behaves_like 'Unauthorized'
+
+    def do_request(options = {})
+      post "/api/v1/questions/#{question.id}/answers", params: { format: :json }.merge(options)
+    end
 
     context 'with valid attributes' do
       before do

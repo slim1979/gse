@@ -13,6 +13,8 @@ describe 'Questions API' do
 
   describe 'GET index' do
 
+    it_behaves_like 'Unauthorized'
+
     before { get '/api/v1/questions', params: { format: :json, access_token: access_token.token} }
 
     it 'will return status 200' do
@@ -40,11 +42,17 @@ describe 'Questions API' do
         end
       end
     end
+
+    def do_request(options = {})
+      get '/api/v1/questions', params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET show' do
     let!(:comment)     { create(:comment, commented: question, user: user) }
     let!(:attach)      { create(:attach, attachable: question) }
+
+    it_behaves_like 'Unauthorized'
 
     before do
       get "/api/v1/questions/#{question.id}", params: { format: :json, access_token: access_token.token }
@@ -69,11 +77,16 @@ describe 'Questions API' do
     it 'attachment object contains url' do
       expect(response.body).to be_json_eql(attach.file.url.to_json).at_path('question/attaches/0/file/url')
     end
+
+    def do_request(options = {})
+      get "/api/v1/questions/#{question.id}", params: { format: :json }.merge(options)
+    end
   end
 
   describe 'POST create' do
     let(:valid_post_create)  { post '/api/v1/questions', params: { format: :json, question: attributes_for(:question), user: user, access_token: access_token.token } }
     let(:invalid_post_create){ post '/api/v1/questions', params: { format: :json, question: attributes_for(:invalid_question), access_token: access_token.token, user: user } }
+    it_behaves_like 'Unauthorized'
 
     context 'with valid attributes' do
       before do
@@ -106,6 +119,10 @@ describe 'Questions API' do
       it 'will not create question' do
         expect{ invalid_post_create }.to_not change(Question, :count)
       end
+    end
+
+    def do_request(options = {})
+      post '/api/v1/questions', params: { format: :json }.merge(options)
     end
   end
 end
