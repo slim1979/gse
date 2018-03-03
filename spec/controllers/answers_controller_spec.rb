@@ -16,20 +16,22 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves answer to database' do
         expect { valid_post_create }.to change(question.answers, :count).by(1)
       end
-      it 'redirect to show' do
+
+      it 'will return status 200' do
+        valid_post_create
+        expect(response).to be_success
+      end
+
+      it 'will render answers/_new_answer template' do
         valid_post_create
         expect(response).to render_template "answers/_new_answer"
       end
     end
 
-    context 'with invalid attributes' do
-      it 'does not save answer to db' do
-        expect { invalid_post_create }.to_not change(Answer, :count)
-      end
-      it 'will return unprocessable entity error' do
-        invalid_post_create
-        expect(response.status).to eq 200
-      end
+    it_behaves_like 'Create with invalid attributes'
+
+    def load_params
+      @request_params = { request: invalid_post_create, object: Answer, render: :create }
     end
   end
 

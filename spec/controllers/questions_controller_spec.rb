@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:user2) { create(:user) }
-  let(:question) { create(:question, user: @user) }
+  let(:user2)     { create(:user) }
   # the better way to assign variable instead of @questions = FactoryBot.create_list etc...
   # FactoryBot. no longer needed, since we add config.include FactoryBot::Syntax::Methods in rails_helper.rb
   let(:questions) { create_list(:question, 2, user: @user) }
-  let(:answer) { create(:answer, question: question, user: @user) }
-  let(:attach) { create(:attach, attachable: question) }
+  let(:question)  { questions.first }
+  let(:answer)    { create(:answer, question: question, user: @user) }
+  let(:attach)    { create(:attach, attachable: question) }
 
   sign_in_user
 
@@ -41,24 +41,24 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'saves new question to DB' do
-        # attributes_for returns a hash of attributes from factory girl
-        # which is create a question object
         expect { valid_post_create }.to change(Question, :count).by(1)
       end
+
       it 'will return status 200 OK' do
         valid_post_create
-        expect(response.status).to eq 200
+        expect(response).to be_success
+      end
+
+      it 'will render create template' do
+        valid_post_create
+        expect(response).to render_template :create
       end
     end
 
-    context 'with invalid attributes' do
-      it 'does not save the new question to DB' do
-        expect { invalid_post_create }.to_not change(Question, :count)
-      end
-      it 're-renders new template' do
-        invalid_post_create
-        expect(response).to render_template :create
-      end
+    it_behaves_like 'Create with invalid attributes'
+
+    def load_params
+      @request_params = { request: invalid_post_create, object: Question, render: :create }
     end
   end
 
