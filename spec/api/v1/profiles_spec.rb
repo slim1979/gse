@@ -2,7 +2,10 @@ require 'rails_helper'
 
 describe 'Profile API' do
   describe 'GET /me' do
+
     context 'authorized' do
+      it_behaves_like 'Unauthorized'
+
       let(:me) { create(:user) }
       let(:access_token) { create(:access_token, resource_owner_id: me.id) }
       before do
@@ -22,12 +25,18 @@ describe 'Profile API' do
         it "does not contain #{kind}" do
           expect(response.body).to_not have_json_path(kind)
         end
+
+        def do_request(options = {})
+          get '/api/v1/profiles/me', params: { format: :json }.merge(options)
+        end
       end
     end
   end
 
   describe 'GET index' do
     context 'authorized' do
+      it_behaves_like 'Unauthorized'
+
       let!(:users) { create_list(:user, 5) }
       let(:access_token) { create(:access_token, resource_owner_id: users[0].id) }
 
@@ -42,6 +51,9 @@ describe 'Profile API' do
       it 'contain users list, except current user' do
         expect(response.body).to be_json_eql(users[1..4].to_json).at_path('profiles')
         expect(response.body).to_not be_json_eql(users[0].to_json).at_path('profiles')
+      end
+      def do_request(options={})
+        get '/api/v1/profiles/', params: { format: :json }.merge(options)
       end
     end
   end
