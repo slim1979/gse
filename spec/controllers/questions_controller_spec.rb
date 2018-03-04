@@ -54,33 +54,18 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update question by it autor' do
-    context 'valid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question) }, format: :js }
+    it_behaves_like 'Update by author'
 
-      it 'assigns request question to @question' do
-        expect(assigns(:question)).to eq question
-      end
-      it 'change question attributes' do
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
-        question.reload
-        expect(question.title).to eq 'new title'
-        expect(question.body).to eq 'new body'
-      end
+    def valid_patch_update
+      patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
     end
 
-    context 'invalid attributes' do
-      before { patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :js }
+    def invalid_patch_update
+      patch :update, params: { id: question, question: { title: nil, body: nil } }, format: :js
+    end
 
-      it 'does not change question attributes' do
-        question.reload
-        expect(question.title).to_not eq nil
-        expect(question.title).to eq question.title
-        expect(question.body).to_not eq nil
-        expect(question.body).to eq question.body
-      end
-      it 're-render edit template' do
-        expect(response).to render_template 'update'
-      end
+    def load_params
+      @shared_params = { object: question, attributes: %w[title body] }
     end
   end
 

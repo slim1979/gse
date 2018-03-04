@@ -35,25 +35,36 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATСH #update' do
-    context 'Answer by it author' do
-      it 'assign answer to @answer' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-        expect(assigns(:answer)).to eq answer
-      end
-      it 'change answer body' do
-        patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
-        answer.reload
-        expect(answer.body).to eq 'some new text'
-      end
-      it 'will have status 200 OK' do
-        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-        answer.reload
-        expect(response.status).to eq 200
-        # parsed_body = JSON.parse(response.body)
-        # expect(parsed_body['answer']['id']).to eq answer.id
-        # expect(parsed_body['answer']['body']).to eq answer.body
-      end
+
+    def valid_patch_update
+      patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
     end
+
+    it_behaves_like 'Update by author'
+
+    def load_params
+      @shared_params = { object: answer, attributes: ['body'] }
+    end
+
+    # context 'Answer by it author' do
+    #   it 'assign answer to @answer' do
+    #     patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+    #     expect(assigns(:answer)).to eq answer
+    #   end
+    #   it 'change answer body' do
+    #     patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
+    #     answer.reload
+    #     expect(answer.body).to eq 'some new text'
+    #   end
+    #   it 'will have status 200 OK' do
+    #     patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+    #     answer.reload
+    #     expect(response.status).to eq 200
+    #     # parsed_body = JSON.parse(response.body)
+    #     # expect(parsed_body['answer']['id']).to eq answer.id
+    #     # expect(parsed_body['answer']['body']).to eq answer.body
+    #   end
+    # end
     context 'Answer by someone else' do
       it 'will not change answer body' do
         sign_out @user
