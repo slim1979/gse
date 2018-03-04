@@ -9,6 +9,8 @@ RSpec.describe AnswersController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
+    it_behaves_like 'POST #create'
+
     def valid_post_create
       post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
     end
@@ -17,63 +19,20 @@ RSpec.describe AnswersController, type: :controller do
       post :create, params: { question_id: question, answer: { body: nil }, format: :js }
     end
 
-    context 'with valid attributes' do
-      it_behaves_like 'Create with valid attributes'
-
-      def load_params
-        @shared_params = { object: question.answers, render: "answers/_new_answer" }
-      end
-    end
-
-    context 'with invalid attributes' do
-      it_behaves_like 'Create with invalid attributes'
-
-      def load_params
-        @shared_params = { object: Answer, render: :create }
-      end
+    def load_params
+      @shared_params = { object: question.answers, render: "answers/_new_answer" }
     end
   end
 
   describe 'PATСH #update' do
+    it_behaves_like 'PATCH #update'
 
     def valid_patch_update
       patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
     end
 
-    it_behaves_like 'Update by author'
-
     def load_params
       @shared_params = { object: answer, attributes: ['body'] }
-    end
-
-    # context 'Answer by it author' do
-    #   it 'assign answer to @answer' do
-    #     patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-    #     expect(assigns(:answer)).to eq answer
-    #   end
-    #   it 'change answer body' do
-    #     patch :update, params: { id: answer, answer: { body: 'some new text' }, format: :js }
-    #     answer.reload
-    #     expect(answer.body).to eq 'some new text'
-    #   end
-    #   it 'will have status 200 OK' do
-    #     patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-    #     answer.reload
-    #     expect(response.status).to eq 200
-    #     # parsed_body = JSON.parse(response.body)
-    #     # expect(parsed_body['answer']['id']).to eq answer.id
-    #     # expect(parsed_body['answer']['body']).to eq answer.body
-    #   end
-    # end
-    context 'Answer by someone else' do
-      it 'will not change answer body' do
-        sign_out @user
-        sign_in user2
-        patch :update, params: { id: answer, answer: { body: 'someone else new text' }, format: :js }
-        answer.reload
-        expect(answer.body).to_not eq 'someone else new text'
-        expect(answer.body).to eq answer.body
-      end
     end
   end
 

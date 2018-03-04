@@ -27,15 +27,15 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assign request question to @question' do
       expect(assigns(:question)).to eq question
     end
-    # it 'build new attachment to answer' do
-    #   expect(assigns(:answer).attaches.first).to be_a_new(Attach)
-    # end
+
     it 'renders show template' do
       expect(response).to render_template :show
     end
   end
 
   describe 'POST #create' do
+    it_behaves_like 'POST #create'
+
     def valid_post_create
       post :create, params: { question: attributes_for(:question) }, format: :js
     end
@@ -47,14 +47,10 @@ RSpec.describe QuestionsController, type: :controller do
     def load_params
       @shared_params = { object: Question, render: :create }
     end
-
-    it_behaves_like 'Create with valid attributes'
-
-    it_behaves_like 'Create with invalid attributes'
   end
 
-  describe 'PATCH #update question by it autor' do
-    it_behaves_like 'Update by author'
+  describe 'PATCH #update' do
+    it_behaves_like 'PATCH #update'
 
     def valid_patch_update
       patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
@@ -66,25 +62,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     def load_params
       @shared_params = { object: question, attributes: %w[title body] }
-    end
-  end
-
-  describe 'PATCH #update question by authenticated someone else' do
-    context 'with valid attributes' do
-      before do
-        sign_out @user
-        sign_in user2
-
-        patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
-      end
-
-      it 'will not change question attributes' do
-        question.reload
-        expect(question.title).to_not eq 'new title'
-        expect(question.body).to_not eq 'new body'
-        expect(question.title).to eq question.title
-        expect(question.body).to eq question.body
-      end
     end
   end
 
