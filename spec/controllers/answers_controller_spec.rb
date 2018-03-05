@@ -9,7 +9,7 @@ RSpec.describe AnswersController, type: :controller do
   sign_in_user
 
   describe 'POST #create' do
-    it_behaves_like 'POST #create'
+    it_behaves_like 'POST #create', 'answer'
 
     def valid_post_create
       post :create, params: { question_id: question, answer: attributes_for(:answer), format: :js }
@@ -25,7 +25,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATСH #update' do
-    it_behaves_like 'PATCH #update'
+    it_behaves_like 'PATCH #update', 'answer'
 
     def valid_patch_update
       patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
@@ -40,7 +40,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'choise by question author' do
       before { patch :assign_best, params: { id: answer, answer: attributes_for(:answer) }, format: :js }
 
-      it 'assigns request question to @question' do
+      it 'assigns request answer to @answer' do
         expect(assigns(:answer)).to eq answer
       end
       it 'change answer attributes' do
@@ -68,31 +68,14 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    context 'Answer by Author' do
-      it 'will decrease answers count' do
-        answer
-        expect { delete :destroy, params: { id: answer }, format: :js }.to change(question.answers, :count).by(-1)
-      end
+    it_behaves_like 'DELETE #destroys', 'question'
+
+    def delete_destroy
+      delete :destroy, params: { id: answer }, format: :js
     end
-    context 'Answer by other author' do
-      it 'will not decrease answers count' do
-        answer
-        sign_out @user
-        sign_in user2
-        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
-      end
-    end
-    context 'Answer by unauthenticated user' do
-      it 'will not decrease answers count' do
-        answer
-        sign_out @user
-        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
-      end
-      it 'will redirect to question' do
-        sign_out @user
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to new_user_session_path
-      end
+
+    def load_params
+      @shared_params = { object: answer, attributes: [] }
     end
   end
 end
