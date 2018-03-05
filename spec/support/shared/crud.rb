@@ -13,14 +13,13 @@ def attributes_not_changed
   end
 end
 
-shared_examples 'POST #create' do
-  context 'with valid attributes' do
-    before do
-      assign_attributes
-      valid_post_create
-    end
+RSpec.shared_examples 'POST #create' do |param|
+  before { assign_attributes }
 
-    it 'saves new question to DB' do
+  context 'with valid attributes' do
+    before { valid_post_create }
+
+    it "saves new #{param} to DB" do
       expect { valid_post_create }.to change(@object, :count).by(1)
     end
 
@@ -28,18 +27,15 @@ shared_examples 'POST #create' do
       expect(response).to be_success
     end
 
-    it "will render create template #{@render}" do
-      expect(response).to render_template @render
+    it 'will render create template create' do
+      expect(response).to render_template :create
     end
   end
 
   context 'with invalid attributes' do
-    before do
-      assign_attributes
-      invalid_post_create
-    end
+    before { invalid_post_create }
 
-    it 'does not save the new question to DB' do
+    it "does not save the new #{param} to DB" do
       expect { invalid_post_create }.to_not change(@object, :count)
     end
 
@@ -49,13 +45,14 @@ shared_examples 'POST #create' do
   end
 end
 
-shared_examples 'PATCH #update' do
+RSpec.shared_examples 'PATCH #update' do |param|
   before { assign_attributes }
+
   describe 'by author' do
     context 'valid attributes' do
       before { valid_patch_update }
 
-      it 'assigns request question to @question' do
+      it "assigns request #{param} to @#{param}" do
         expect(assigns(@object.class.name.downcase.to_sym)).to eq @object
       end
 
@@ -64,7 +61,7 @@ shared_examples 'PATCH #update' do
         expect(response.status).to eq 200
       end
 
-      it 'change question attributes' do
+      it "change #{param} attributes" do
         @object.reload
         @attributes.each do |attrib|
           expect(@object.send("#{attrib}")).to eq "new #{attrib}"
@@ -75,11 +72,11 @@ shared_examples 'PATCH #update' do
     context 'invalid attributes' do
       before { valid_patch_update }
 
-      it 'does not change question attributes' do
+      it "does not change #{param} attributes" do
         attributes_not_changed
       end
 
-      it 're-render edit template' do
+      it 're-render edit template update' do
         expect(response).to render_template :update
       end
     end
@@ -91,6 +88,41 @@ shared_examples 'PATCH #update' do
       sign_in user2
       valid_patch_update
       attributes_not_changed
+    end
+  end
+end
+
+RSpec.shared_examples 'DELETE #destroys' do |param|
+  before { assign_attributes }
+  describe 'Object by author' do
+    it "will decrease #{param} count" do
+      expect { delete_destroy }.to change(@object.class, :count).by(-1)
+    end
+
+    it 'redirect to destroy view' do
+      delete :destroy, params: { id: @object }, format: :js
+      expect(response).to render_template :destroy
+    end
+  end
+
+  context "#{param} by other author" do
+    it "will not decrease #{param}s count" do
+      sign_out @user
+      sign_in user2
+      expect { delete :destroy, params: { id: @object }, format: :js }.to_not change(@object.class, :count)
+    end
+  end
+
+  context 'object by unauthenticated user' do
+    it "will not decrease #{param}s count" do
+      sign_out @user
+      expect { delete :destroy, params: { id: @object }, format: :js }.to_not change(@object.class, :count)
+    end
+
+    it "will redirect to log in page" do
+      sign_out @user
+      delete :destroy, params: { id: @object }
+      expect(response).to redirect_to new_user_session_path
     end
   end
 end
