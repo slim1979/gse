@@ -34,7 +34,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    it_behaves_like 'POST #create'
+    it_behaves_like 'POST #create', 'question'
 
     def valid_post_create
       post :create, params: { question: attributes_for(:question) }, format: :js
@@ -50,7 +50,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    it_behaves_like 'PATCH #update'
+    it_behaves_like 'PATCH #update', 'question'
 
     def valid_patch_update
       patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
@@ -66,26 +66,14 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    it_behaves_like 'DELETE #destroys', 'question'
 
-    context 'Question by it author' do
-      before { question }
-
-      it 'delete question' do
-        expect { delete :destroy, params: { id: question }, format: :js }.to change(Question, :count).by(-1)
-      end
-      it 'redirect to index view' do
-        delete :destroy, params: { id: question }, format: :js
-        expect(response).to render_template :destroy
-      end
+    def delete_destroy
+      delete :destroy, params: { id: question }, format: :js
     end
 
-    context 'Question by other author' do
-      before { question }
-
-      it 'will not delete question' do
-        sign_in user2
-        expect { delete :destroy, params: { id: question }, format: :js }.to_not change(Question, :count)
-      end
+    def load_params
+      @shared_params = { object: question, attributes: [] }
     end
   end
 end
