@@ -15,32 +15,20 @@ RSpec.describe VotesController, type: :controller do
 
     before { sign_in user }
 
-    it 'vote \'like\' for answer will increase its rating' do
-      expect {
-        vote_like_for_answer
-        answer.reload
-      }.to change(answer, :votes_count).by(1)
+    context 'answer' do
+      it_behaves_like 'votes', 'answer'
+
+      def load_params
+        @shared_params = { object: answer }
+      end
     end
 
-    it 'vote \'dislike\' for answer will decrease its rating' do
-      expect {
-        vote_dislike_for_answer
-        answer.reload
-      }.to change(answer, :votes_count).by(-1)
-    end
+    context 'question' do
+      it_behaves_like 'votes', 'question'
 
-    it 'vote \'like\' for question will increase its rating' do
-      expect {
-        vote_like_for_question
-        question.reload
-      }.to change(question, :votes_count).by(1)
-    end
-
-    it 'vote \'dislike\' for question will decrease its rating' do
-      expect {
-        vote_dislike_for_question
-        question.reload
-      }.to change(question, :votes_count).by(-1)
+      def load_params
+        @shared_params = { object: question }
+      end
     end
   end
 end
