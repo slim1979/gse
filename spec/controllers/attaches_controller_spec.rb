@@ -10,55 +10,25 @@ RSpec.describe AttachesController, type: :controller do
 
   describe 'DELETE #destroy' do
     context 'question attach' do
-      context 'as an attachable author' do
-        before { sign_in user }
-        it 'assigns request attach to @attach' do
-          delete :destroy, params: { id: question_attach }, format: :json
-          expect(assigns(:attach)).to eq question_attach
-        end
-        it 'reduce attaches count' do
-          question_attach
-          expect { delete :destroy, params: { id: question_attach }, format: :json }.to change(question.attaches, :count).by(-1)
-        end
+      it_behaves_like 'attaches DELETE #destroy'
+
+      def do_request
+        delete :destroy, params: { id: question_attach }, format: :json
       end
-      context 'as another attachable author' do
-        it 'will not reduce attaches count' do
-          sign_in user2
-          question_attach
-          expect { delete :destroy, params: { id: question_attach }, format: :json }.to_not change(Attach, :count)
-        end
-      end
-      context 'as unauthenticated user' do
-        it 'will not reduce attaches count' do
-          question_attach
-          expect { delete :destroy, params: { id: question_attach }, format: :json }.to_not change(Attach, :count)
-        end
+
+      def load_params
+        @shared_params = { object: question, object_attach: question_attach }
       end
     end
     context 'answer attach' do
-      context 'as an attachable author' do
-        before { sign_in user }
-        it 'assigns request attach to @attach' do
-          delete :destroy, params: { id: answer_attach }, format: :json
-          expect(assigns(:attach)).to eq answer_attach
-        end
-        it 'reduce attaches count' do
-          answer_attach
-          expect { delete :destroy, params: { id: answer_attach }, format: :json }.to change(answer.attaches, :count).by(-1)
-        end
+      it_behaves_like 'attaches DELETE #destroy'
+
+      def do_request
+        delete :destroy, params: { id: answer_attach }, format: :json
       end
-      context 'as another attachable author' do
-        it 'will not reduce attaches count' do
-          sign_in user2
-          answer_attach
-          expect { delete :destroy, params: { id: answer_attach }, format: :json }.to_not change(Attach, :count)
-        end
-      end
-      context 'as unauthenticated user' do
-        it 'will not reduce attaches count' do
-          answer_attach
-          expect { delete :destroy, params: { id: answer_attach }, format: :json }.to_not change(Attach, :count)
-        end
+
+      def load_params
+        @shared_params = { object: answer, object_attach: answer_attach }
       end
     end
   end
