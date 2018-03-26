@@ -31,6 +31,10 @@ RSpec.describe AnswersController, type: :controller do
       patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
     end
 
+    def invalid_patch_update
+      patch :update, params: { id: answer, answer: { body: nil }, format: :js }
+    end
+
     def load_params
       @shared_params = { object: answer, attributes: ['body'] }
     end
