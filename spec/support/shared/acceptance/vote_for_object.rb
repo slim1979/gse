@@ -82,3 +82,50 @@ RSpec.shared_examples 'Muliusers votes for' do |param|
     end
   end
 end
+
+RSpec.shared_examples 'Can cancel vote for' do |param|
+  before do
+    sign_in other_user
+    visit question_path(question)
+    load_params
+    @object = @shared_params[:object]
+    @current_votes_count = @object.votes_count
+    expect(@current_votes_count).to eq 0
+  end
+
+  scenario "Can cancel vote for #{param}", js: true do
+    within ".#{param}_vote_box" do
+      click_on 'like'
+    end
+
+    within ".#{param}_votes_count_#{@object.id}" do
+      expect(page).to have_content @current_votes_count + 1
+      @object.reload
+      expect(@object.votes_count).to eq 1
+    end
+
+    within ".#{param}_vote_box" do
+      click_on 'dislike'
+    end
+
+    within ".#{param}_votes_count_#{@object.id}" do
+      expect(page).to have_content @current_votes_count
+    end
+
+    within ".#{param}_vote_box" do
+      click_on 'dislike'
+    end
+
+    within ".#{param}_votes_count_#{@object.id}" do
+      expect(page).to have_content @current_votes_count - 1
+    end
+
+    within ".#{param}_vote_box" do
+      click_on 'like'
+    end
+
+    within ".#{param}_votes_count_#{@object.id}" do
+      expect(page).to have_content @current_votes_count
+    end
+  end
+end

@@ -11,36 +11,10 @@ feature 'User can cancel his choise, when votes for question', %q{
   given!(:question)           { create(:question, user: author_of_question) }
 
   describe 'Authenticated user' do
-    before do
-      sign_in other_user
-      visit question_path(question)
-    end
+    it_behaves_like 'Can cancel vote for', 'question'
 
-    scenario 'vote for the question - canceled his choise', js: true do
-      current_question_votes_count = question.votes_count
-      expect(current_question_votes_count).to eq 0
-
-      click_on 'like'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content current_question_votes_count + 1
-        question.reload
-        expect(question.votes_count).to eq 1
-      end
-
-      click_on 'dislike'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content current_question_votes_count
-      end
-
-      click_on 'dislike'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content current_question_votes_count - 1
-      end
-
-      click_on 'like'
-      within ".question_votes_count_#{question.id}" do
-        expect(page).to have_content current_question_votes_count
-      end
+    def load_params
+      @shared_params = { object: question }
     end
   end
 end
