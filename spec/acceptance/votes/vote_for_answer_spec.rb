@@ -38,11 +38,6 @@ feature 'Votes for answer', %q{
 
 
   describe 'Unauthenticated user' do
-    scenario 'tries to vote for answer' do
-      visit question_path(question)
-
-      expect(page).to_not have_selector '.like'
-      expect(page).to_not have_selector '.dislike'
-    end
+    it_behaves_like 'Cannot vote for', 'answer'
   end
 end
