@@ -21,7 +21,7 @@ feature 'Votes for answer', %q{
     before do
       sign_in author_of_question
       visit question_path(question)
-      @current_answer_votes_count = answer.votes_count
+      @votes_count = answer.votes_count
     end
 
     scenario 'see the \'vote for answer\' buttons' do
@@ -29,40 +29,10 @@ feature 'Votes for answer', %q{
       expect(page).to have_selector '.dislike'
     end
 
-    scenario 'vote for the answer - like - for the first time', js: true do
-      within '.answer' do
-        like
-      end
-      within ".answer_votes_count_#{answer.id}" do
-        expect(page).to have_content @current_answer_votes_count + 1
-      end
-    end
+    it_behaves_like 'Vote for', 'answer'
 
-    scenario 'vote for the answer - dislike - for the first time', js: true do
-      within '.answer' do
-        dislike
-      end
-      within ".answer_votes_count_#{answer.id}" do
-        expect(page).to have_content @current_answer_votes_count - 1
-      end
-    end
-
-    scenario 'vote for the answer - like - the second and subsequent times, by same user will not increase the answer rating', js: true do
-      within '.answer' do
-        3.times { like }
-      end
-      within ".answer_votes_count_#{answer.id}" do
-        expect(page).to have_content 1
-      end
-    end
-
-    scenario 'vote for the answer - dislike - the second and subsequent times will not decrease the answer rating', js: true do
-      within '.answer' do
-        3.times { dislike }
-      end
-      within ".answer_votes_count_#{answer.id}" do
-        expect(page).to have_content(-1)
-      end
+    def load_params
+      @shared_params = { object: answer }
     end
   end
 
