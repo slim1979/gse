@@ -42,11 +42,6 @@ feature 'Votes for question', %q{
   end
 
   describe 'Unauthenticated user' do
-    scenario 'tries to vote for question' do
-      visit question_path(question)
-
-      expect(page).to_not have_link 'like'
-      expect(page).to_not have_link 'dislike'
-    end
+    it_behaves_like 'Cannot vote for', 'question'
   end
 end
