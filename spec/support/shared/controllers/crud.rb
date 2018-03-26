@@ -6,11 +6,20 @@ def assign_attributes
 end
 
 def attributes_not_changed
+  current_value
   @object.reload
   @attributes.each do |attrib|
     expect(@object.send(attrib.to_s)).to_not eq nil
-    expect(@object.send(attrib.to_s)).to eq @object.send("#{attrib}")
+    expect(@object.send(attrib.to_s)).to eq @current_values[attrib.to_s]
   end
+end
+
+def current_value
+  @current_values = {}
+  @attributes.each do |attrib|
+    @current_values[attrib] = @object.send(attrib.to_s)
+  end
+  @current_values
 end
 
 RSpec.shared_examples 'POST #create' do |param|
@@ -70,7 +79,7 @@ RSpec.shared_examples 'PATCH #update' do |param|
     end
 
     context 'invalid attributes' do
-      before { valid_patch_update }
+      before { invalid_patch_update }
 
       it "does not change #{param} attributes" do
         attributes_not_changed
@@ -107,7 +116,6 @@ RSpec.shared_examples 'DELETE #destroys' do |param|
 
   context "#{param} by other author" do
     it "will not decrease #{param}s count" do
-      sign_out @user
       sign_in user2
       expect { delete :destroy, params: { id: @object }, format: :js }.to_not change(@object.class, :count)
     end
