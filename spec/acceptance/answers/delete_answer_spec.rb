@@ -16,17 +16,18 @@ feature 'Delete answer', %q{
       sign_in user
       visit question_path(question)
     end
-    scenario 'sees link to delete answer' do
 
+    scenario 'sees link to delete answer' do
       expect(page).to have_link 'Удалить'
     end
+
     scenario 'tries to delete answer' do
       within '.delete_answer' do
         click_on 'Удалить'
       end
-
       expect(page).to_not have_content answer.body
     end
+
     scenario 're-render question show template', js: true do
       within '.delete_answer' do
         click_on 'Удалить'
@@ -37,8 +38,9 @@ feature 'Delete answer', %q{
       expect(current_path).to eq question_path(question)
     end
   end
+
   describe 'Unauthenticated user' do
-    scenario 'tries to delete someine answer' do
+    scenario 'tries to delete someone answer' do
       visit question_path(question)
 
       expect(page).to_not have_link 'Удалить'
