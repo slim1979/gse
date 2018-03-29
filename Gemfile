@@ -52,6 +52,7 @@ gem 'doorkeeper', '4.2.6'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'redis-server'
+gem 'whenever'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
