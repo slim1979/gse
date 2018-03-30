@@ -6,7 +6,11 @@ feature 'Browse through the questions and its answers', %q(
   I want to be able to see available issues and its solve
 ) do
 
-  casting
+  # casting
+  given!(:user)        { create(:user) }
+  given!(:user1)       { create(:user) }
+  given!(:question3)   { create(:question, user: user1) }
+  given!(:answers3)    { create_list(:answer, 5, question: question3, user: user1) }
 
   scenario 'Authenticated user can browse the question and its answers' do
     sign_in(user)
