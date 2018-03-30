@@ -19,7 +19,7 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscription]
     can :vote, [Answer, Question] { |subject| subject.user_id != user.id }
     can %i[update destroy], [Question, Answer, Comment], user_id: user.id
     can :assign_best, Answer, question: { user_id: user.id }
