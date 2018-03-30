@@ -22,6 +22,9 @@ module Gse
       require 'irb'
       config.console = IRB
     end
+
+    config.active_job.queue_adapter = :sidekiq
+
     config.generators do |g|
       g.test_framework :rspec,
                        fixtures: true,
