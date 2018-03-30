@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.configure do |config|
 
   config.include AcceptanceInstanceHelper, type: :feature
-  config.extend AcceptanceMacros, type: :feature
+  # config.extend AcceptanceMacros, type: :feature
   OmniAuth.config.test_mode = true
   Capybara.javascript_driver = :webkit
   # Capybara.javascript_driver = :poltergeist
