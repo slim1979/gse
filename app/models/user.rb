@@ -10,6 +10,15 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  def self.send_daily_digest
+    questions = Question.created_yesterday.to_a
+    pluck(:email).in_groups_of(100) do |group|
+      group.compact!.each do |email|
+        DailyMailer.digest(email, questions).deliver_later
+      end
+    end
+  end
+
   def author_of?(resource)
     resource.user_id == id
   end
