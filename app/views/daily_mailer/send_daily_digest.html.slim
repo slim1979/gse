@@ -1,0 +1,4 @@
+p За вчерашний день было создано #{@yesterday_questions.count} вопрос(ов)
+p
+  - @yesterday_questions.each do |question|
+    = link_to question.title, question
