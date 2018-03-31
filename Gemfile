@@ -51,7 +51,8 @@ gem 'cancancan'
 gem 'doorkeeper', '4.2.6'
 gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
-gem 'whenever'
+gem 'whenever', require: false
+gem 'sinatra', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
