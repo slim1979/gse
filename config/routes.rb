@@ -1,5 +1,6 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
-  resources :subscriptions
   use_doorkeeper
 
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :subscriptions
   resources :attaches
 
   resources :authorizations do
@@ -37,4 +39,5 @@ Rails.application.routes.draw do
 
   root 'questions#index'
   mount ActionCable.server => '/cable'
+  mount Sidekiq::Web, at: '/sidekiq'
 end
