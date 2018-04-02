@@ -6,6 +6,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:authorizations).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
   # . if class method, # if instance method
   describe 'oauth' do
     let!(:user) { create(:user) }
