@@ -58,12 +58,6 @@ ActiveRecord::Schema.define(version: 20180330124128) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "emails", force: :cascade do |t|
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer "resource_owner_id", null: false
     t.bigint "application_id", null: false
