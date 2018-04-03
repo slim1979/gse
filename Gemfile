@@ -70,6 +70,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'pry-rails'
   gem 'capybara-email'
+  gem 'faker'
 end
 
 group :development do
