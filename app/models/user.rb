@@ -11,9 +11,6 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
-  def self.send_daily_digest
-  end
-
   def author_of?(resource)
     resource.user_id == id
   end
