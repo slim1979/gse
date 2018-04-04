@@ -3,9 +3,11 @@ class Question < ApplicationRecord
 
   belongs_to :user
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   has_many :attaches, as: :attachable, dependent: :destroy
   has_many :votes, as: :subject, dependent: :destroy
   has_many :comments, as: :commented, dependent: :destroy
+
   scope :created_yesterday, -> { where(created_at: (Time.current.localtime.yesterday.beginning_of_day..Time.current.localtime.yesterday.end_of_day)) }
 
   validates :title, :body, presence: true
@@ -25,6 +27,7 @@ class Question < ApplicationRecord
         json: { publish: { question: self, author: user } }
       )
     )
+    CreateQuestionJob.perform_later(user, self)
   end
 
   def update_question
