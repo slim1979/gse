@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+Sidekiq::Testing.inline!
 RSpec.configure do |config|
 
   config.include AcceptanceInstanceHelper, type: :feature
@@ -10,7 +11,6 @@ RSpec.configure do |config|
   # Capybara.current_driver = Capybara.javascript_driver
   Capybara.server = :puma
   config.use_transactional_fixtures = false
-
   config.before(:suite) do
     DatabaseCleaner.clean_with :truncation
     # DatabaseCleaner.strategy = :transaction
