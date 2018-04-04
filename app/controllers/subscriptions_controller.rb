@@ -11,6 +11,6 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     @subscription = Subscription.where(user: current_user, question_id: params[:id]).first
-    respond_with(@subscription.destroy)
+    respond_with(@subscription.destroy) if @subscription
   end
 end
