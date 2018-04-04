@@ -26,17 +26,18 @@ RSpec.shared_examples 'POST #create' do |param|
   before { assign_attributes }
 
   context 'with valid attributes' do
-    before { valid_post_create }
 
     it "saves new #{param} to DB" do
       expect { valid_post_create }.to change(@object, :count).by(1)
     end
 
     it 'will return status 200 OK' do
+      valid_post_create
       expect(response).to be_success
     end
 
     it 'will render create template create' do
+      valid_post_create
       expect(response).to render_template :create
     end
   end
