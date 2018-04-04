@@ -35,6 +35,7 @@ class Answer < ApplicationRecord
         locals: { answer: self }
       )
     )
+    NewAnswerJob.perform_later(self)
   end
 
   def update_answer
@@ -57,4 +58,5 @@ class Answer < ApplicationRecord
       )
     )
   end
+
 end
