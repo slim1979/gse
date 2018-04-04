@@ -23,7 +23,10 @@ div class="question question_#{@question.id}" data-id="#{@question.id}"
     .author.float_left = "Автор: #{@question.user.email}"
     - if current_user
       .manage.comment_link = link_to 'Комментировать','', class: 'new_comment_link', data: { class: ".question_#{@question.id}" }
-    .manage.subscribe = link_to 'Подписаться', subscriptions_path(id: @question), method: :post, remote: true
+      - if Subscription.where(user: current_user, question: @question).first
+        .manage.subscribe = link_to 'Отписаться', subscription_path(@question), method: :delete, remote: true
+      - else
+        .manage.subscribe = link_to 'Подписаться', subscriptions_path(id: @question), method: :post, remote: true
     - if current_user&.author_of?(@question)
       .manage.delete_question = link_to 'Удалить', question_path(@question), method: :delete, remote: true, data: { confirm: 'Вы уверены?' }
       .manage.edit_question =link_to 'Редактировать','', class: 'edit_question_link'
