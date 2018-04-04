@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe SubscriptionsController, type: :controller do
-  let(:user)             { create(:user) }
-  let(:question)         { create(:question, user: user) }
+  let(:user)      { create(:user) }
+  let!(:question) { create(:question) }
 
   sign_in_user
 
