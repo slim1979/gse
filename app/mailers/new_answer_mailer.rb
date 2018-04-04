@@ -1,4 +1,4 @@
-class SendNotificationToSubscribersMailer < ApplicationMailer
+class NewAnswerMailer < ApplicationMailer
   def send_notification(user, question, answer)
     @answer = answer
     @question = question
