@@ -104,34 +104,38 @@ end
 
 RSpec.shared_examples 'DELETE #destroys' do |param|
   before { assign_attributes }
+
   describe 'Object by author' do
     it "will decrease #{param} count" do
       expect { delete_destroy }.to change(@object.class, :count).by(-1)
     end
 
     it 'redirect to destroy view' do
-      delete :destroy, params: { id: @object }, format: :js
+      delete_destroy
       expect(response).to render_template :destroy
     end
   end
 
-  context "#{param} by other author" do
-    it "will not decrease #{param}s count" do
-      sign_in user2
-      expect { delete :destroy, params: { id: @object }, format: :js }.to_not change(@object.class, :count)
-    end
-  end
+  context param.to_s do
+    before { sign_out @user }
 
-  context 'object by unauthenticated user' do
-    it "will not decrease #{param}s count" do
-      sign_out @user
-      expect { delete :destroy, params: { id: @object }, format: :js }.to_not change(@object.class, :count)
+    context 'by other author' do
+      it "will not decrease #{param}s count" do
+        sign_in user2
+        expect { delete_destroy }.to_not change(@object.class, :count)
+      end
     end
 
-    it "will redirect to log in page" do
-      sign_out @user
-      delete :destroy, params: { id: @object }
-      expect(response).to redirect_to new_user_session_path
+    context 'by unauthenticated user' do
+      it "will not decrease #{param}s count" do
+        expect { delete_destroy }.to_not change(@object.class, :count)
+      end
+
+      it 'will redirect to log in page' do
+        delete_destroy
+        expect(response.status).to eq 401
+        expect(response.body).to have_content 'Вам необходимо войти в систему или зарегистрироваться'
+      end
     end
   end
 end
