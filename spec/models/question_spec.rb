@@ -16,10 +16,14 @@ RSpec.describe Question, type: :model do
       expect(Subscription.where(question: question, user: user).count).to eq 1
     end
 
-    it 'should send an thanks email' do
-      message_delivery = instance_double(ActionMailer::MessageDelivery)
-      expect(ThanksMailer).to receive(:send_thanks).and_return(message_delivery)
-      expect(message_delivery).to receive(:deliver_later)
+    it_behaves_like 'deliver_later', 'should send an thanks email'
+
+    def load_params
+      @class = ThanksMailer
+      @method = 'send_thanks'
+    end
+
+    def action
       Question.create(title: 'dsdsd', body: 'dasd0', user: user)
     end
   end
