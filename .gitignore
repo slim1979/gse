@@ -20,4 +20,5 @@ public/uploads
 
 .byebug_history
 /.idea
+/dump.*
 config/database.yml
