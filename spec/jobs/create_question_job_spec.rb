@@ -9,7 +9,9 @@ RSpec.describe CreateQuestionJob, type: :job do
   end
 
   it 'will send an email' do
-    expect(ThanksMailer).to receive(:send_thanks).with(user, question).and_call_original
+    message_delivery = instance_double(ActionMailer::MessageDelivery)
+    expect(ThanksMailer).to receive(:send_thanks).with(user, question).and_return(message_delivery)
+    expect(message_delivery).to receive(:deliver_later)
     CreateQuestionJob.perform_now(user, question)
   end
 end
