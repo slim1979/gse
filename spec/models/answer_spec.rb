@@ -14,7 +14,9 @@ RSpec.describe Answer, type: :model do
     let(:subscription) { create(:subscription, user: user, question: question) }
 
     it 'will send notification to subscribers' do
-      expect(NewAnswerMailer).to receive(:send_notification).and_call_original
+      message_delivery = instance_double(ActionMailer::MessageDelivery)
+      expect(NewAnswerMailer).to receive(:send_notification).and_return(message_delivery)
+      expect(message_delivery).to receive(:deliver_later)
       Answer.create(user: user2, question: question, body: 'adfsdfsdfasd')
     end
   end

@@ -21,13 +21,13 @@ class Question < ApplicationRecord
 
   def publish_question
     return if errors.any?
+    CreateQuestionJob.perform_later(user, self)
     ActionCable.server.broadcast(
       'questions',
       ApplicationController.render(
         json: { publish: { question: self, author: user } }
       )
     )
-    CreateQuestionJob.perform_later(user, self)
   end
 
   def update_question

@@ -3,6 +3,6 @@ class CreateQuestionJob < ApplicationJob
 
   def perform(user, question)
     question.subscriptions.create(user: user, question: question)
-    ThanksMailer.send_thanks(user, question).deliver_now
+    ThanksMailer.send_thanks(user, question).deliver_later
   end
 end

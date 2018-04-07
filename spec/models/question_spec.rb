@@ -17,7 +17,9 @@ RSpec.describe Question, type: :model do
     end
 
     it 'should send an thanks email' do
-      expect(ThanksMailer).to receive(:send_thanks).and_call_original
+      message_delivery = instance_double(ActionMailer::MessageDelivery)
+      expect(ThanksMailer).to receive(:send_thanks).and_return(message_delivery)
+      expect(message_delivery).to receive(:deliver_later)
       Question.create(title: 'dsdsd', body: 'dasd0', user: user)
     end
   end
