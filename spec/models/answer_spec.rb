@@ -13,10 +13,14 @@ RSpec.describe Answer, type: :model do
     let(:question) { create(:question) }
     let(:subscription) { create(:subscription, user: user, question: question) }
 
-    it 'will send notification to subscribers' do
-      message_delivery = instance_double(ActionMailer::MessageDelivery)
-      expect(NewAnswerMailer).to receive(:send_notification).and_return(message_delivery)
-      expect(message_delivery).to receive(:deliver_later)
+    it_behaves_like 'deliver_later', 'will send notification to subscribers'
+
+    def load_params
+      @class = NewAnswerMailer
+      @method = 'send_notification'
+    end
+
+    def action
       Answer.create(user: user2, question: question, body: 'adfsdfsdfasd')
     end
   end
