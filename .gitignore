@@ -24,4 +24,7 @@ public/uploads
 config/database.yml
 config/*.sphinx.conf
 db/sphinx
+<<<<<<< c33760af471c3ee9352021176e44db6140b5617f
 /.vscode
+=======
+>>>>>>> sphinx added
