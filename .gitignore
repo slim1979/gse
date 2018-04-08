@@ -22,3 +22,5 @@ public/uploads
 /.idea
 /dump.*
 config/database.yml
+config/*.sphinx.conf
+db/sphinx
