@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
 gem 'devise'
-
+gem 'rubocop'
 gem 'twitter-bootstrap-rails'
 gem 'less-rails'
 gem 'jquery-rails'
@@ -52,7 +52,12 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
+<<<<<<< 203dc774d9b5124d2268e32c7c3828cf5a562860
 gem 'dotenv'
+=======
+gem 'mysql2'
+gem 'thinking-sphinx'
+>>>>>>> rubocop, mysql2, thinking-sphinx added
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
