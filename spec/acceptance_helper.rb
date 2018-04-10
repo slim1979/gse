@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 Sidekiq::Testing.inline!
+
 RSpec.configure do |config|
-  config.include SphinxHelpers, type: :feature
   config.include AcceptanceInstanceHelper, type: :feature
   OmniAuth.config.test_mode = true
   Capybara.javascript_driver = :webkit
