@@ -52,12 +52,17 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
+<<<<<<< ee9ddf6221aad5080ce916b71dbcdb21e1398233
 <<<<<<< 203dc774d9b5124d2268e32c7c3828cf5a562860
 gem 'dotenv'
 =======
 gem 'mysql2'
 gem 'thinking-sphinx'
 >>>>>>> rubocop, mysql2, thinking-sphinx added
+=======
+gem 'mysql2', '>= 0.3.18', :platform => :ruby
+gem 'thinking-sphinx', '~> 3.4.2'
+>>>>>>> platform ruby, branch added
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
