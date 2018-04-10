@@ -1,0 +1,8 @@
+h3 Результаты поиска:
+hr
+.results
+  - if @result.nil?
+    p По Вашему запросу ничего не найдено
+  - else
+    - @result.each do |object|
+      p = link_to (object.class == User ? object.email : object.class == Question ? object.title : object.body), object
