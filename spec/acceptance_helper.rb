@@ -2,36 +2,32 @@ require 'rails_helper'
 
 Sidekiq::Testing.inline!
 RSpec.configure do |config|
-
+  config.include SphinxHelpers, type: :feature
   config.include AcceptanceInstanceHelper, type: :feature
-  # config.extend AcceptanceMacros, type: :feature
   OmniAuth.config.test_mode = true
   Capybara.javascript_driver = :webkit
-  # Capybara.javascript_driver = :poltergeist
-  # Capybara.current_driver = Capybara.javascript_driver
   Capybara.server = :puma
+  Capybara.server_port = 4000
+
   config.use_transactional_fixtures = false
+
   config.before(:suite) do
-    DatabaseCleaner.clean_with :truncation
-    # DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.around( :each ) do |spec|
-    if spec.metadata[:js]
-      # JS => doesn't share connections => can't use transactions
-      spec.run
-      DatabaseCleaner.clean_with :deletion
-    else
-      # No JS/Devise => run with Rack::Test => transactions are ok
-      DatabaseCleaner.start
-      spec.run
-      DatabaseCleaner.clean
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
 
-      # see https://github.com/bmabey/database_cleaner/issues/99
-      begin
-        ActiveRecord::Base.connection.send :rollback_transaction_records, true
-      rescue
-      end
-    end
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end
