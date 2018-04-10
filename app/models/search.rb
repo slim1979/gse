@@ -4,6 +4,6 @@ class Search < ApplicationRecord
   def make_search(search_for, search_through)
     search_through = SEARCH_TYPE[search_through]
     search_through ||= ThinkingSphinx
-    search_through.search search_for
+    search_through.search ThinkingSphinx::Query.escape(search_for)
   end
 end
