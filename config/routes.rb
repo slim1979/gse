@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  resources :searches
   use_doorkeeper
 
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
@@ -23,6 +22,9 @@ Rails.application.routes.draw do
 
   resources :subscriptions
   resources :attaches
+  resources :searches do
+    post :search_hound, on: :collection
+  end
 
   resources :authorizations do
     get :confirm_email, on: :member
