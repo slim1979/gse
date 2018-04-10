@@ -26,6 +26,7 @@ class Ability
     can :manage, Attach, attachable: { user_id: user.id }
     can :load, :profile
     can :load, :users_list
+    can :search, :content
   end
 
   def admin_abilities
