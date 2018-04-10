@@ -6,7 +6,8 @@ feature 'Search through site', %q{
   I want to be able search by my conditions
 } do
 
-  let(:users)       { create_list(:user, 6) }
+  let!(:user)       { create(:user, email: 'www@www.ru', password: 'qwerty', password_confirmation: 'qwerty') }
+  let!(:users)      { create_list(:user, 6) }
   let!(:questions)  { create_list(:question, 5, user: users.sample, title: "#{('a'..'z').to_a.sample(51).join} qwerty") }
   let!(:answers)    { create_list(:answer, 5, user: users.sample, body: "#{('a'..'z').to_a.sample(51).join} qwerty answer") }
   let!(:comments)   { create_list(:comment, 5, commented: questions.sample, user: users.sample, body: "#{('a'..'z').to_a.sample(51).join} qwerty question_comment") }
@@ -52,12 +53,15 @@ feature 'Search through site', %q{
     end
   end
 
-  describe 'Search through users' do
-    ThinkingSphinx::Test.index
-    sign_in users.last
-    visit root_path
-    fill_in :search_for, with: 'users.last.email'
-    choose('search_through_users')
-    click_on 'Искать'
+  describe 'Search through users', js: true do
+    it 'will return users' do
+      ThinkingSphinx::Test.index
+      sign_in users.last
+      visit root_path
+      fill_in :search_for, with: users.first.email
+      choose('search_through_users')
+      click_on 'Искать'
+      expect(page).to have_content users.first.email
+    end
   end
 end
