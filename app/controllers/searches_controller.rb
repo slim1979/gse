@@ -5,7 +5,6 @@ class SearchesController < ApplicationController
     authorize! :search, :content
     search_for = params[:search_for]
     search_through = params[:search_through].to_sym
-    # debugger
     @result = Search.new.make_search(search_for, search_through)
   end
 end
