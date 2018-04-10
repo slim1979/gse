@@ -47,6 +47,8 @@ html lang="en"
                       = radio_button_tag :search_through, 'answers'
                       = label_tag :search_through, 'Комментарии'
                       = radio_button_tag :search_through, 'comments'
+                      = label_tag :search_through, 'Пользователи'
+                      = radio_button_tag :search_through, 'users'
             ul.navbar-text.navbar-link.navbar-right
               = current_user.email if current_user
     .container
