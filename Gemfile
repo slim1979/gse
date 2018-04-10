@@ -53,8 +53,8 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
-gem 'mysql2'
-gem 'thinking-sphinx'
+gem 'mysql2', '>= 0.3.18', :platform => :ruby
+gem 'thinking-sphinx', '~> 3.4.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
