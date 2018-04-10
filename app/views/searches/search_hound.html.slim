@@ -7,5 +7,10 @@ hr
     - @result.each do |object|
       - if object.class == User
         p = mail_to object.email
+      - elsif object.class == Question
+        p = link_to object.title, object
+      -elsif object.class == Comment
+        p = link_to object.body, object.commented
       - else
-        p = link_to (object.class == Question ? object.title : object.body),  object.class == Question ? object : object.question
+        p = link_to object.body, object.question
+        
