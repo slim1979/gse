@@ -8,4 +8,4 @@ hr
       - if object.class == User
         p = mail_to object.email
       - else
-        p = link_to (object.class == Question ? object.title : object.body),  object
+        p = link_to (object.class == Question ? object.title : object.body),  object.class == Question ? object : object.question
