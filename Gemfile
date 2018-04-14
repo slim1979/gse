@@ -6,6 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 
+gem 'dotenv-rails', require: 'dotenv/deployment'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use postgresql as the database for Active Record
@@ -52,7 +53,6 @@ gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
 gem 'dotenv'
-gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
