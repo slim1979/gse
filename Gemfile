@@ -29,8 +29,6 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'slim-rails'
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 gem 'devise'
 
 gem 'twitter-bootstrap-rails'
@@ -53,6 +51,8 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -81,6 +81,11 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
   gem 'letter_opener'
+  # Use Capistrano for deployment
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :test do
