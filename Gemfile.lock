@@ -59,12 +59,7 @@ GEM
     bindex (0.5.0)
     builder (3.2.3)
     byebug (10.0.2)
-<<<<<<< 3d71db23ed7b49cb9ff99ee815493c624748cfed
-<<<<<<< ee9ddf6221aad5080ce916b71dbcdb21e1398233
-    cancancan (2.1.3)
-=======
     cancancan (2.1.4)
->>>>>>> rebase conflicts
     capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
@@ -79,9 +74,6 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-=======
-    cancancan (2.1.4)
->>>>>>> platform ruby, branch added
     capybara (2.18.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -123,9 +115,10 @@ GEM
     diff-lcs (1.3)
     doorkeeper (4.2.6)
       railties (>= 4.2)
-    dotenv (1.0.2)
-    dotenv-rails (1.0.2)
-      dotenv (= 1.0.2)
+    dotenv (2.2.2)
+    dotenv-rails (2.2.2)
+      dotenv (= 2.2.2)
+      railties (>= 3.2, < 6.0)
     erubi (1.7.1)
     execjs (2.7.0)
     factory_bot (4.8.2)
@@ -213,7 +206,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustermann (1.0.2)
-    mysql2 (0.5.0)
+    mysql2 (0.5.1)
     nenv (0.3.0)
     nested_form (0.3.2)
     net-scp (1.2.1)
@@ -235,7 +228,7 @@ GEM
     omniauth (1.8.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
-    omniauth-facebook (4.0.0)
+    omniauth-facebook (5.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-oauth (1.1.0)
       oauth
@@ -248,7 +241,7 @@ GEM
       rack
     orm_adapter (0.5.0)
     parallel (1.12.1)
-    parser (2.5.0.5)
+    parser (2.5.1.0)
       ast (~> 2.4.0)
     pg (0.21.0)
     poltergeist (1.17.0)
@@ -265,7 +258,7 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     public_suffix (3.0.2)
-    puma (3.11.3)
+    puma (3.11.4)
     rack (2.0.4)
     rack-protection (2.0.1)
       rack
@@ -397,17 +390,17 @@ GEM
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
-    thinking-sphinx (3.4.2)
+    thinking-sphinx (4.0.0)
       activerecord (>= 3.1.0)
       builder (>= 2.1.2)
       innertube (>= 1.0.2)
       joiner (>= 0.2.0)
       middleware (>= 0.1.0)
-      riddle (>= 2.0.0)
+      riddle (~> 2.3)
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    turbolinks (5.1.0)
+    turbolinks (5.1.1)
       turbolinks-source (~> 5.1)
     turbolinks-source (5.1.0)
     twitter-bootstrap-rails (4.0.0)
@@ -417,12 +410,12 @@ GEM
       railties (~> 5.0, >= 5.0.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.8)
+    uglifier (4.1.9)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.3.0)
     warden (1.2.7)
       rack (>= 1.0)
-    web-console (3.5.1)
+    web-console (3.6.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
@@ -467,11 +460,7 @@ DEPENDENCIES
   less-rails
   letter_opener
   listen (>= 3.0.5, < 3.2)
-<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
-  mysql2 (>= 0.3.18)
-=======
   mysql2
->>>>>>> ss
   nested_form
   omniauth
   omniauth-facebook
@@ -498,11 +487,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sprockets (= 3.6.3)
   therubyracer
-<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
-  thinking-sphinx (~> 3.4.2)
-=======
   thinking-sphinx
->>>>>>> ss
   turbolinks (~> 5)
   twitter-bootstrap-rails
   tzinfo-data

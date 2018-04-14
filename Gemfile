@@ -52,28 +52,9 @@ gem 'active_model_serializers', '~> 0.9.3'
 gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
-<<<<<<< 3d71db23ed7b49cb9ff99ee815493c624748cfed
-<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
-<<<<<<< ee9ddf6221aad5080ce916b71dbcdb21e1398233
-=======
->>>>>>> ss
-<<<<<<< 203dc774d9b5124d2268e32c7c3828cf5a562860
-=======
->>>>>>> rebase conflicts
 gem 'dotenv'
 gem 'mysql2'
 gem 'thinking-sphinx'
-<<<<<<< 3d71db23ed7b49cb9ff99ee815493c624748cfed
->>>>>>> rubocop, mysql2, thinking-sphinx added
-<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
-=======
-gem 'mysql2', '>= 0.3.18', :platform => :ruby
-gem 'thinking-sphinx', '~> 3.4.2'
->>>>>>> platform ruby, branch added
-=======
->>>>>>> ss
-=======
->>>>>>> rebase conflicts
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
