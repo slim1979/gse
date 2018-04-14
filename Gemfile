@@ -52,7 +52,7 @@ gem 'sidekiq'
 gem 'whenever', require: false
 gem 'sinatra', require: false
 gem 'dotenv'
-gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
