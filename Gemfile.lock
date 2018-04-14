@@ -463,7 +463,11 @@ DEPENDENCIES
   less-rails
   letter_opener
   listen (>= 3.0.5, < 3.2)
+<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
   mysql2 (>= 0.3.18)
+=======
+  mysql2
+>>>>>>> ss
   nested_form
   omniauth
   omniauth-facebook
@@ -490,7 +494,11 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sprockets (= 3.6.3)
   therubyracer
+<<<<<<< 8defb36bae89bb90204c1bf4aae297c8ae943b28
   thinking-sphinx (~> 3.4.2)
+=======
+  thinking-sphinx
+>>>>>>> ss
   turbolinks (~> 5)
   twitter-bootstrap-rails
   tzinfo-data
