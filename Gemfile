@@ -6,7 +6,11 @@ git_source(:github) do |repo_name|
 end
 
 
+<<<<<<< HEAD
 gem 'dotenv-rails', require: 'dotenv/rails-now'
+=======
+gem 'dotenv-rails', require: 'dotenv/deployment'
+>>>>>>> 2cbf9d8d1a5581754d4ea8b809baf6e63833442e
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
 # Use postgresql as the database for Active Record
