@@ -59,8 +59,12 @@ GEM
     bindex (0.5.0)
     builder (3.2.3)
     byebug (10.0.2)
+<<<<<<< 3d71db23ed7b49cb9ff99ee815493c624748cfed
 <<<<<<< ee9ddf6221aad5080ce916b71dbcdb21e1398233
     cancancan (2.1.3)
+=======
+    cancancan (2.1.4)
+>>>>>>> rebase conflicts
     capistrano (3.10.1)
       airbrussh (>= 1.0.0)
       i18n
