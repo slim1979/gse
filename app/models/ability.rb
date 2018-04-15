@@ -15,7 +15,7 @@ class Ability
   def guest_abilities
     can :confirm_email, :all
     can :read, :all
-    can :search, :content
+    # can :search, :content
   end
 
   def user_abilities
