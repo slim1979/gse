@@ -10,7 +10,6 @@ hr
       - elsif object.class == Question
         p = link_to object.title, object
       -elsif object.class == Comment
-        p = link_to object.body, object.commented
+        p = link_to object.body, object.commented.class == Question ? object.commented : object.commented.question
       - else
         p = link_to object.body, object.question
-        
